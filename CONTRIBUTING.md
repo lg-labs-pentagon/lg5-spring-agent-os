@@ -1,4 +1,4 @@
-# Contributing to lg5-spring-skills
+# Contributing to lg5-spring-agent-os
 
 Thanks for helping keep this knowledge base accurate. This file documents the
 review process, commit conventions, and release flow.
@@ -85,7 +85,7 @@ After a PR is merged to `main`:
    - `skills/CHANGELOG.md` (bundle)
 2. Aligns `bundle.version` and `released:` in `skills/manifest.yaml`.
 3. Updates the compatibility matrix in `README.md` if `lg5-spring-sha` changed.
-4. Tags: `git tag -a vX.Y.Z -m "lg5-spring-skills vX.Y.Z"` and `git push --tags`.
+4. Tags: `git tag -a vX.Y.Z -m "lg5-spring-agent-os vX.Y.Z"` and `git push --tags`.
 5. (Optional) Cuts a GitHub Release with the bundle CHANGELOG section as body.
 
 ## How skills are validated

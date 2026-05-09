@@ -1,0 +1,31 @@
+# Commands manifest — lg5-spring-agent-os bundle
+# Slash commands that drive repeatable workflow tasks.
+# Format: each command is a single .md file at the root of commands/ with
+# YAML frontmatter (description, argument-hint, allowed-tools) and a body
+# that is the prompt/instructions injected into the agent when invoked.
+#
+# CI validates that every entry below maps 1:1 to a file on disk and that
+# every file declares the required frontmatter keys.
+
+bundle:
+  name: lg5-spring-agent-os
+  version: 0.2.0
+  lg5-spring-sha: cbb6783
+
+commands:
+  - name: scaffold-service
+    file: scaffold-service.md
+    version: 0.1.0
+    description: Scaffold a new microservice from the blank-service skeleton.
+  - name: add-saga
+    file: add-saga.md
+    version: 0.1.0
+    description: Add an end-to-end SagaStep (publisher + listener + outbox + scheduler).
+  - name: add-outbox
+    file: add-outbox.md
+    version: 0.1.0
+    description: Add a Transactional Outbox (entity + DDL + helper + scheduler) for one event type.
+  - name: add-kafka-listener
+    file: add-kafka-listener.md
+    version: 0.1.0
+    description: Add a batch Kafka listener with NO-OP exception handling per RULE-010.

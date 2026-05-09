@@ -1,0 +1,30 @@
+# Specs manifest — lg5-spring-agent-os bundle
+# Spec-driven workflow templates and example specs.
+#
+# Format conventions:
+#   - Templates live at the root of specs/ and are named <name>-template.md.
+#   - Example specs live under specs/examples/<example-name>/.
+#   - Every template + example has YAML frontmatter (kind, version,
+#     description) so CI can validate consistency.
+
+bundle:
+  name: lg5-spring-agent-os
+  version: 0.2.0
+  lg5-spring-sha: cbb6783
+
+specs:
+  - name: prd-template
+    file: prd-template.md
+    kind: template
+    version: 0.1.0
+    description: Product Requirements Document template for a new lg5-spring service or feature.
+  - name: adr-template
+    file: adr-template.md
+    kind: template
+    version: 0.1.0
+    description: Lightweight Architecture Decision Record template aware of the lg5 conventions.
+  - name: microservice-spec-example
+    file: examples/microservice-spec-example.md
+    kind: example
+    version: 0.1.0
+    description: End-to-end spec example combining PRD + ADR + module breakdown for a sample loyalty-ledger service.

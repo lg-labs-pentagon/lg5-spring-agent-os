@@ -1,4 +1,4 @@
-# Changelog — lg5-spring-skills bundle
+# Changelog — lg5-spring-agent-os skills bundle
 
 All notable changes to the **bundle** (every change in any skill rolls up here)
 are documented in this file.
@@ -22,6 +22,28 @@ Each bundle release pins **all** included skills to a single `lg5-spring-sha`
 commits is unsupported.
 
 ## [Unreleased]
+
+## [0.2.0] — 2026-05-09
+### Changed
+- **Bundle rebranded** from `lg5-spring-skills` to `lg5-spring-agent-os` to
+  accommodate additional artifact types alongside skills. The repo on GitHub
+  was renamed accordingly; old URLs redirect.
+- `manifest.yaml` `bundle.name` updated to `lg5-spring-agent-os`,
+  `bundle.version` bumped to `0.2.0`.
+- Top-level scripts renamed (`validate-skills.sh` → `validate.sh`,
+  `install-skills.sh` → `install.sh`) and extended to handle multiple artifact
+  types (`skills/`, `rules/`, `commands/`, `subagents/`, `specs/`, `hooks/`).
+- README rewritten to describe the artifact-typed organization.
+### Notes
+- **No skill content changed** in this release; only metadata/structural
+  rebrand. Individual skill versions stay at `0.1.0`. The bundle version
+  bumps because the cross-bundle invariant requires every per-type
+  manifest's `bundle.version` to be identical, and other artifact types
+  (rules, commands, subagents, specs) are introduced at the same time.
+- All skills still validated against `lg5-spring` SHA `cbb6783`.
+- Companion artifact types added in this release have their own per-type
+  CHANGELOGs: `rules/CHANGELOG.md`, `commands/CHANGELOG.md`,
+  `subagents/CHANGELOG.md`, `specs/CHANGELOG.md`.
 
 ## [0.1.0] — 2026-05-09
 ### Added

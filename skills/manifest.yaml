@@ -1,16 +1,16 @@
-# Skills manifest — lg5-spring knowledge base
+# Skills manifest — lg5-spring-agent-os bundle
 # This file is the single source of truth for installed skill versions and
 # the framework commit each one is validated against.
 #
 # Convention: each entry mirrors the frontmatter of the corresponding SKILL.md.
-# CI validates that the values here match the frontmatter (see scripts/validate-skills.sh).
+# CI validates that the values here match the frontmatter (see scripts/validate.sh).
 
-# Bundle version follows SemVer; bump when any included skill changes.
+# Bundle version follows SemVer; bump when any included artifact changes.
 bundle:
-  name: lg5-spring-skills
-  version: 0.1.0
+  name: lg5-spring-agent-os
+  version: 0.2.0
   released: 2026-05-09
-  repository: https://github.com/lg-labs-pentagon/lg5-spring-skills
+  repository: https://github.com/lg-labs-pentagon/lg5-spring-agent-os
   # Framework commit against which the WHOLE bundle is validated.
   # All skills must declare the same `lg5-spring-sha`.
   lg5-spring-sha: cbb6783
