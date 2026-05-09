@@ -4,6 +4,7 @@ slug: hexagonal-ddd
 version: 0.1.0
 lg5-spring-sha: cbb6783
 severity: must
+constitutional: true
 scope: architecture
 tags: [hexagonal, ddd, domain-purity, ports-and-adapters]
 description: Hexagonal architecture + DDD. Domain logic lives in `<svc>-domain-core` and depends on nothing Spring. Spring annotations belong in adapters / application-service / container.

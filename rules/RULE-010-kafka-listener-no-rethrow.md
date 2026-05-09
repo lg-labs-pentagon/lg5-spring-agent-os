@@ -4,6 +4,7 @@ slug: kafka-listener-no-rethrow
 version: 0.1.0
 lg5-spring-sha: cbb6783
 severity: must
+constitutional: true
 scope: kafka
 tags: [kafka, listener, batch-listener, optimistic-locking, no-op, redelivery]
 description: Kafka listeners are batch by default (`batch-listener: true`). They must catch `OptimisticLockingFailureException` and not-found exceptions as NO-OP (do not rethrow) to prevent infinite Kafka redelivery loops.

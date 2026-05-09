@@ -1,8 +1,8 @@
 ---
 kind: template
 name: adr-template
-version: 0.1.0
-description: Lightweight Architecture Decision Record template aware of the lg5-spring conventions.
+version: 0.2.0
+description: Lightweight Architecture Decision Record template aware of the lg5-spring constitution.
 ---
 
 # ADR-<NNN>: <Short title in present tense>
@@ -51,16 +51,20 @@ What changes after this decision is implemented?
 - **Negative:** what gets worse, what new constraints appear.
 - **Neutral:** trade-offs that aren't strictly better or worse.
 
-## lg5 rule cross-references
+## Constitutional impact
 
-Which of the 18 hard rules does this decision interact with? List them by ID
-with a one-line note on the relationship.
+Which of the 15 **constitutional** rules (severity `must`) does this
+decision interact with? List them by ID with a one-line note on the
+relationship.
 
 - RULE-XXX — <how this ADR confirms / clarifies / temporarily overrides this rule>.
 - …
 
 If this ADR proposes overriding a `must`-level rule, that override MUST be
 time-boxed and tracked as a separate technical-debt item linked here.
+
+Advisory rules (`should`, `info`) do **not** need to be listed unless the
+decision changes how the team treats them.
 
 ## Implementation notes
 
@@ -74,6 +78,16 @@ Optional. Pointers to:
 ## Related ADRs
 
 - ADR-XXX — <title>.
+
+## Definition of Done (ADR)
+
+- [ ] Status is one of `Proposed | Accepted | Deprecated | Superseded`.
+- [ ] Decision is stated in active voice ("We will…").
+- [ ] At least one alternative is documented (otherwise it is not a real
+      decision — downgrade to a doc note).
+- [ ] Consequences cover positive AND negative.
+- [ ] Constitutional impact section names every relevant `must` rule.
+- [ ] Any `must` override is time-boxed with a tech-debt link.
 
 ---
 

@@ -4,6 +4,7 @@ slug: outbox-scheduler-shape
 version: 0.1.0
 lg5-spring-sha: cbb6783
 severity: must
+constitutional: true
 scope: outbox
 tags: [outbox, scheduler, scheduled, conditional-on-property, fixed-delay]
 description: Outbox schedulers implement `com.lg5.spring.outbox.OutboxScheduler`, are annotated `@Scheduled(fixedDelayString = "${<svc>.outbox-scheduler-fixed-rate}")` and gated with `@ConditionalOnProperty("scheduling.enabled")`.

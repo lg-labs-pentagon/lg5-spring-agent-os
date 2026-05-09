@@ -4,6 +4,7 @@ slug: test-profiles
 version: 0.1.0
 lg5-spring-sha: cbb6783
 severity: must
+constitutional: true
 scope: testing
 tags: [testing, profiles, lg5-test-boot, integration-tests, atdd]
 description: Integration & ATDD tests always run with `@ActiveProfiles({"test","local"})` and extend `Lg5TestBoot` (random port + RestAssured) or `Lg5TestBootPortNone` (NONE web env).

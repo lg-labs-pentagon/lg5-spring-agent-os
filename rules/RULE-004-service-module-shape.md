@@ -4,6 +4,7 @@ slug: service-module-shape
 version: 0.1.0
 lg5-spring-sha: cbb6783
 severity: must
+constitutional: true
 scope: architecture
 tags: [maven-modules, project-structure, blank-service]
 description: Every microservice mirrors the `blank-service` skeleton: domain (core+application-service), api, data-access, message (core+model), external (optional), container, acceptance-test, support.

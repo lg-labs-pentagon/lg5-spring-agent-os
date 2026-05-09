@@ -4,6 +4,7 @@ slug: parent-pom
 version: 0.1.0
 lg5-spring-sha: cbb6783
 severity: must
+constitutional: true
 scope: framework
 tags: [maven, parent-pom, framework-pin, sha]
 description: Every consumer service's pom.xml must inherit from `com.lg5.spring:lg5-spring-parent:1.0.0-alpha.<short-git-sha>` where the SHA is the framework commit being consumed.

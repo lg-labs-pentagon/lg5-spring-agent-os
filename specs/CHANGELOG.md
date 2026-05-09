@@ -4,6 +4,45 @@ All notable changes to the **specs** artifact set are documented here.
 Uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] — 2026-05-09
+### Added
+- **Spec-Driven Development workflow** formalized following Fowler/spec-kit:
+  Specify → Plan → Tasks → Implement, each phase consuming a template
+  and producing a per-feature markdown under `docs/specs/<NNN-slug>/`.
+- New templates under `templates/`:
+  - `plan-template.md` — technical plan (module map, ADR index,
+    dependency graph, risks, DoD checklist).
+  - `tasks-template.md` — atomic TASK-NNN with Given/When/Then AC and
+    Definition of Done checklist.
+  - `data-model-template.md` — concrete shapes (aggregates, events,
+    outbox payloads, REST DTOs, Avro schemas, JPA tables).
+  - `research-template.md` — optional time-boxed spike doc.
+- `specs/README.md` documenting the SDD workflow and per-feature folder
+  layout for consumer services.
+- The illustrative `loyalty-ledger` example was **split** into a
+  per-feature folder under `examples/loyalty-ledger/`:
+  `prd.md`, `plan.md`, `tasks.md`, `data-model.md`, `README.md`,
+  `adr/ADR-001-outbox-only-no-saga.md`,
+  `adr/ADR-002-reuse-order-message-model.md`. This shape is what
+  consumer services replicate under `docs/specs/<NNN-slug>/`.
+### Changed
+- `prd-template.md` rewritten: requirements now use stable `REQ-NNN` IDs;
+  Definition of Done checklist embedded; the template explicitly forbids
+  technology mentions to keep PRDs purely functional.
+- `adr-template.md`: the "lg5 rule cross-references" section is renamed
+  to **"Constitutional impact"** to align with the new constitution
+  vocabulary (see `rules/CONSTITUTION.md`); DoD checklist embedded.
+- `manifest.yaml` reorganized: explicit `templates/` and `examples/`
+  groupings; example entry now points to a folder.
+- `validate.sh` updated to walk `templates/` + recurse into
+  `examples/<feature>/` and to accept the new `example-*` `kind` values.
+### Removed
+- Old monolithic `examples/microservice-spec-example.md` (split into the
+  per-feature folder above; nothing lost in content).
+### Notes
+- Validated against `lg5-spring` SHA `cbb6783`.
+- Inspired by the spec-kit per-feature folder shape and DoD checklists.
+
 ## [0.1.0] — 2026-05-09
 ### Added
 - `prd-template.md` — Product Requirements Document template with sections

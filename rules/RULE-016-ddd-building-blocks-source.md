@@ -4,6 +4,7 @@ slug: ddd-building-blocks-source
 version: 0.1.0
 lg5-spring-sha: cbb6783
 severity: must
+constitutional: true
 scope: architecture
 tags: [ddd, building-blocks, external-library, ddd-common-domain, lg5-common-domain]
 description: DDD building blocks (`AggregateRoot`, `BaseEntity`, `BaseId`, `Money`, `DomainEvent`) come from the external `com.labs.lg.pentagon:ddd-common-domain` library, re-exported by `lg5-common-domain`. They are NOT defined in the lg5-spring repo.

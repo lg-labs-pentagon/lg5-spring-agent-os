@@ -4,6 +4,7 @@ slug: configuration-prefixes
 version: 0.1.0
 lg5-spring-sha: cbb6783
 severity: must
+constitutional: true
 scope: framework
 tags: [configuration, properties, kafka, testcontainers, feign]
 description: Use the canonical configuration property prefixes — `kafka-config.*`, `kafka-producer-config.*`, `kafka-consumer-config.*` (framework), `<svc>-service.*` (per-service), `testcontainers.<name>.enabled`, `application.image.name`, `application.traces.{console,file}.enabled` (ATDD), `third.basic.auth.{username,password}` (Feign).
