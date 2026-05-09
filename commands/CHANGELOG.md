@@ -4,6 +4,29 @@ All notable changes to the **commands** artifact set are documented here.
 Uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] — 2026-05-09
+### Added
+- **SDD orchestrator commands** (4 new) that drive the Spec-Driven
+  Development workflow phases per Fowler/spec-kit:
+  - `/sdd-specify <feature-slug> "<informal description>"` — produces a
+    functional, technology-free PRD under `docs/specs/<NNN-slug>/prd.md`.
+  - `/sdd-plan <NNN-feature-slug>` — produces `plan.md` + `adr/*.md`
+    (and `data-model.md` if persistent state); each ADR explicitly
+    states its constitutional impact by RULE-ID.
+  - `/sdd-tasks <NNN-feature-slug>` — decomposes the Plan into atomic
+    `TASK-NNN` with Given/When/Then acceptance criteria and a
+    Definition-of-Done checklist.
+  - `/sdd-implement <TASK-NNN>` — executes ONE task at a time (write
+    code + tests, run `lg5-code-reviewer`, commit with `TASK-NNN` ID).
+- New `category` field in `manifest.yaml`: `sdd` vs `building-block`.
+### Changed
+- Existing 4 commands re-categorized as `building-block` (invoked from
+  inside `/sdd-implement`, not directly by humans in the SDD flow).
+### Notes
+- Bundle bumped to `0.3.0` to align with the rules + specs co-release.
+- The SDD commands assume the bundle is mounted at `.agent-os/` in the
+  consumer repo (git-submodule mode).
+
 ## [0.1.0] — 2026-05-09
 ### Added
 - `/scaffold-service` — bootstrap a new microservice from `blank-service`.

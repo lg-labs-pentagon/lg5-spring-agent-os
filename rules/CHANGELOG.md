@@ -7,6 +7,24 @@ This file uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 The version below tracks the rules bundle as a whole, independently of
 individual rule versions in their own frontmatter.
 
+## [0.2.0] — 2026-05-09
+### Added
+- **Constitution layer** (concept borrowed from spec-kit). 15 of the 18 rules
+  (those with `severity: must`) are now flagged as **constitutional** — i.e.
+  immutable architectural laws that any consumer service must respect or
+  explicitly justify in an ADR.
+- New `constitutional: bool` field in every rule's frontmatter.
+- New `rules/CONSTITUTION.md` document: index of the 15 constitutional rules
+  with their one-liner, plus rules of engagement (how PRDs/Plans/Tasks should
+  reference the constitution).
+- New `constitution: CONSTITUTION.md` field in `manifest.yaml`.
+- Per-rule `constitutional: <bool>` echoed in `manifest.yaml` for fast lookup.
+### Notes
+- No rule wording changed. This is a metadata + documentation enhancement.
+- Bundle bumped to `0.3.0` because (a) the SDD-aligned commands and templates
+  introduced in the same release require this metadata, and (b) the
+  cross-bundle invariant requires `bundle.version` to match across types.
+
 ## [0.1.0] — 2026-05-09
 ### Added
 - Initial extraction of the 18 always-active hard rules from the workspace

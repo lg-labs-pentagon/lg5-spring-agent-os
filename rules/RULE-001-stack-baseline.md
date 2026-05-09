@@ -4,6 +4,7 @@ slug: stack-baseline
 version: 0.1.0
 lg5-spring-sha: cbb6783
 severity: must
+constitutional: true
 scope: framework
 tags: [versions, spring-boot, jdk, kotlin, build-tool]
 description: Pin the stack baseline (Spring Boot 3.4.2, Spring 6.2.2, JDK 21, Kotlin 21, Gradle for framework / Maven for services). Never propose lower versions.

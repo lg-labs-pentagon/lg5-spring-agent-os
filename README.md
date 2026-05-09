@@ -8,7 +8,7 @@ This repository ships a curated, validated set of **agent context artifacts**
 Copilot, etc.) need to be productive on services that follow the lg5-spring
 conventions.
 
-Current bundle: **v0.2.0** · Validated against `lg5-spring` SHA: **`cbb6783`**.
+Current bundle: **v0.3.0** · Validated against `lg5-spring` SHA: **`cbb6783`**.
 
 ---
 
@@ -27,13 +27,18 @@ lg5-spring-agent-os/
 │   ├── lg5-kafka-avro/SKILL.md
 │   ├── lg5-atdd/SKILL.md
 │   └── food-ordering-system/SKILL.md
-├── rules/                                     # 18 always-active hard rules
+├── rules/                                     # 18 always-active hard rules (15 form the constitution)
 │   ├── manifest.yaml
 │   ├── CHANGELOG.md
+│   ├── CONSTITUTION.md                        # index of constitutional rules + rules of engagement
 │   └── RULE-001-stack-baseline.md … RULE-018-reference-projects.md
-├── commands/                                  # 4 slash commands
+├── commands/                                  # 8 slash commands (4 SDD orchestrators + 4 building-blocks)
 │   ├── manifest.yaml
 │   ├── CHANGELOG.md
+│   ├── sdd-specify.md                         # SDD: informal prompt → PRD
+│   ├── sdd-plan.md                            # SDD: PRD → plan + ADRs + data-model
+│   ├── sdd-tasks.md                           # SDD: plan → atomic TASK-NNN
+│   ├── sdd-implement.md                       # SDD: execute one TASK-NNN end-to-end
 │   ├── scaffold-service.md
 │   ├── add-saga.md
 │   ├── add-outbox.md
@@ -44,12 +49,18 @@ lg5-spring-agent-os/
 │   ├── lg5-code-reviewer.md
 │   ├── lg5-test-generator.md
 │   └── lg5-planner.md
-├── specs/                                     # spec-driven workflow templates + 1 example
+├── specs/                                     # spec-driven workflow templates + examples
 │   ├── manifest.yaml
 │   ├── CHANGELOG.md
-│   ├── prd-template.md
-│   ├── adr-template.md
-│   └── examples/microservice-spec-example.md
+│   ├── README.md                              # SDD workflow overview
+│   ├── templates/
+│   │   ├── prd-template.md
+│   │   ├── adr-template.md
+│   │   ├── plan-template.md
+│   │   ├── tasks-template.md
+│   │   ├── data-model-template.md
+│   │   └── research-template.md
+│   └── examples/loyalty-ledger/               # end-to-end SDD example (PRD+plan+tasks+ADRs+data-model)
 ├── scripts/
 │   ├── validate.sh                            # CI / local sanity checks for all artifact types
 │   └── install.sh                             # install into a consumer repo
@@ -68,19 +79,77 @@ lg5-spring-agent-os/
 | **subagent** | `<name>.md` with frontmatter (name, description, tools, model) | Spawned by orchestrator | Delegated specialists (code-reviewer, test-generator, planner). |
 | **spec**     | `<name>.md` with frontmatter (kind, name, version)     | Read at planning time | PRD/ADR templates + example spec for spec-driven workflow.   |
 
-### Inventory at v0.2.0
+### Inventory at v0.3.0
 
-- **18 rules** (15 `must`, 2 `should`, 1 `info`). Scopes: framework (4),
-  architecture (5), kafka (2), outbox (2), saga (1), testing (2), style (1),
-  build (1), reference (1).
+- **18 rules** (15 constitutional / `severity: must`, 2 `should`, 1 `info`).
+  Scopes: framework (4), architecture (5), kafka (2), outbox (2), saga (1),
+  testing (2), style (1), build (1), reference (1). Indexed in
+  [`rules/CONSTITUTION.md`](rules/CONSTITUTION.md).
 - **7 skills** (`lg5-spring-overview`, `lg5-new-service`, `lg5-saga`,
   `lg5-outbox`, `lg5-kafka-avro`, `lg5-atdd`, `food-ordering-system`).
-- **4 commands** (`/scaffold-service`, `/add-saga`, `/add-outbox`,
-  `/add-kafka-listener`).
+- **8 commands**:
+  - 4 SDD orchestrators (`/sdd-specify`, `/sdd-plan`, `/sdd-tasks`, `/sdd-implement`)
+  - 4 building blocks (`/scaffold-service`, `/add-saga`, `/add-outbox`, `/add-kafka-listener`)
 - **3 subagents** (`lg5-code-reviewer`, `lg5-test-generator`, `lg5-planner`).
-- **2 spec templates + 1 example** (`prd-template`, `adr-template`,
-  `examples/microservice-spec-example`).
+- **6 spec templates + 1 worked example**: `prd-template`, `plan-template`,
+  `tasks-template`, `data-model-template`, `adr-template`, `research-template`,
+  plus the end-to-end [`examples/loyalty-ledger/`](specs/examples/loyalty-ledger/)
+  spec set.
 - All artifacts validated against `lg5-spring` SHA `cbb6783`.
+
+---
+
+## Spec-Driven Development workflow
+
+This bundle implements the **spec-anchored** SDD variant described by
+[Fowler & Böckeler](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html),
+borrowing the four-phase command chain from
+[GitHub spec-kit](https://github.com/github/spec-kit). Specs live alongside
+the code they describe, are kept in sync with it, and remain editable —
+they are not the single source of truth (which is still the code), but they
+are the single source of **intent**.
+
+```
+   /sdd-specify     /sdd-plan         /sdd-tasks        /sdd-implement
+       │                │                  │                  │
+       ▼                ▼                  ▼                  ▼
+     prd.md   ──►  plan.md + adr/  ──►  tasks.md   ──►   code + tests
+                  + data-model.md       (TASK-NNN)        + commit (loop)
+   (functional)   (technical)           (atomic)
+       │                │                  │                  │
+       └─ HUMAN ────────┴────── HUMAN ─────┴── HUMAN ────────►
+          APPROVES        APPROVES          APPROVES
+```
+
+Per-feature artifacts live in the **consumer** repo at
+`docs/specs/<NNN-slug>/` (e.g. `001-loyalty-ledger/`):
+
+```
+docs/specs/001-loyalty-ledger/
+├── prd.md            # functional requirements (REQ-NNN), no technology
+├── plan.md           # module map, dep graph, risks
+├── tasks.md          # atomic TASK-NNN with Given/When/Then AC
+├── data-model.md     # aggregates, events, outbox, REST DTOs, Avro, JPA
+├── research.md       # (optional) time-boxed spike notes
+└── adr/
+    ├── ADR-001-<slug>.md
+    └── ADR-002-<slug>.md
+```
+
+Approval gates exist **between phases**, not between individual TASKs.
+Inside Build, `/sdd-implement TASK-NNN` is invoked per task and produces
+exactly one commit (`feat(TASK-NNN): <title>`).
+
+Read [`specs/README.md`](specs/README.md) for the full workflow guide and
+[`specs/examples/loyalty-ledger/`](specs/examples/loyalty-ledger/) for an
+end-to-end worked example.
+
+### Constitution
+
+The 15 rules with `severity: must` form the **constitution**: immutable
+constraints that bind every PRD/Plan/Task/code change. ADRs that override a
+constitutional rule must justify the override and time-box the deviation.
+See [`rules/CONSTITUTION.md`](rules/CONSTITUTION.md).
 
 ---
 
@@ -105,7 +174,7 @@ Follows [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html):
   artifact, validation against a new framework SHA.
 - **PATCH** — clarifications, anti-pattern additions, no recipe change.
 
-Every release is tagged (`v0.1.0`, `v0.2.0`, …) and pinned to a single
+Every release is tagged (`v0.1.0`, `v0.2.0`, `v0.3.0`, …) and pinned to a single
 `lg5-spring-sha`. The `bundle.lg5-spring-sha` and `bundle.version` fields
 are identical across all per-type `manifest.yaml` files (CI-enforced).
 
@@ -115,6 +184,7 @@ are identical across all per-type `manifest.yaml` files (CI-enforced).
 |---------------:|----------------|------------|------------|
 | `0.1.0`        | `cbb6783`      | 2026-05-09 | 7 skills only; bundle name `lg5-spring-skills`. |
 | `0.2.0`        | `cbb6783`      | 2026-05-09 | Rebranded to `lg5-spring-agent-os`; added 18 rules + 4 commands + 3 subagents + 2 spec templates + 1 example spec. Same skill content as 0.1.0. |
+| `0.3.0`        | `cbb6783`      | 2026-05-09 | SDD adoption: `CONSTITUTION.md` + `constitutional` rule frontmatter; 4 SDD orchestrator commands (`/sdd-{specify,plan,tasks,implement}`); specs reorg into `templates/` + per-feature folder example (`loyalty-ledger`); 4 new templates (plan/tasks/data-model/research). No skill content changes. |
 
 ---
 
@@ -133,8 +203,8 @@ git submodule update --init
 .lg5-agent-os/scripts/install.sh .opencode
 
 # Pin to a specific release
-git -C .lg5-agent-os checkout v0.2.0
-git add .gitmodules .lg5-agent-os && git commit -m "chore(agents): pin lg5-spring-agent-os v0.2.0"
+git -C .lg5-agent-os checkout v0.3.0
+git add .gitmodules .lg5-agent-os && git commit -m "chore(agents): pin lg5-spring-agent-os v0.3.0"
 ```
 
 Pros: explicit, audit-friendly, the consumer sees exactly which SHA is in use.
@@ -144,10 +214,10 @@ Cons: developers need `git submodule update --init --recursive` after clone.
 
 ```bash
 cd your-microservice-repo
-curl -sL https://github.com/lg-labs-pentagon/lg5-spring-agent-os/archive/refs/tags/v0.2.0.tar.gz \
+curl -sL https://github.com/lg-labs-pentagon/lg5-spring-agent-os/archive/refs/tags/v0.3.0.tar.gz \
   | tar -xz -C /tmp
-/tmp/lg5-spring-agent-os-0.2.0/scripts/install.sh .opencode
-git add .opencode && git commit -m "chore(agents): install lg5-spring-agent-os@0.2.0"
+/tmp/lg5-spring-agent-os-0.3.0/scripts/install.sh .opencode
+git add .opencode && git commit -m "chore(agents): install lg5-spring-agent-os@0.3.0"
 ```
 
 Pros: zero submodule machinery; agent state is self-contained in the consumer.
@@ -159,7 +229,7 @@ Cons: harder to upgrade (re-run the install at the new tag, review diff).
 git clone --filter=blob:none --no-checkout https://github.com/lg-labs-pentagon/lg5-spring-agent-os.git .lg5-agent-os
 git -C .lg5-agent-os sparse-checkout init --cone
 git -C .lg5-agent-os sparse-checkout set rules skills/lg5-saga skills/lg5-outbox commands
-git -C .lg5-agent-os checkout v0.2.0
+git -C .lg5-agent-os checkout v0.3.0
 .lg5-agent-os/scripts/install.sh .opencode
 ```
 

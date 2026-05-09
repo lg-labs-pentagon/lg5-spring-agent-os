@@ -4,6 +4,7 @@ slug: build-commands
 version: 0.1.0
 lg5-spring-sha: cbb6783
 severity: should
+constitutional: false
 scope: build
 tags: [make, makefile, build-commands, dev-loop, ci]
 description: Use Make targets for repetitive build tasks. Framework — `make all-build`, `make publish-local`. Service — `make install-skip-test`, `make run-avro-model`, `make docker-up`, `make run-apps`, `make run-acceptance-test`.

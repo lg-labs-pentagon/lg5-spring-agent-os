@@ -4,6 +4,7 @@ slug: saga-step-idempotent
 version: 0.1.0
 lg5-spring-sha: cbb6783
 severity: must
+constitutional: true
 scope: saga
 tags: [saga, saga-step, idempotency, transactional, rollback]
 description: Saga steps implement `com.lg5.spring.saga.SagaStep<T>` as `@Component`. `process` and `rollback` are `@Transactional` and idempotent — query the outbox by (sagaId, expected SagaStatus) and return early if not found.

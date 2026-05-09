@@ -4,6 +4,7 @@ slug: testcontainers-opt-in
 version: 0.1.0
 lg5-spring-sha: cbb6783
 severity: must
+constitutional: true
 scope: testing
 tags: [testcontainers, opt-in, conditional, atdd, infrastructure]
 description: Each Testcontainers `*ContainerCustomConfig` is opt-in via `testcontainers.<name>.enabled`. ATDD `CucumberHooks` extending `Lg5TestBootPortNone` import them via `@Import(TestContainersLoader.class)`.

@@ -4,6 +4,7 @@ slug: kafka-avro-payloads
 version: 0.1.0
 lg5-spring-sha: cbb6783
 severity: must
+constitutional: true
 scope: kafka
 tags: [kafka, avro, schema-registry, message-model, specific-record-base]
 description: Every Kafka producer and consumer is generic over `V extends SpecificRecordBase`. Avro schemas live in `<svc>-message-model/src/main/resources/avro/*.avsc` and are regenerated with `make run-avro-model`.

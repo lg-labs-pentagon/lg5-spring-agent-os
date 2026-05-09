@@ -262,29 +262,29 @@ validate_subagents() {
 validate_specs() {
   local dir="${ROOT}/specs"
   echo; echo "═══ specs ═══"
-  # Templates at root + examples under examples/
+  # Templates under templates/ + every .md under examples/<feature>/**
   mapfile -t files < <(
     {
-      find "${dir}" -mindepth 1 -maxdepth 1 -type f -name '*.md' ! -name 'CHANGELOG.md'
-      [[ -d "${dir}/examples" ]] && find "${dir}/examples" -mindepth 1 -maxdepth 1 -type f -name '*.md'
+      [[ -d "${dir}/templates" ]] && find "${dir}/templates" -mindepth 1 -maxdepth 1 -type f -name '*.md'
+      [[ -d "${dir}/examples"  ]] && find "${dir}/examples"  -mindepth 2 -type f -name '*.md'
     } | sort
   )
   if [[ ${#files[@]} -eq 0 ]]; then err "no spec files found"; return; fi
 
-  local valid_kinds=" template example "
+  local valid_kinds=" template example example-prd example-adr example-plan example-tasks example-data-model example-research example-readme "
   for f in "${files[@]}"; do
     local rel="${f#${dir}/}"
     echo; echo "→ ${rel}"
     local fm; fm="$(extract_frontmatter "${f}")"
     if [[ -z "${fm}" ]]; then err "no frontmatter"; continue; fi
-    for key in kind name version description; do
+    for key in kind version description; do
       grep -qE "^${key}:" <<<"${fm}" || err "frontmatter missing '${key}'"
     done
     local fm_kind fm_ver
     fm_kind="$(echo "${fm}" | fm_get kind)"
     fm_ver="$(echo "${fm}"  | fm_get version)"
     [[ "${valid_kinds}" == *" ${fm_kind} "* ]] && ok "kind ${fm_kind}" \
-      || err "kind '${fm_kind}' not in {template,example}"
+      || err "kind '${fm_kind}' not in {template,example,example-*}"
     semver_ok "${fm_ver}" && ok "version ${fm_ver}" || err "version '${fm_ver}' not SemVer"
   done
 

@@ -4,6 +4,7 @@ slug: no-custom-annotations
 version: 0.1.0
 lg5-spring-sha: cbb6783
 severity: must
+constitutional: true
 scope: framework
 tags: [annotations, stock-spring, lombok, no-magic]
 description: Use stock Spring annotations (@RestController, @Component, @Configuration, @Transactional, @Scheduled, @KafkaListener) + Lombok. Do NOT invent or expect framework-specific annotations like @LgController or @ApplicationService.

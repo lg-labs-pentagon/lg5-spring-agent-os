@@ -1,55 +1,79 @@
 # AGENTS.md — lg5-spring-agent-os (upstream template)
 
 This file is the **upstream template** shipped by `lg5-spring-agent-os`.
-Consumer repositories that install this bundle should copy or merge it into
-their own root-level `AGENTS.md`.
+Consumer repositories that install this bundle should copy or merge it
+into their own root-level `AGENTS.md`.
 
-> **Path convention.** This template assumes artifacts are installed at
-> `.opencode/<artifact-type>/` in the consumer repo (the default target of
-> `scripts/install.sh`). Adjust the path if your agent expects a different
-> location (e.g. `.cursor/rules/`, `.continue/`).
+> **Path convention.** This template assumes artifacts are mounted at
+> `.agent-os/` in the consumer repo (the default target of git-submodule
+> integration). Adjust if your agent expects a different location.
 
 ---
 
-## Hard rules (always-active)
+## Spec-Driven Development workflow (read this if doing a feature)
 
-The 18 hard rules below are **always active**. Each rule has its own
-`rules/RULE-NNN-<slug>.md` file with full statement, rationale, examples,
-anti-patterns, and references. Cite a rule by its ID in PR reviews
-("violates RULE-008") so the conversation stays grounded.
+This bundle implements the **spec-anchored** variant of SDD described by
+[Fowler & Böckeler](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html),
+borrowing structural ideas from
+[GitHub spec-kit](https://github.com/github/spec-kit).
 
-| ID         | Scope         | Rule (one-liner)                                                          |
-|------------|---------------|---------------------------------------------------------------------------|
-| RULE-001   | framework     | Stack baseline: Spring Boot 3.4.2, Spring 6.2.2, JDK 21, Kotlin 21, Gradle/Maven. |
-| RULE-002   | framework     | Parent POM `com.lg5.spring:lg5-spring-parent:1.0.0-alpha.<short-git-sha>`. |
-| RULE-003   | architecture  | Hexagonal + DDD; domain core is Spring-free.                              |
-| RULE-004   | architecture  | Mirror the `blank-service` module shape (8 modules).                      |
-| RULE-005   | framework     | No custom framework annotations — stock Spring + Lombok only.             |
-| RULE-006   | architecture  | REST controllers produce `application/vnd.api.v1+json`.                   |
-| RULE-007   | kafka         | Kafka payloads must be Avro (`SpecificRecordBase`); schemas in `*-message-model`. |
-| RULE-008   | outbox        | Transactional Outbox is mandatory; entity must have `@Version` + `OutboxStatus`. |
-| RULE-009   | saga          | `SagaStep<T>` `@Component`; `process`/`rollback` `@Transactional` + idempotent. |
-| RULE-010   | kafka         | Kafka listeners batch by default; swallow `OptimisticLock` + not-found as NO-OP. |
-| RULE-011   | outbox        | Outbox scheduler implements `OutboxScheduler`, gated by `scheduling.enabled`. |
-| RULE-012   | testing       | IT/ATDD: `@ActiveProfiles({"test","local"})` + extend `Lg5TestBoot[PortNone]`. |
-| RULE-013   | testing       | Testcontainers opt-in via `testcontainers.<name>.enabled`.                |
-| RULE-014   | framework     | Use canonical config prefixes (`kafka-config.*`, `<svc>-service.*`, …).   |
-| RULE-015   | style         | `final` everywhere, records for DTOs, Kotlin only for interfaces/config.  |
-| RULE-016   | architecture  | DDD building blocks come from `ddd-common-domain` (re-exported by `lg5-common-domain`). |
-| RULE-017   | build         | Prefer Make targets (`make all-build`, `make run-apps`, `make run-acceptance-test`). |
-| RULE-018   | reference     | Ground answers against `lg5-spring`, `food-ordering-system`, `blank-service` cloned in `/tmp/lg5-study/`. |
+```
+   /sdd-specify     /sdd-plan         /sdd-tasks        /sdd-implement
+       │                │                  │                  │
+       ▼                ▼                  ▼                  ▼
+     prd.md   ──►  plan.md + adr/  ──►  tasks.md   ──►   code + tests
+                  + data-model.md       (TASK-NNN)        + commit
+   (functional)   (technical)           (atomic)         (per task, loop)
+       │                │                  │                  │
+       └─ HUMAN ────────┴────── HUMAN ─────┴── HUMAN ────────►
+          APPROVES        APPROVES          APPROVES
+```
 
-Severity legend: `must` (RULE-001 to 014, 016) · `should` (RULE-015, 017) · `info` (RULE-018).
+Per-feature artifacts live under `docs/specs/<NNN-slug>/` in the consumer
+repo. See [`specs/README.md`](specs/README.md) for the full layout and
+[`specs/examples/loyalty-ledger/`](specs/examples/loyalty-ledger/) for an
+end-to-end example.
+
+---
+
+## Constitution (15 immutable rules)
+
+The 15 rules with `severity: must` form the **constitution**. They are
+immutable and bind every PRD/Plan/Task/code change. See
+[`rules/CONSTITUTION.md`](rules/CONSTITUTION.md) for the full index +
+rules of engagement, and [`rules/RULE-NNN-*.md`](rules/) for each rule's
+statement, rationale, examples, and anti-patterns.
+
+| ID         | Const? | Scope         | One-liner                                                                  |
+|------------|:------:|---------------|----------------------------------------------------------------------------|
+| RULE-001   | ✅ | framework     | Stack baseline: Spring Boot 3.4.2, Spring 6.2.2, JDK 21, Kotlin 21, Gradle/Maven. |
+| RULE-002   | ✅ | framework     | Parent POM `com.lg5.spring:lg5-spring-parent:1.0.0-alpha.<short-git-sha>`. |
+| RULE-003   | ✅ | architecture  | Hexagonal + DDD; domain core is Spring-free.                               |
+| RULE-004   | ✅ | architecture  | Mirror the `blank-service` module shape (8 modules).                       |
+| RULE-005   | ✅ | framework     | No custom framework annotations — stock Spring + Lombok only.              |
+| RULE-006   | ✅ | architecture  | REST controllers produce `application/vnd.api.v1+json`.                    |
+| RULE-007   | ✅ | kafka         | Kafka payloads must be Avro (`SpecificRecordBase`); schemas in `*-message-model`. |
+| RULE-008   | ✅ | outbox        | Transactional Outbox is mandatory; entity must have `@Version` + `OutboxStatus`. |
+| RULE-009   | ✅ | saga          | `SagaStep<T>` `@Component`; `process`/`rollback` `@Transactional` + idempotent. |
+| RULE-010   | ✅ | kafka         | Kafka listeners batch by default; swallow `OptimisticLock` + not-found as NO-OP. |
+| RULE-011   | ✅ | outbox        | Outbox scheduler implements `OutboxScheduler`, gated by `scheduling.enabled`. |
+| RULE-012   | ✅ | testing       | IT/ATDD: `@ActiveProfiles({"test","local"})` + extend `Lg5TestBoot[PortNone]`. |
+| RULE-013   | ✅ | testing       | Testcontainers opt-in via `testcontainers.<name>.enabled`.                 |
+| RULE-014   | ✅ | framework     | Use canonical config prefixes (`kafka-config.*`, `<svc>-service.*`, …).    |
+| RULE-015   | ⚠ | style         | `final` everywhere, records for DTOs, Kotlin only for interfaces/config.   |
+| RULE-016   | ✅ | architecture  | DDD blocks come from `ddd-common-domain` (re-exported by `lg5-common-domain`). |
+| RULE-017   | ⚠ | build         | Prefer Make targets (`make all-build`, `make run-apps`, `make run-acceptance-test`). |
+| RULE-018   | ⚠ | reference     | Ground answers against `lg5-spring`, `food-ordering-system`, `blank-service` cloned in `/tmp/lg5-study/`. |
+
+Legend: ✅ constitutional (`severity: must`) · ⚠ advisory (`should`/`info`).
 
 ---
 
 ## Skill routing table (load on demand)
 
-When the user asks anything related to lg5-spring, building services, sagas,
-outbox, kafka producers/consumers, acceptance tests, or generating new
-modules, **load the relevant skill first**:
+When the user asks anything related to lg5-spring, **load the relevant skill**:
 
-| Topic                                                       | Skill to load            |
+| Topic                                                       | Skill                    |
 |-------------------------------------------------------------|--------------------------|
 | Overview, module map, recent changes, conventions           | `lg5-spring-overview`    |
 | Scaffolding a brand-new microservice from `blank-service`   | `lg5-new-service`        |
@@ -61,14 +85,26 @@ modules, **load the relevant skill first**:
 
 ---
 
-## Command catalog (slash commands)
+## Command catalog
 
-The bundle ships executable workflow commands under `commands/`. Invoke them
-to drive repeatable scaffolding/refactoring tasks:
+Two categories: **SDD orchestrators** drive the workflow phases;
+**building blocks** are invoked from inside `/sdd-implement` to actually
+generate code.
 
-| Command                | What it does                                                        |
-|------------------------|---------------------------------------------------------------------|
-| `/scaffold-service`    | Scaffolds a new microservice from `blank-service` skeleton.         |
+### SDD orchestrators
+
+| Command                          | What it does                                                       |
+|----------------------------------|--------------------------------------------------------------------|
+| `/sdd-specify <slug> "<desc>"`   | Convert informal prompt → functional PRD (no technology).          |
+| `/sdd-plan <NNN-slug>`           | Generate `plan.md` + ADRs (+ `data-model.md`) from approved PRD.   |
+| `/sdd-tasks <NNN-slug>`          | Decompose Plan into atomic `TASK-NNN` with Given/When/Then AC.     |
+| `/sdd-implement <TASK-NNN>`      | Execute ONE task (code + tests + commit). Loops by re-invocation.  |
+
+### Building blocks (called from inside /sdd-implement)
+
+| Command                | What it does                                                          |
+|------------------------|-----------------------------------------------------------------------|
+| `/scaffold-service`    | Scaffolds a new microservice from `blank-service` skeleton.           |
 | `/add-saga`            | Adds a `SagaStep` end-to-end (publisher + listener + outbox + scheduler). |
 | `/add-outbox`          | Adds an outbox (entity + DDL + helper + scheduler) for one event type. |
 | `/add-kafka-listener`  | Adds a Kafka listener (batch + NO-OP exception handling per RULE-010). |
@@ -77,29 +113,30 @@ See `commands/<name>.md` for each command's full prompt and parameters.
 
 ---
 
-## Subagent catalog (delegated specialists)
-
-Specialized subagents the orchestrator can spawn:
+## Subagent catalog
 
 | Subagent              | Purpose                                                          |
 |-----------------------|------------------------------------------------------------------|
-| `lg5-code-reviewer`   | Reviews diffs against the 18 hard rules; cites violations by ID. |
-| `lg5-test-generator`  | Generates IT/ATDD test scaffolds following RULE-012/013 patterns. |
-| `lg5-planner`         | Decomposes a feature request into rule-aligned implementation steps. |
-
-See `subagents/<name>.md` for each subagent's role and toolset.
+| `lg5-code-reviewer`   | Reviews diffs against the 18 rules; cites violations by RULE-ID. |
+| `lg5-test-generator`  | Generates IT/ATDD test scaffolds (RULE-012/013 patterns).        |
+| `lg5-planner`         | Decomposes feature → rule-aligned implementation plan.           |
 
 ---
 
-## Spec templates (spec-driven workflow)
+## Spec templates
 
-Templates for planning artifacts under `specs/`:
+Under [`specs/templates/`](specs/templates/):
 
-| Template              | Purpose                                                          |
-|-----------------------|------------------------------------------------------------------|
-| `prd-template`        | Product Requirements Doc for a new service/feature.              |
-| `adr-template`        | Architecture Decision Record (lightweight, lg5-aware).           |
-| `microservice-spec`   | End-to-end spec example: PRD + ADR + module breakdown for a sample service. |
+| Template                   | Used by             | Purpose                                                  |
+|----------------------------|---------------------|----------------------------------------------------------|
+| `prd-template`             | `/sdd-specify`      | Functional PRD (REQ-NNN with AC; tech-free).             |
+| `plan-template`            | `/sdd-plan`         | Module map, ADR index, dep graph, risks.                 |
+| `adr-template`             | `/sdd-plan`         | Lightweight ADR with constitutional impact section.      |
+| `data-model-template`      | `/sdd-plan`         | Aggregates, events, outbox, REST DTOs, Avro, JPA.        |
+| `tasks-template`           | `/sdd-tasks`        | Atomic TASK-NNN with Given/When/Then AC + DoD checklist. |
+| `research-template`        | (manual)            | Optional time-boxed spike doc.                           |
+
+End-to-end example: [`specs/examples/loyalty-ledger/`](specs/examples/loyalty-ledger/).
 
 ---
 
@@ -111,5 +148,7 @@ Templates for planning artifacts under `specs/`:
 - Prefer copying patterns from `food-ordering-system/order-service` (the
   most complete example: REST + JPA + Kafka producer/consumer + Saga +
   Outbox + ATDD).
-- Never invent framework classes. If a class isn't in the skill files, the
-  rules, or the cloned repos, say so explicitly (RULE-005, RULE-018).
+- Never invent framework classes. If a class isn't in the skill files,
+  the rules, or the cloned repos, say so explicitly (RULE-005, RULE-018).
+- Never override a constitutional rule (`severity: must`) without a
+  dedicated ADR justifying the override and time-boxing the deviation.

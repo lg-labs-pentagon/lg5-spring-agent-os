@@ -4,6 +4,7 @@ slug: rest-media-type
 version: 0.1.0
 lg5-spring-sha: cbb6783
 severity: must
+constitutional: true
 scope: architecture
 tags: [rest, media-type, versioning, content-negotiation]
 description: REST controllers must produce `application/vnd.api.v1+json`. This is the conventional vendor media type used by all lg5-spring services for explicit API versioning.

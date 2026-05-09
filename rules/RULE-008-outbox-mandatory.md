@@ -4,6 +4,7 @@ slug: outbox-mandatory
 version: 0.1.0
 lg5-spring-sha: cbb6783
 severity: must
+constitutional: true
 scope: outbox
 tags: [outbox, transactional-outbox, optimistic-locking, kafka, atomicity]
 description: Every domain event that crosses a service boundary must be published via the Transactional Outbox. The outbox JPA entity must carry `@Version` (optimistic locking) and an `OutboxStatus` field (STARTED|COMPLETED|FAILED).

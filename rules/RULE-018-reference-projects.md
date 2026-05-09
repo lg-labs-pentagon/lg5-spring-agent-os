@@ -4,6 +4,7 @@ slug: reference-projects
 version: 0.1.0
 lg5-spring-sha: cbb6783
 severity: info
+constitutional: false
 scope: reference
 tags: [reference, repos, framework, examples, blank-service]
 description: Three canonical reference projects — `lg5-spring` (framework), `food-ordering-system` (real example), `blank-service` (skeleton). Clone them under `/tmp/lg5-study/` to provide grounded answers.

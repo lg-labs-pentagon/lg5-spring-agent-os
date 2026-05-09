@@ -4,6 +4,7 @@ slug: code-style
 version: 0.1.0
 lg5-spring-sha: cbb6783
 severity: should
+constitutional: false
 scope: style
 tags: [style, final, records, lombok, kotlin, package-layout]
 description: Style defaults — `final` on locals & params; records for DTOs; Kotlin only for stateless interfaces and `@ConfigurationProperties`; package layout per concern (dto/, entity/, mapper/, event/, exception/, ports/, outbox/, saga/).

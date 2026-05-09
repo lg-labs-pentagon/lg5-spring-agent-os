@@ -23,6 +23,20 @@ commits is unsupported.
 
 ## [Unreleased]
 
+## [0.3.0] — 2026-05-09
+### Changed
+- `manifest.yaml` `bundle.version` bumped to `0.3.0` to align with the
+  rest of the bundle (cross-bundle invariant: all per-type manifests must
+  agree on `bundle.version`).
+### Notes
+- **No skill content changed in this release.** All 7 skills remain at
+  individual version `0.1.0` and validated against `lg5-spring` SHA
+  `cbb6783`.
+- The 0.3.0 release of the bundle adds a constitution layer to `rules/`,
+  Spec-Driven-Development workflow templates to `specs/`, and 4 new SDD
+  orchestrator commands to `commands/`. See those directories' CHANGELOGs
+  for details.
+
 ## [0.2.0] — 2026-05-09
 ### Changed
 - **Bundle rebranded** from `lg5-spring-skills` to `lg5-spring-agent-os` to
