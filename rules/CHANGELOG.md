@@ -7,6 +7,21 @@ This file uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 The version below tracks the rules bundle as a whole, independently of
 individual rule versions in their own frontmatter.
 
+## [0.3.2] — 2026-05-10
+### Changed
+- Framework SHA pin bumped from `af81c7c` to `d0d754a` (PATCH).
+- Includes [`fix(testcontainers)`: in-network Kafka listener](https://github.com/lg-labs-pentagon/lg5-spring/pull/1)
+  — relevant for RULE-007 and RULE-013 (Kafka/testcontainers scope) but
+  no rule wording changed.
+- Also pulls in [LG-83] Jib Maven plugin upgrade to 3.5.1 (transitive on
+  the framework parent pom).
+- All 18 rule files updated `lg5-spring-sha: d0d754a` in frontmatter.
+  RULE-001 and RULE-002 example POM coordinates updated to
+  `1.0.0-alpha.d0d754a`.
+### Notes
+- **No rule wording changed.** RULE-001 still mandates Spring Boot 3.4.2
+  (which remains true on `d0d754a`).
+
 ## [0.3.1] — 2026-05-10
 ### Changed
 - Framework SHA pin bumped from `cbb6783` to `af81c7c` to honor RULE-001's

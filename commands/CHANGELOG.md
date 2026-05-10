@@ -4,6 +4,18 @@ All notable changes to the **commands** artifact set are documented here.
 Uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.2] — 2026-05-10
+### Changed
+- Framework SHA pin bumped from `af81c7c` to `d0d754a` (PATCH).
+- Includes [`fix(testcontainers)`: in-network Kafka listener](https://github.com/lg-labs-pentagon/lg5-spring/pull/1)
+  — surfaced while wiring the first downstream Kafka listener IT in
+  `lg5-loyalty-ledger` TASK-009.
+- Also pulls in [LG-83] Jib Maven plugin upgrade to 3.5.1 (transitive on
+  the framework parent pom).
+### Notes
+- **No command behavior changed** in this release. Individual command
+  versions are unchanged.
+
 ## [0.3.1] — 2026-05-10
 ### Changed
 - Framework SHA pin bumped from `cbb6783` to `af81c7c` to honor RULE-001's

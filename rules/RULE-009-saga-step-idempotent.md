@@ -2,7 +2,7 @@
 id: RULE-009
 slug: saga-step-idempotent
 version: 0.1.0
-lg5-spring-sha: af81c7c
+lg5-spring-sha: d0d754a
 severity: must
 constitutional: true
 scope: saga

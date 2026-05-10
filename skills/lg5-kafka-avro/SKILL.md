@@ -1,7 +1,7 @@
 ---
 name: lg5-kafka-avro
 version: 0.1.0
-lg5-spring-sha: af81c7c
+lg5-spring-sha: d0d754a
 last-validated: 2026-05-09
 description: How to wire Kafka producers, consumers and Avro schemas in lg5-spring services using KafkaProducer<K,V>, KafkaConsumer<T>, KafkaMessageHelper, the Avro maven plugin and the kafka-* configuration prefixes. Load this skill when the user asks about Kafka publishers, listeners, batch consumption, schema registry, Avro generation, or topic configuration.
 ---

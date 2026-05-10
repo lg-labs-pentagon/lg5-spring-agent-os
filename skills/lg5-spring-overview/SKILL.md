@@ -1,7 +1,7 @@
 ---
 name: lg5-spring-overview
 version: 0.1.0
-lg5-spring-sha: af81c7c
+lg5-spring-sha: d0d754a
 last-validated: 2026-05-09
 description: Overview, module map, recent commit insights, and global conventions of the lg5-spring framework (https://github.com/lg-labs-pentagon/lg5-spring). Load this skill when the user asks "what is lg5-spring", "what modules does it have", "what changed recently", or needs a high-level orientation before diving into a specific topic.
 ---
@@ -128,7 +128,7 @@ Mirror `blank-service/` 1:1:
 
 ## Versioning convention
 
-Framework artifacts are versioned `1.0.0-alpha.<short-git-sha>` (e.g. `1.0.0-alpha.af81c7c`). Consumers pin the SHA explicitly. To bump: pick a newer SHA from `git -C /tmp/lg5-study/lg5-spring log --oneline -20` and run `make publish-local` in the framework repo.
+Framework artifacts are versioned `1.0.0-alpha.<short-git-sha>` (e.g. `1.0.0-alpha.d0d754a`). Consumers pin the SHA explicitly. To bump: pick a newer SHA from `git -C /tmp/lg5-study/lg5-spring log --oneline -20` and run `make publish-local` in the framework repo.
 
 ## Configuration property prefixes
 
