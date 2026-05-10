@@ -4,6 +4,16 @@ All notable changes to the **specs** artifact set are documented here.
 Uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.1] — 2026-05-10
+### Changed
+- Framework SHA pin bumped from `cbb6783` to `af81c7c` to honor RULE-001's
+  Spring Boot 3.4.2 requirement (`cbb6783` actually shipped 3.3.5,
+  discovered during consumer-service TASK-002 of `lg5-loyalty-ledger`).
+- `bundle.version` in `manifest.yaml` bumped to `0.3.1` (PATCH; cross-bundle
+  invariant requires every per-type manifest to agree).
+### Notes
+- **No spec template or example content changed** in this release.
+
 ## [0.3.0] — 2026-05-09
 ### Added
 - **Spec-Driven Development workflow** formalized following Fowler/spec-kit:

@@ -4,6 +4,17 @@ All notable changes to the **subagents** artifact set are documented here.
 Uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.1] — 2026-05-10
+### Changed
+- Framework SHA pin bumped from `cbb6783` to `af81c7c` to honor RULE-001's
+  Spring Boot 3.4.2 requirement (`cbb6783` actually shipped 3.3.5,
+  discovered during consumer-service TASK-002 of `lg5-loyalty-ledger`).
+- `bundle.version` in `manifest.yaml` bumped to `0.3.1` (PATCH; cross-bundle
+  invariant requires every per-type manifest to agree).
+### Notes
+- **No subagent behavior changed** in this release. Individual subagent
+  versions are unchanged.
+
 ## [0.2.0] — 2026-05-09
 ### Changed
 - `manifest.yaml` `bundle.version` bumped to `0.3.0` to align with the

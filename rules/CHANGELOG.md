@@ -7,6 +7,22 @@ This file uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 The version below tracks the rules bundle as a whole, independently of
 individual rule versions in their own frontmatter.
 
+## [0.3.1] — 2026-05-10
+### Changed
+- Framework SHA pin bumped from `cbb6783` to `af81c7c` to honor RULE-001's
+  Spring Boot 3.4.2 requirement (`cbb6783` actually shipped 3.3.5,
+  discovered during consumer-service TASK-002 of `lg5-loyalty-ledger`).
+- `bundle.version` in `manifest.yaml` bumped to `0.3.1` (PATCH; cross-bundle
+  invariant requires every per-type manifest to agree).
+- All 18 rule files updated `lg5-spring-sha: af81c7c` in frontmatter.
+  RULE-001 and RULE-002 example POM coordinates updated to
+  `1.0.0-alpha.af81c7c`.
+### Notes
+- **No rule wording changed.** RULE-001 still mandates Spring Boot 3.4.2
+  (which is now actually true on the pinned framework SHA).
+- Bundles in `af81c7c`: Spring Boot 3.4.2 upgrade (`e5139d0`),
+  `ConfluentKafkaContainerCustomConfig` (`5fb16aa`), CI/docs updates.
+
 ## [0.2.0] — 2026-05-09
 ### Added
 - **Constitution layer** (concept borrowed from spec-kit). 15 of the 18 rules

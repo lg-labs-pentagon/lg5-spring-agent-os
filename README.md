@@ -8,7 +8,7 @@ This repository ships a curated, validated set of **agent context artifacts**
 Copilot, etc.) need to be productive on services that follow the lg5-spring
 conventions.
 
-Current bundle: **v0.3.0** · Validated against `lg5-spring` SHA: **`cbb6783`**.
+Current bundle: **v0.3.1** · Validated against `lg5-spring` SHA: **`af81c7c`**.
 
 ---
 
@@ -79,7 +79,7 @@ lg5-spring-agent-os/
 | **subagent** | `<name>.md` with frontmatter (name, description, tools, model) | Spawned by orchestrator | Delegated specialists (code-reviewer, test-generator, planner). |
 | **spec**     | `<name>.md` with frontmatter (kind, name, version)     | Read at planning time | PRD/ADR templates + example spec for spec-driven workflow.   |
 
-### Inventory at v0.3.0
+### Inventory at v0.3.1
 
 - **18 rules** (15 constitutional / `severity: must`, 2 `should`, 1 `info`).
   Scopes: framework (4), architecture (5), kafka (2), outbox (2), saga (1),
@@ -95,7 +95,7 @@ lg5-spring-agent-os/
   `tasks-template`, `data-model-template`, `adr-template`, `research-template`,
   plus the end-to-end [`examples/loyalty-ledger/`](specs/examples/loyalty-ledger/)
   spec set.
-- All artifacts validated against `lg5-spring` SHA `cbb6783`.
+- All artifacts validated against `lg5-spring` SHA `af81c7c`.
 
 ---
 
@@ -174,7 +174,7 @@ Follows [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html):
   artifact, validation against a new framework SHA.
 - **PATCH** — clarifications, anti-pattern additions, no recipe change.
 
-Every release is tagged (`v0.1.0`, `v0.2.0`, `v0.3.0`, …) and pinned to a single
+Every release is tagged (`v0.1.0`, `v0.2.0`, `v0.3.0`, `v0.3.1`, …) and pinned to a single
 `lg5-spring-sha`. The `bundle.lg5-spring-sha` and `bundle.version` fields
 are identical across all per-type `manifest.yaml` files (CI-enforced).
 
@@ -185,6 +185,7 @@ are identical across all per-type `manifest.yaml` files (CI-enforced).
 | `0.1.0`        | `cbb6783`      | 2026-05-09 | 7 skills only; bundle name `lg5-spring-skills`. |
 | `0.2.0`        | `cbb6783`      | 2026-05-09 | Rebranded to `lg5-spring-agent-os`; added 18 rules + 4 commands + 3 subagents + 2 spec templates + 1 example spec. Same skill content as 0.1.0. |
 | `0.3.0`        | `cbb6783`      | 2026-05-09 | SDD adoption: `CONSTITUTION.md` + `constitutional` rule frontmatter; 4 SDD orchestrator commands (`/sdd-{specify,plan,tasks,implement}`); specs reorg into `templates/` + per-feature folder example (`loyalty-ledger`); 4 new templates (plan/tasks/data-model/research). No skill content changes. |
+| `0.3.1`        | `af81c7c`      | 2026-05-10 | PATCH: framework SHA pin bumped to honor RULE-001's Spring Boot 3.4.2 mandate (`cbb6783` actually shipped 3.3.5; discovered during consumer-service TASK-002 of `lg5-loyalty-ledger`). `af81c7c` bundles the Spring Boot 3.4.2 upgrade (`e5139d0`), `ConfluentKafkaContainerCustomConfig` (`5fb16aa`), and CI/docs updates. No rule/skill/command/subagent/spec contracts changed. |
 
 ---
 
@@ -203,8 +204,8 @@ git submodule update --init
 .lg5-agent-os/scripts/install.sh .opencode
 
 # Pin to a specific release
-git -C .lg5-agent-os checkout v0.3.0
-git add .gitmodules .lg5-agent-os && git commit -m "chore(agents): pin lg5-spring-agent-os v0.3.0"
+git -C .lg5-agent-os checkout v0.3.1
+git add .gitmodules .lg5-agent-os && git commit -m "chore(agents): pin lg5-spring-agent-os v0.3.1"
 ```
 
 Pros: explicit, audit-friendly, the consumer sees exactly which SHA is in use.
@@ -214,10 +215,10 @@ Cons: developers need `git submodule update --init --recursive` after clone.
 
 ```bash
 cd your-microservice-repo
-curl -sL https://github.com/lg-labs-pentagon/lg5-spring-agent-os/archive/refs/tags/v0.3.0.tar.gz \
+curl -sL https://github.com/lg-labs-pentagon/lg5-spring-agent-os/archive/refs/tags/v0.3.1.tar.gz \
   | tar -xz -C /tmp
-/tmp/lg5-spring-agent-os-0.3.0/scripts/install.sh .opencode
-git add .opencode && git commit -m "chore(agents): install lg5-spring-agent-os@0.3.0"
+/tmp/lg5-spring-agent-os-0.3.1/scripts/install.sh .opencode
+git add .opencode && git commit -m "chore(agents): install lg5-spring-agent-os@0.3.1"
 ```
 
 Pros: zero submodule machinery; agent state is self-contained in the consumer.
@@ -229,7 +230,7 @@ Cons: harder to upgrade (re-run the install at the new tag, review diff).
 git clone --filter=blob:none --no-checkout https://github.com/lg-labs-pentagon/lg5-spring-agent-os.git .lg5-agent-os
 git -C .lg5-agent-os sparse-checkout init --cone
 git -C .lg5-agent-os sparse-checkout set rules skills/lg5-saga skills/lg5-outbox commands
-git -C .lg5-agent-os checkout v0.3.0
+git -C .lg5-agent-os checkout v0.3.1
 .lg5-agent-os/scripts/install.sh .opencode
 ```
 

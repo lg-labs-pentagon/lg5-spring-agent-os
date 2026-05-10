@@ -2,7 +2,7 @@
 id: RULE-001
 slug: stack-baseline
 version: 0.1.0
-lg5-spring-sha: cbb6783
+lg5-spring-sha: af81c7c
 severity: must
 constitutional: true
 scope: framework
@@ -47,7 +47,7 @@ that drive the local dev loop.
 <parent>
   <groupId>com.lg5.spring</groupId>
   <artifactId>lg5-spring-parent</artifactId>
-  <version>1.0.0-alpha.cbb6783</version>
+  <version>1.0.0-alpha.af81c7c</version>
 </parent>
 
 <properties>
