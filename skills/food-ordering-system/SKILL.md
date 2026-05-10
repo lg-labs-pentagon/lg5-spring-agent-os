@@ -1,7 +1,7 @@
 ---
 name: food-ordering-system
 version: 0.1.0
-lg5-spring-sha: cbb6783
+lg5-spring-sha: af81c7c
 last-validated: 2026-05-09
 description: Canonical reference implementation breakdown of the food-ordering-system project (https://github.com/lg-labs/food-ordering-system) — 4 microservices on top of lg5-spring with full Saga/Outbox orchestration. Use this skill when the user asks "how does food-ordering-system do X", needs to copy a real-world pattern, wants to trace the order saga end-to-end, or needs concrete examples of orchestrator vs participant services, reverse outbox, or multi-service ATDD.
 ---
@@ -10,7 +10,7 @@ description: Canonical reference implementation breakdown of the food-ordering-s
 
 > Repo on disk: `/tmp/lg5-study/food-ordering-system/`
 > Maven groupId: `com.labs.lg.food.ordering.system` · version: `1.0.0-alpha`
-> Inherits `com.lg5.spring:lg5-spring-parent:1.0.0-alpha.cbb6783`
+> Inherits `com.lg5.spring:lg5-spring-parent:1.0.0-alpha.af81c7c`
 > 4 services, 5 Kafka topics, 4 outbox tables, 1 orchestrator (order-service).
 
 ## 1. The 4 services at a glance
@@ -572,7 +572,7 @@ run-kafka-model    # regen Avro classes
 
 ## 15. Root pom + CI/CD
 
-- Parent: `com.lg5.spring:lg5-spring-parent:1.0.0-alpha.cbb6783` (single source of versions).
+- Parent: `com.lg5.spring:lg5-spring-parent:1.0.0-alpha.af81c7c` (single source of versions).
 - `<dependencyManagement>` enumerates every `<svc>-*` module — services declare deps without versions.
 - Plugins: `maven-compiler-plugin` (`<release>21</release>`), `maven-checkstyle-plugin` (config in parent), Jib via parent.
 

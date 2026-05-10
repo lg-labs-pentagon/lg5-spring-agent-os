@@ -2,7 +2,7 @@
 id: RULE-012
 slug: test-profiles
 version: 0.1.0
-lg5-spring-sha: cbb6783
+lg5-spring-sha: af81c7c
 severity: must
 constitutional: true
 scope: testing

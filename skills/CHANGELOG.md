@@ -23,6 +23,22 @@ commits is unsupported.
 
 ## [Unreleased]
 
+## [0.3.1] — 2026-05-10
+### Changed
+- Framework SHA pin bumped from `cbb6783` to `af81c7c` to honor RULE-001's
+  Spring Boot 3.4.2 requirement (`cbb6783` actually shipped 3.3.5,
+  discovered during consumer-service TASK-002 of `lg5-loyalty-ledger`).
+- `bundle.version` in `manifest.yaml` bumped to `0.3.1` (PATCH; cross-bundle
+  invariant requires every per-type manifest to agree).
+- All 7 skill files updated `lg5-spring-sha: af81c7c` in frontmatter.
+  Worked examples in `food-ordering-system` and `lg5-spring-overview` updated
+  the parent-pom coordinate snippets to `1.0.0-alpha.af81c7c`.
+### Notes
+- **No skill content changed** in this release. Individual skill versions
+  remain at `0.1.0`.
+- Bundles in `af81c7c`: Spring Boot 3.4.2 upgrade (`e5139d0`),
+  `ConfluentKafkaContainerCustomConfig` (`5fb16aa`), CI/docs updates.
+
 ## [0.3.0] — 2026-05-09
 ### Changed
 - `manifest.yaml` `bundle.version` bumped to `0.3.0` to align with the
