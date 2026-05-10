@@ -8,7 +8,7 @@ This repository ships a curated, validated set of **agent context artifacts**
 Copilot, etc.) need to be productive on services that follow the lg5-spring
 conventions.
 
-Current bundle: **v1.0.0** · Validated against `lg5-spring` SHA: **`d0d754a`**.
+Current bundle: **v2.0.0** · Validated against `lg5-spring` SHA: **`d0d754a`**.
 
 ---
 
@@ -43,12 +43,16 @@ lg5-spring-agent-os/
 │   ├── add-saga.md
 │   ├── add-outbox.md
 │   └── add-kafka-listener.md
-├── subagents/                                 # 3 specialized subagents
+├── subagents/                                 # 7 specialized subagents
 │   ├── manifest.yaml
 │   ├── CHANGELOG.md
 │   ├── lg5-code-reviewer.md
 │   ├── lg5-test-generator.md
-│   └── lg5-planner.md
+│   ├── lg5-ci-cd-engineer.md
+│   ├── sdd-specifier.md
+│   ├── sdd-planner.md
+│   ├── sdd-tasker.md
+│   └── sdd-implementer.md
 ├── specs/                                     # spec-driven workflow templates + examples
 │   ├── manifest.yaml
 │   ├── CHANGELOG.md
@@ -79,7 +83,7 @@ lg5-spring-agent-os/
 | **subagent** | `<name>.md` with frontmatter (name, description, tools, model) | Spawned by orchestrator | Delegated specialists (code-reviewer, test-generator, planner). |
 | **spec**     | `<name>.md` with frontmatter (kind, name, version)     | Read at planning time | PRD/ADR templates + example spec for spec-driven workflow.   |
 
-### Inventory at v0.3.2
+### Inventory at v2.0.0
 
 - **18 rules** (15 constitutional / `severity: must`, 2 `should`, 1 `info`).
   Scopes: framework (4), architecture (5), kafka (2), outbox (2), saga (1),
@@ -90,7 +94,9 @@ lg5-spring-agent-os/
 - **8 commands**:
   - 4 SDD orchestrators (`/sdd-specify`, `/sdd-plan`, `/sdd-tasks`, `/sdd-implement`)
   - 4 building blocks (`/scaffold-service`, `/add-saga`, `/add-outbox`, `/add-kafka-listener`)
-- **3 subagents** (`lg5-code-reviewer`, `lg5-test-generator`, `lg5-planner`).
+- **7 subagents**:
+  - 3 cross-cutting (`lg5-code-reviewer`, `lg5-test-generator`, `lg5-ci-cd-engineer`)
+  - 4 SDD phase specialists (`sdd-specifier`, `sdd-planner`, `sdd-tasker`, `sdd-implementer`) — 1:1 with the four `/sdd-*` commands.
 - **6 spec templates + 1 worked example**: `prd-template`, `plan-template`,
   `tasks-template`, `data-model-template`, `adr-template`, `research-template`,
   plus the end-to-end [`examples/loyalty-ledger/`](specs/examples/loyalty-ledger/)

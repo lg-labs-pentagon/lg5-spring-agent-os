@@ -4,6 +4,52 @@ All notable changes to the **subagents** artifact set are documented here.
 Uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] — 2026-05-10
+### Added (BREAKING)
+- **3 new SDD phase-specialist subagents** completing the 1:1 mapping
+  with the four `/sdd-*` orchestrator commands:
+  - **`sdd-specifier`** (v0.1.0) — pairs with `/sdd-specify`. Converts
+    an informal stakeholder prompt into a tech-free PRD under
+    `docs/specs/<NNN-slug>/prd.md` using `prd-template.md`. Surfaces
+    ambiguity aggressively via `[NEEDS CLARIFICATION]` markers.
+    Tools: `read, write, edit, glob, bash`.
+  - **`sdd-tasker`** (v0.1.0) — pairs with `/sdd-tasks`. Decomposes an
+    approved Plan into atomic `TASK-NNN` with Given/When/Then AC under
+    `docs/specs/<NNN-slug>/tasks.md`. Enforces ≤1 day / 1–2 modules per
+    TASK and a DAG of dependencies. Tools: `read, write, edit, glob,
+    grep, bash`.
+  - **`sdd-implementer`** (v0.1.0) — pairs with `/sdd-implement`.
+    Executes ONE TASK per invocation: writes code + tests, runs builds,
+    invokes `lg5-code-reviewer`, commits, flips `Status` to `done`.
+    Refuses to batch multiple TASKs in a single run. Tools:
+    `read, write, edit, glob, grep, bash`.
+
+### Changed (BREAKING)
+- **Subagent rename**: `lg5-planner` → `sdd-planner` (file renamed via
+  `git mv` to preserve history; bumped 0.1.1 → 0.2.0). The body was
+  rewritten to align strictly with the `/sdd-plan` phase: read approved
+  PRD, generate `plan.md` + ADRs (+ `data-model.md` when applicable),
+  cite constitutional rules by stable RULE-ID, fill the
+  Constitutional-impact section in every ADR. Tool capabilities
+  expanded from `read/glob/grep` to `read/write/edit/glob/grep` (the
+  Plan phase writes markdown files under `docs/specs/<NNN-slug>/`).
+
+### Migration from v1.0.1
+- `@lg5-planner` invocations must be renamed to `@sdd-planner`.
+- `commands/sdd-plan.md` already references the new name (updated in
+  this release). No other command needs adjustment.
+- The 3 cross-cutting subagents are unchanged: `lg5-code-reviewer`,
+  `lg5-test-generator`, `lg5-ci-cd-engineer` keep the `lg5-` prefix
+  intentionally — they are not phase-specific.
+
+### Why MAJOR
+Subagent name resolution in OpenCode (and most agent runtimes) keys on
+the filename / `name:` frontmatter field; there is no alias mechanism.
+Consumer prompts, slash commands, and any in-flight specs that mention
+`@lg5-planner` will fail to resolve until updated. The break is
+intentional and one-time; it locks in the SDD naming convention so
+future SDD additions stay consistent.
+
 ## [1.0.1] — 2026-05-10
 ### Fixed
 - **OpenCode compatibility** — all 4 subagents bumped `0.1.0 → 0.1.1`:
