@@ -23,6 +23,52 @@ commits is unsupported.
 
 ## [Unreleased]
 
+## [1.0.0] — 2026-05-10
+### Changed (BREAKING)
+- **Install model: submodule-as-source-of-truth + symlinks** — `scripts/install.sh`
+  no longer copies artifacts. The bundle is now consumed exclusively as a git
+  submodule mounted at `.agent-os/` in the consumer repo. The submodule itself
+  IS the source of truth; `install.sh` materializes a `.opencode/` directory of
+  relative symlinks that point back into `.agent-os/`:
+
+  ```
+  .opencode/skills    -> ../.agent-os/skills
+  .opencode/commands  -> ../.agent-os/commands
+  .opencode/agents    -> ../.agent-os/subagents     (OpenCode's naming)
+  .opencode/AGENTS.md -> ../.agent-os/AGENTS.md
+  ```
+
+  `.opencode/` is added to the consumer's `.gitignore` automatically. Upgrades
+  are now `git -C .agent-os checkout vX.Y.Z` — symlinks remain valid; no
+  re-install needed for the artifact tree.
+
+### Removed (BREAKING)
+- **Install Modes B (plain copy) and C (sparse checkout)** — both relied on
+  the copy model and are no longer supported. The submodule is the only
+  supported integration.
+- **`scripts/dev-link.sh`** — its self-host symlink logic was absorbed into
+  `install.sh`, which now auto-detects whether it is invoked from a submodule
+  (`.agent-os/scripts/install.sh`, consumer mode) or from the upstream working
+  tree (`./scripts/install.sh`, self-host mode) and adjusts symlink targets
+  accordingly.
+
+### Migration from v0.3.x
+A v0.3.x consumer (e.g. `blank-service` with `.lg5-agent-os/` submodule +
+copied `.agent-os/`) migrates by:
+
+1. Removing the old submodule: `git submodule deinit -f .lg5-agent-os && git rm -f .lg5-agent-os && rm -rf .git/modules/.lg5-agent-os`
+2. Removing the copied tree: `rm -rf .agent-os`
+3. Re-adding as `.agent-os/`: `git submodule add -b main <url> .agent-os && git -C .agent-os checkout v1.0.0`
+4. Wiring symlinks: `.agent-os/scripts/install.sh`
+5. Committing: `.gitmodules`, `.agent-os` gitlink, `.gitignore`.
+
+### Why MAJOR
+Layout change at the install boundary. v0.3.x consumers have hard-coded
+references to `.lg5-agent-os/` (submodule path) and `.agent-os/` (copy
+target); v1.0.0 collapses both into a single `.agent-os/` (submodule). The
+break is intentional and one-time; subsequent bumps within v1.x stay
+backward-compatible.
+
 ## [0.3.6] — 2026-05-10
 ### Added
 - **Developer tooling** — `scripts/dev-link.sh` self-hosts the bundle for
