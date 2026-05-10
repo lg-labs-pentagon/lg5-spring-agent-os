@@ -26,7 +26,7 @@ You are running the **Plan** phase of Spec-Driven Development.
 2. Read `.agent-os/rules/CONSTITUTION.md` and every `RULE-*.md`. You
    will cite them by ID in the ADRs.
 3. Read `.agent-os/specs/templates/{plan,adr,data-model}-template.md`.
-4. Optionally invoke the `lg5-planner` subagent to draft the plan
+4. Optionally invoke the `sdd-planner` subagent to draft the plan
    structure if the feature is non-trivial (>5 REQs).
 
 ## Steps
@@ -87,5 +87,5 @@ You are running the **Plan** phase of Spec-Driven Development.
 
 - Templates: `specs/templates/{plan,adr,data-model}-template.md`.
 - Constitution: `rules/CONSTITUTION.md`.
-- Subagent: `subagents/lg5-planner.md`.
+- Subagent: `subagents/sdd-planner.md`.
 - Example output: `specs/examples/loyalty-ledger/{plan.md,adr/,data-model.md}`.

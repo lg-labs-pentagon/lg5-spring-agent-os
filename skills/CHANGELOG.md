@@ -23,6 +23,54 @@ commits is unsupported.
 
 ## [Unreleased]
 
+## [2.0.0] — 2026-05-10
+### Added (BREAKING)
+- **3 new SDD phase-specialist subagents** completing the 1:1 mapping
+  with the four `/sdd-*` orchestrator commands. Each subagent is the
+  persistent / interactive counterpart of the slash command:
+  - `sdd-specifier` (v0.1.0) ↔ `/sdd-specify` — informal prompt → tech-free PRD.
+  - `sdd-tasker`    (v0.1.0) ↔ `/sdd-tasks`   — Plan → atomic TASK-NNN with Given/When/Then AC.
+  - `sdd-implementer` (v0.1.0) ↔ `/sdd-implement` — one TASK → code + tests + lg5-code-reviewer + commit.
+- The four SDD subagents now form a complete chain: `sdd-specifier →
+  sdd-planner → sdd-tasker → sdd-implementer`, with every transition
+  gated by human approval per Fowler's spec-anchored SDD model.
+
+### Changed (BREAKING)
+- **Subagent rename**: `lg5-planner` → `sdd-planner` (bumped 0.1.1 →
+  0.2.0). Body rewritten to align strictly with the `/sdd-plan` phase:
+  read PRD, generate `plan.md` + ADRs (+ `data-model.md`), cite
+  RULE-NNN, fill Constitutional-impact section in every ADR. Tool
+  capabilities expanded from `read/glob/grep` to
+  `read/write/edit/glob/grep` (Plan phase writes markdown).
+- The 3 cross-cutting subagents intentionally keep their `lg5-`
+  prefix: `lg5-code-reviewer`, `lg5-test-generator`,
+  `lg5-ci-cd-engineer`. They are not phase-specific and are invoked
+  from any phase (notably `lg5-code-reviewer` is invoked by
+  `sdd-implementer` before every commit; `lg5-test-generator` is
+  invoked when a TASK references RULE-012/013).
+- `AGENTS.md` subagent catalog split into two tables: cross-cutting (3)
+  vs. SDD phase specialists (4). README inventory updated to reflect
+  7 subagents (was 3).
+- `commands/sdd-plan.md` updated to reference `sdd-planner` (was
+  `lg5-planner`).
+- `specs/examples/loyalty-ledger/plan.md` reference updated.
+
+### Migration from v1.0.1
+- Replace `@lg5-planner` invocations with `@sdd-planner` in any
+  consumer prompts, in-flight specs, or documentation.
+- No action needed for `lg5-code-reviewer`, `lg5-test-generator`,
+  `lg5-ci-cd-engineer` — names unchanged.
+- The submodule bump from `v1.0.1` → `v2.0.0` is sufficient for
+  consumers using the `.agent-os/` submodule integration; symlinks
+  remain valid.
+
+### Why MAJOR
+Subagent name resolution in OpenCode (and most agent runtimes) keys on
+the filename + `name:` frontmatter field; there is no alias mechanism.
+Any consumer reference to `@lg5-planner` will fail to resolve. The
+break is intentional and one-time; it locks in the SDD naming
+convention so future phase-specialist subagents stay consistent.
+
 ## [1.0.1] — 2026-05-10
 ### Fixed
 - **Subagent frontmatter — OpenCode compatibility** (4 subagents bumped 0.1.0 → 0.1.1):

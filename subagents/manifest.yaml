@@ -9,7 +9,7 @@
 
 bundle:
   name: lg5-spring-agent-os
-  version: 1.0.1
+  version: 2.0.0
   lg5-spring-sha: d0d754a
 
 subagents:
@@ -21,11 +21,23 @@ subagents:
     file: lg5-test-generator.md
     version: 0.1.1
     description: Generates IT/ATDD test scaffolds following RULE-012/013 patterns.
-  - name: lg5-planner
-    file: lg5-planner.md
-    version: 0.1.1
-    description: Decomposes a feature request into rule-aligned implementation steps.
   - name: lg5-ci-cd-engineer
     file: lg5-ci-cd-engineer.md
     version: 0.1.1
     description: Specialist for GitHub Actions CI/CD on lg5-spring (workflow, composite Maven-creds action, API doc sites, Allure, supply-chain hardening).
+  - name: sdd-specifier
+    file: sdd-specifier.md
+    version: 0.1.0
+    description: SDD Specify-phase subagent. Converts an informal feature prompt into a tech-free PRD under docs/specs/<NNN-slug>/prd.md. Pairs with /sdd-specify.
+  - name: sdd-planner
+    file: sdd-planner.md
+    version: 0.2.0
+    description: SDD Plan-phase subagent. Generates plan.md + ADRs (+ data-model.md when applicable) from an approved PRD, citing constitutional rules by RULE-ID. Pairs with /sdd-plan. Renamed from lg5-planner in v2.0.0.
+  - name: sdd-tasker
+    file: sdd-tasker.md
+    version: 0.1.0
+    description: SDD Tasks-phase subagent. Decomposes an approved Plan into atomic TASK-NNN with Given/When/Then AC. Pairs with /sdd-tasks.
+  - name: sdd-implementer
+    file: sdd-implementer.md
+    version: 0.1.0
+    description: SDD Implement-phase subagent. Executes ONE TASK per invocation (code + tests + lg5-code-reviewer + commit). Pairs with /sdd-implement.
