@@ -7,6 +7,19 @@ This file uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 The version below tracks the rules bundle as a whole, independently of
 individual rule versions in their own frontmatter.
 
+## [0.3.3] — 2026-05-10
+### Changed
+- `bundle.version` in `manifest.yaml` bumped to `3.0.0` to honor the
+  cross-bundle invariant — when `commands`, `subagents`, or `specs`
+  ship a MAJOR, all per-type manifests must align even if their own
+  content didn't change.
+### Notes
+- **No rule wording changed in this release.** The 18 rules and their
+  individual versions remain stable. The Design phase introduced in
+  bundle 3.0.0 (via `/sdd-design`) consumes existing rules (RULE-004,
+  RULE-006, RULE-007, RULE-008, RULE-009, RULE-010, RULE-011, RULE-014,
+  RULE-015) without modifying them.
+
 ## [0.3.2] — 2026-05-10
 ### Changed
 - Framework SHA pin bumped from `af81c7c` to `d0d754a` (PATCH).

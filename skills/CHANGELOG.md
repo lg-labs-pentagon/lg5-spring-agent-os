@@ -23,6 +23,19 @@ commits is unsupported.
 
 ## [Unreleased]
 
+## [3.0.0] — 2026-05-10
+### Changed
+- `bundle.version` in `manifest.yaml` bumped to `3.0.0` to honor the
+  cross-bundle invariant — `commands`, `subagents`, and `specs` shipped
+  a MAJOR (extended SDD workflow with new `/sdd-intent`, `/sdd-design`,
+  `/sdd-verify`, `/sdd-orchestrate` phases). All per-type manifests
+  must agree on `bundle.version`.
+### Notes
+- **No skill content changed in this release.** The 11 skills and their
+  individual versions remain stable. The new Design phase consumes
+  existing skills (`lg5-saga`, `lg5-outbox`, `lg5-kafka-avro`, `lg5-atdd`,
+  `lg5-api-docs`, `lg5-allure-report`) without modifying them.
+
 ## [2.0.0] — 2026-05-10
 ### Added (BREAKING)
 - **3 new SDD phase-specialist subagents** completing the 1:1 mapping

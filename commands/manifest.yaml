@@ -14,31 +14,51 @@
 
 bundle:
   name: lg5-spring-agent-os
-  version: 2.0.0
+  version: 3.0.0
   lg5-spring-sha: d0d754a
 
 commands:
   # SDD workflow commands
+  - name: sdd-intent
+    file: sdd-intent.md
+    version: 0.1.0
+    category: sdd
+    description: (Optional) Convert an informal idea into a one-page intent.md framing the problem before /sdd-specify.
   - name: sdd-specify
     file: sdd-specify.md
-    version: 0.1.0
+    version: 0.2.0
     category: sdd
-    description: Convert an informal product prompt into a functional PRD (technology-free).
+    description: Convert an informal product prompt (or an approved intent.md) into a functional PRD (technology-free).
   - name: sdd-plan
     file: sdd-plan.md
+    version: 0.2.0
+    category: sdd
+    description: Generate plan.md + ADRs (architecture only — data-model now belongs to /sdd-design) from an approved PRD.
+  - name: sdd-design
+    file: sdd-design.md
     version: 0.1.0
     category: sdd
-    description: Generate plan.md + ADRs (+ data-model.md if persistent state) from an approved PRD.
+    description: Produce design.md + data-model.md with concrete contracts, schemas, JPA, configs, module graph from approved Plan.
   - name: sdd-tasks
     file: sdd-tasks.md
-    version: 0.1.0
+    version: 0.2.0
     category: sdd
-    description: Decompose an approved Plan into atomic TASK-NNN with Given/When/Then AC.
+    description: Decompose an approved Design into atomic TASK-NNN with Given/When/Then AC.
   - name: sdd-implement
     file: sdd-implement.md
     version: 0.1.0
     category: sdd
     description: Execute ONE task (write code + tests + commit). Loops by re-invocation.
+  - name: sdd-verify
+    file: sdd-verify.md
+    version: 0.1.0
+    category: sdd
+    description: Cross-check every PRD AC against test evidence. Gate decision blocks spec closure unless overridden by tech-debt ADR.
+  - name: sdd-orchestrate
+    file: sdd-orchestrate.md
+    version: 0.1.0
+    category: sdd
+    description: Inspect a spec's state and recommend the next SDD phase command. Read-only helper.
 
   # Building-block commands (invoked from inside /sdd-implement)
   - name: scaffold-service

@@ -18,16 +18,25 @@ borrowing structural ideas from
 [GitHub spec-kit](https://github.com/github/spec-kit).
 
 ```
-   /sdd-specify     /sdd-plan         /sdd-tasks        /sdd-implement
-       │                │                  │                  │
-       ▼                ▼                  ▼                  ▼
-     prd.md   ──►  plan.md + adr/  ──►  tasks.md   ──►   code + tests
-                  + data-model.md       (TASK-NNN)        + commit
-   (functional)   (technical)           (atomic)         (per task, loop)
-       │                │                  │                  │
-       └─ HUMAN ────────┴────── HUMAN ─────┴── HUMAN ────────►
-          APPROVES        APPROVES          APPROVES
+  /sdd-intent    /sdd-specify   /sdd-plan       /sdd-design       /sdd-tasks    /sdd-implement   /sdd-verify
+   (optional)
+      │              │              │                 │                │              │              │
+      ▼              ▼              ▼                 ▼                ▼              ▼              ▼
+   intent.md  ►   prd.md     ►  plan.md + adr/  ►  design.md      ►  tasks.md   ►  code + tests ►  verify-report.md
+   (why,          (what,        (architecture)     + data-model.md   (atomic)       + commit       (AC ✓/✗ per REQ,
+    framing)       functional)                     (detailed how)    (TASK-NNN)     (per task,      gate decision)
+                                                                                     loop)
+      │              │              │                 │                │              │              │
+      └── HUMAN ─────┴── HUMAN ─────┴── HUMAN ────────┴── HUMAN ──────┴── HUMAN ────┴── HUMAN ──────►
+          APPROVES       APPROVES       APPROVES          APPROVES        APPROVES       APPROVES
 ```
+
+> **Intent** (phase 0) is **optional** — skip when the idea is mature.
+> **Verify** (phase 6) is **mandatory and bloqueante** — a red gate
+> blocks spec closure unless overridden by an explicit `tech-debt` ADR.
+>
+> Use `/sdd-orchestrate <NNN-slug>` (or with no arg, for a multi-spec
+> dashboard) to inspect a spec's state and get the recommended next phase.
 
 Per-feature artifacts live under `docs/specs/<NNN-slug>/` in the consumer
 repo. See [`specs/README.md`](specs/README.md) for the full layout and
@@ -96,12 +105,16 @@ generate code.
 
 ### SDD orchestrators
 
-| Command                          | What it does                                                       |
-|----------------------------------|--------------------------------------------------------------------|
-| `/sdd-specify <slug> "<desc>"`   | Convert informal prompt → functional PRD (no technology).          |
-| `/sdd-plan <NNN-slug>`           | Generate `plan.md` + ADRs (+ `data-model.md`) from approved PRD.   |
-| `/sdd-tasks <NNN-slug>`          | Decompose Plan into atomic `TASK-NNN` with Given/When/Then AC.     |
-| `/sdd-implement <TASK-NNN>`      | Execute ONE task (code + tests + commit). Loops by re-invocation.  |
+| Command                          | Phase     | What it does                                                            |
+|----------------------------------|-----------|-------------------------------------------------------------------------|
+| `/sdd-intent <slug> "<idea>"`    | 0 (opt.)  | Frame an informal idea as a one-page intent (why, who, outcome, non-goals). |
+| `/sdd-specify <slug> "<desc>"`   | 1         | Convert informal prompt (or approved intent) → functional PRD (tech-free). |
+| `/sdd-plan <NNN-slug>`           | 2         | Generate `plan.md` + ADRs (architecture only) from approved PRD.        |
+| `/sdd-design <NNN-slug>`         | 3         | Generate `design.md` + `data-model.md` (detailed contracts, schemas, configs). |
+| `/sdd-tasks <NNN-slug>`          | 4         | Decompose Design into atomic `TASK-NNN` with Given/When/Then AC.        |
+| `/sdd-implement <TASK-NNN>`      | 5         | Execute ONE task (code + tests + commit). Loops by re-invocation.       |
+| `/sdd-verify <NNN-slug>`         | 6         | Cross-check every AC against test evidence; gate decision blocks closure. |
+| `/sdd-orchestrate [<NNN-slug>]`  | meta      | Inspect spec state; recommend the next phase command. Read-only helper. |
 
 ### Building blocks (called from inside /sdd-implement)
 
@@ -127,14 +140,19 @@ Cross-cutting (apply to any phase):
 | `lg5-test-generator`  | Generates IT/ATDD test scaffolds (RULE-012/013 patterns).        |
 | `lg5-ci-cd-engineer`  | Specialist for CI/CD pipelines (GitHub Actions topology, Maven-creds action, API docs, Allure, supply-chain hardening). |
 
-SDD phase specialists (1:1 with the four `/sdd-*` commands):
+SDD phase specialists (1:1 with the seven `/sdd-*` phase commands plus
+a meta-orchestrator):
 
-| Subagent           | Phase     | Pairs with        | Purpose                                                       |
-|--------------------|-----------|-------------------|---------------------------------------------------------------|
-| `sdd-specifier`    | Specify   | `/sdd-specify`    | Informal prompt → tech-free PRD with REQ-NNN + clarifications. |
-| `sdd-planner`      | Plan      | `/sdd-plan`       | PRD → `plan.md` + ADRs (+ `data-model.md`); cites RULE-NNN.   |
-| `sdd-tasker`       | Tasks     | `/sdd-tasks`      | Plan → atomic `TASK-NNN` with Given/When/Then AC.             |
-| `sdd-implementer`  | Implement | `/sdd-implement`  | One TASK → code + tests + `lg5-code-reviewer` + commit.       |
+| Subagent           | Phase       | Pairs with           | Purpose                                                                                          |
+|--------------------|-------------|----------------------|--------------------------------------------------------------------------------------------------|
+| `sdd-intender`     | Intent (0)  | `/sdd-intent`        | Informal idea → one-page `intent.md` (problem, users, outcome, non-goals). Optional first phase. |
+| `sdd-specifier`    | Specify (1) | `/sdd-specify`       | Informal prompt (or approved intent) → tech-free PRD with REQ-NNN + clarifications.              |
+| `sdd-planner`      | Plan (2)    | `/sdd-plan`          | PRD → `plan.md` + ADRs (architecture only; cites RULE-NNN).                                      |
+| `sdd-designer`     | Design (3)  | `/sdd-design`        | Plan + ADRs → `design.md` + `data-model.md` (concrete contracts, schemas, JPA, configs).         |
+| `sdd-tasker`       | Tasks (4)   | `/sdd-tasks`         | Design → atomic `TASK-NNN` with Given/When/Then AC.                                              |
+| `sdd-implementer`  | Implement (5) | `/sdd-implement`   | One TASK → code + tests + `lg5-code-reviewer` + commit.                                          |
+| `sdd-verifier`     | Verify (6)  | `/sdd-verify`        | Cross-check every AC against test evidence; produce gate decision (VERIFIED / OVERRIDE / NOT).   |
+| `sdd-orchestrator` | meta        | `/sdd-orchestrate`   | Inspect spec state; recommend next phase. Read-only. Never produces feature artifacts.           |
 
 ---
 
@@ -144,11 +162,14 @@ Under [`specs/templates/`](specs/templates/):
 
 | Template                   | Used by             | Purpose                                                  |
 |----------------------------|---------------------|----------------------------------------------------------|
+| `intent-template`          | `/sdd-intent`       | One-page intent: problem, users, outcome, non-goals (pre-PRD framing). |
 | `prd-template`             | `/sdd-specify`      | Functional PRD (REQ-NNN with AC; tech-free).             |
-| `plan-template`            | `/sdd-plan`         | Module map, ADR index, dep graph, risks.                 |
+| `plan-template`            | `/sdd-plan`         | Module map, ADR index, dep graph, risks (architecture only). |
 | `adr-template`             | `/sdd-plan`         | Lightweight ADR with constitutional impact section.      |
-| `data-model-template`      | `/sdd-plan`         | Aggregates, events, outbox, REST DTOs, Avro, JPA.        |
+| `design-template`          | `/sdd-design`       | Detailed contracts, schemas, JPA, configs, module graph. |
+| `data-model-template`      | `/sdd-design`       | Aggregates, events, outbox, REST DTOs, Avro, JPA.        |
 | `tasks-template`           | `/sdd-tasks`        | Atomic TASK-NNN with Given/When/Then AC + DoD checklist. |
+| `verify-report-template`   | `/sdd-verify`       | AC↔evidence matrix, constitutional check, gate decision. |
 | `research-template`        | (manual)            | Optional time-boxed spike doc.                           |
 
 End-to-end example: [`specs/examples/loyalty-ledger/`](specs/examples/loyalty-ledger/).
