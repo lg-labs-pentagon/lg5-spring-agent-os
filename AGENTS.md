@@ -124,6 +124,7 @@ See `commands/<name>.md` for each command's full prompt and parameters.
 | `lg5-code-reviewer`   | Reviews diffs against the 18 rules; cites violations by RULE-ID. |
 | `lg5-test-generator`  | Generates IT/ATDD test scaffolds (RULE-012/013 patterns).        |
 | `lg5-planner`         | Decomposes feature → rule-aligned implementation plan.           |
+| `lg5-ci-cd-engineer`  | Specialist for CI/CD pipelines (GitHub Actions topology, Maven-creds action, API docs, Allure, supply-chain hardening). |
 
 ---
 
