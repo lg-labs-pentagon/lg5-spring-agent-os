@@ -1,8 +1,15 @@
 ---
 name: lg5-ci-cd-engineer
 description: Specialist subagent for designing, implementing, debugging, and reviewing CI/CD pipelines on lg5-spring services. Owns the canonical 11-job GitHub Actions topology, the shared `setup-maven-credentials` composite action, the static-HTML OpenAPI/AsyncAPI doc sites, the Allure Report wiring, and supply-chain hardening (SHA-pinning per OpenSSF Scorecard). Use this subagent when the user asks to scaffold a CI pipeline, debug a failing job (Maven 401, Docker hand-off, ATDD), publish API/Allure docs, harden a workflow against Codacy/actionlint findings, or migrate a service from an ad-hoc CI to the lg5-spring template.
-tools: read, write, edit, glob, grep, bash
-model: opus
+mode: subagent
+model: anthropic/claude-sonnet-4-20250514
+tools:
+  read: true
+  write: true
+  edit: true
+  glob: true
+  grep: true
+  bash: true
 ---
 
 # Subagent: lg5-ci-cd-engineer

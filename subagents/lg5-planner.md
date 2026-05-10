@@ -1,8 +1,12 @@
 ---
 name: lg5-planner
 description: Decomposes a high-level feature request (e.g. "add a refund flow") into an ordered, rule-aligned implementation plan. Outputs the steps, the rules that apply at each step, the skill to load, and the slash command to invoke (when applicable). Does NOT write code — its output is the plan only.
-tools: read, glob, grep
-model: opus
+mode: subagent
+model: anthropic/claude-sonnet-4-20250514
+tools:
+  read: true
+  glob: true
+  grep: true
 ---
 
 # Subagent: lg5-planner

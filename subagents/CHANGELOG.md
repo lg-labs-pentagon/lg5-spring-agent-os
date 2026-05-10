@@ -4,6 +4,27 @@ All notable changes to the **subagents** artifact set are documented here.
 Uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] — 2026-05-10
+### Fixed
+- **OpenCode compatibility** — all 4 subagents bumped `0.1.0 → 0.1.1`:
+  - `tools` field changed from CSV string to YAML object form
+    (`tools: { read: true, write: true, ... }`). OpenCode rejected the
+    string form (`Expected object | undefined, got "..."`).
+  - `model` field changed from bare `opus` to a real provider/model id
+    (`anthropic/claude-sonnet-4-20250514`).
+  - Added `mode: subagent` (required by OpenCode for non-primary agents).
+  - Tool capabilities preserved per subagent:
+    - `lg5-ci-cd-engineer` → `read, write, edit, glob, grep, bash`
+    - `lg5-test-generator` → `read, write, edit, glob, grep, bash`
+    - `lg5-code-reviewer`  → `read, glob, grep, bash`
+    - `lg5-planner`        → `read, glob, grep`
+
+### Notes
+- This release adopts the **OpenCode dialect** of subagent frontmatter.
+  Multi-client portability (Claude Code, Cursor, Continue) will be
+  addressed in a future MAJOR with a neutral schema + per-client
+  adapters in `install.sh`.
+
 ## [0.3.5] — 2026-05-10
 ### Added
 - New subagent **`lg5-ci-cd-engineer`** (v0.1.0) — specialist for

@@ -23,6 +23,35 @@ commits is unsupported.
 
 ## [Unreleased]
 
+## [1.0.1] — 2026-05-10
+### Fixed
+- **Subagent frontmatter — OpenCode compatibility** (4 subagents bumped 0.1.0 → 0.1.1):
+  - `tools` is now an object (`tools: { read: true, ... }`) instead of a CSV
+    string (`tools: "read, write, edit, ..."`). OpenCode rejected the string
+    form with `Expected object | undefined, got "..."`.
+  - `model` is now a real provider/model identifier
+    (`anthropic/claude-sonnet-4-20250514`) instead of the bare word `opus`,
+    which OpenCode could not resolve.
+  - Added `mode: subagent` (required by OpenCode for non-primary agents).
+  - Per-tool capabilities preserved: `lg5-ci-cd-engineer` and
+    `lg5-test-generator` get `read/write/edit/glob/grep/bash`;
+    `lg5-code-reviewer` gets the read-only set + bash; `lg5-planner` gets
+    only `read/glob/grep`.
+- Affected files:
+  - `subagents/lg5-ci-cd-engineer.md`
+  - `subagents/lg5-code-reviewer.md`
+  - `subagents/lg5-planner.md`
+  - `subagents/lg5-test-generator.md`
+
+### Notes
+- This release adopts the **OpenCode dialect** of subagent frontmatter.
+  Multi-client portability (Claude Code, Cursor, Continue, etc.) will be
+  addressed in a future MAJOR release with a neutral/canonical frontmatter
+  schema and per-client adapters in `install.sh`. v1.0.1 explicitly does
+  NOT introduce that abstraction — it unblocks OpenCode users today.
+- No artifact contracts changed in skills, commands, rules, or specs;
+  consumers using those artifact types do not need to upgrade.
+
 ## [1.0.0] — 2026-05-10
 ### Changed (BREAKING)
 - **Install model: submodule-as-source-of-truth + symlinks** — `scripts/install.sh`
