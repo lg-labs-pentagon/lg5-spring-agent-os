@@ -82,6 +82,9 @@ When the user asks anything related to lg5-spring, **load the relevant skill**:
 | Kafka producer/consumer + Avro schemas                      | `lg5-kafka-avro`         |
 | Acceptance tests (Cucumber + Testcontainers + Wiremock)     | `lg5-atdd`               |
 | Real-world patterns from food-ordering-system               | `food-ordering-system`   |
+| GitHub Actions CI pipeline + Maven-credentials action       | `lg5-github-actions`     |
+| OpenAPI / AsyncAPI HTML doc sites (Swagger UI + Studio)     | `lg5-api-docs`           |
+| Allure Report wiring (Cucumber 7 + JUnit Platform)          | `lg5-allure-report`      |
 
 ---
 
@@ -108,6 +111,7 @@ generate code.
 | `/add-saga`            | Adds a `SagaStep` end-to-end (publisher + listener + outbox + scheduler). |
 | `/add-outbox`          | Adds an outbox (entity + DDL + helper + scheduler) for one event type. |
 | `/add-kafka-listener`  | Adds a Kafka listener (batch + NO-OP exception handling per RULE-010). |
+| `/scaffold-ci-cd`      | Installs the canonical CI pipeline (workflow + composite action + API doc templates + Allure wiring) into a consumer service. |
 
 See `commands/<name>.md` for each command's full prompt and parameters.
 
