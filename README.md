@@ -8,7 +8,7 @@ This repository ships a curated, validated set of **agent context artifacts**
 Copilot, etc.) need to be productive on services that follow the lg5-spring
 conventions.
 
-Current bundle: **v0.3.2** · Validated against `lg5-spring` SHA: **`d0d754a`**.
+Current bundle: **v1.0.0** · Validated against `lg5-spring` SHA: **`d0d754a`**.
 
 ---
 
@@ -187,74 +187,72 @@ are identical across all per-type `manifest.yaml` files (CI-enforced).
 | `0.3.0`        | `cbb6783`      | 2026-05-09 | SDD adoption: `CONSTITUTION.md` + `constitutional` rule frontmatter; 4 SDD orchestrator commands (`/sdd-{specify,plan,tasks,implement}`); specs reorg into `templates/` + per-feature folder example (`loyalty-ledger`); 4 new templates (plan/tasks/data-model/research). No skill content changes. |
 | `0.3.1`        | `af81c7c`      | 2026-05-10 | PATCH: framework SHA pin bumped to honor RULE-001's Spring Boot 3.4.2 mandate (`cbb6783` actually shipped 3.3.5; discovered during consumer-service TASK-002 of `lg5-loyalty-ledger`). `af81c7c` bundles the Spring Boot 3.4.2 upgrade (`e5139d0`), `ConfluentKafkaContainerCustomConfig` (`5fb16aa`), and CI/docs updates. No rule/skill/command/subagent/spec contracts changed. |
 | `0.3.2`        | `d0d754a`      | 2026-05-10 | PATCH: framework SHA pin bumped to ship the [`ConfluentKafkaContainerCustomConfig` in-network Kafka listener fix](https://github.com/lg-labs-pentagon/lg5-spring/pull/1) — companion containers (Schema Registry, app-in-container) can now reach the broker via `kafka:19092` instead of the host-mapped `localhost:<random-port>`. Also pulls in [LG-83] Jib Maven plugin upgrade to 3.5.1 (transitive on the framework parent pom). Surfaced while wiring the first downstream Kafka listener IT in `lg5-loyalty-ledger` TASK-009. No rule/skill/command/subagent/spec contracts changed. |
+| `0.3.3`        | `d0d754a`      | 2026-05-10 | PATCH (early-access for new artifact type): added 3 CI/CD skills (`lg5-github-actions`, `lg5-api-docs`, `lg5-allure-report`) + `/scaffold-ci-cd` command. Promoted from `blank-service`'s reference CI pipeline (canonical 11-job topology + `setup-maven-credentials` composite action + Swagger UI / AsyncAPI doc renderers + Allure Cucumber7 wiring). PATCH chosen intentionally so consumers battle-test before promotion to a MINOR. |
+| `0.3.4`        | `d0d754a`      | 2026-05-10 | PATCH (security): pinned `NBprojekt/gource-action@v1.2.1` to commit SHA `d2fdf85904db416b69445dae5551282528e052ae` in the `lg5-github-actions` skill template (skill bumped 0.1.0 → 0.1.1). Closes Codacy/OpenSSF-Scorecard finding for unpinned third-party action. |
+| `0.3.5`        | `d0d754a`      | 2026-05-10 | MINOR-equivalent shipped as PATCH (early-access cadence): added subagent `lg5-ci-cd-engineer` (v0.1.0) — CI/CD specialist that loads the 3 CI/CD skills on demand and declares an explicit out-of-scope section listing 8 future skills (container delivery, k8s manifests, GitOps, release automation, secrets, env promotion, perf pipelines, quality gates) per RULE-018. |
+| `0.3.6`        | `d0d754a`      | 2026-05-10 | PATCH (tooling-only): added `scripts/dev-link.sh` to self-host the bundle for OpenCode in the upstream working tree via `.opencode/` symlinks. No artifact contract changes; consumer upgrade unnecessary. |
+| `1.0.0`        | `d0d754a`      | 2026-05-10 | **MAJOR (install layout change).** Bundle is now consumed as a single git submodule mounted at `.agent-os/` (was `.lg5-agent-os/` with copy to `.agent-os/`). `install.sh` no longer copies — it materializes `.opencode/` symlinks into `.agent-os/`. Removed Modes B (plain copy) and C (sparse checkout); only the submodule mode is supported. Removed `scripts/dev-link.sh` (logic absorbed into `install.sh`, which auto-detects consumer vs. self-host mode). See `skills/CHANGELOG.md` for the migration guide. |
 
 ---
 
 ## How to consume from a microservice repo
 
-Pick **one** of the three integration modes below.
-
-### Mode A — Git submodule (recommended for monorepo-style governance)
-
-```bash
-cd your-microservice-repo
-git submodule add -b main https://github.com/lg-labs-pentagon/lg5-spring-agent-os.git .lg5-agent-os
-git submodule update --init
-
-# Install into the agent's expected locations
-.lg5-agent-os/scripts/install.sh .opencode
-
-# Pin to a specific release
-git -C .lg5-agent-os checkout v0.3.2
-git add .gitmodules .lg5-agent-os && git commit -m "chore(agents): pin lg5-spring-agent-os v0.3.2"
-```
-
-Pros: explicit, audit-friendly, the consumer sees exactly which SHA is in use.
-Cons: developers need `git submodule update --init --recursive` after clone.
-
-### Mode B — Plain copy at a tag (no submodule overhead)
+The bundle is consumed as a **git submodule** mounted at `.agent-os/` in the
+consumer repo. The submodule itself is the source of truth — artifacts are
+**not** copied. `install.sh` materializes a `.opencode/` directory of
+relative symlinks that point back into `.agent-os/`, which is what OpenCode
+actually loads at runtime.
 
 ```bash
 cd your-microservice-repo
-curl -sL https://github.com/lg-labs-pentagon/lg5-spring-agent-os/archive/refs/tags/v0.3.2.tar.gz \
-  | tar -xz -C /tmp
-/tmp/lg5-spring-agent-os-0.3.2/scripts/install.sh .opencode
-git add .opencode && git commit -m "chore(agents): install lg5-spring-agent-os@0.3.2"
+
+# 1. Add the bundle as a submodule at .agent-os/
+git submodule add -b main git@github.com:lg-labs-pentagon/lg5-spring-agent-os.git .agent-os
+
+# 2. Pin to a release
+git -C .agent-os checkout v1.0.0
+
+# 3. Wire OpenCode (creates .opencode/ symlinks + adds .opencode/ to .gitignore)
+.agent-os/scripts/install.sh
+
+# 4. Commit the submodule pin
+git add .gitmodules .agent-os .gitignore
+git commit -m "chore(agent-os): pin lg5-spring-agent-os@v1.0.0"
 ```
 
-Pros: zero submodule machinery; agent state is self-contained in the consumer.
-Cons: harder to upgrade (re-run the install at the new tag, review diff).
+**After fresh clone** (the only manual step): `git submodule update --init`
+followed by `.agent-os/scripts/install.sh` (re-creates the symlinks; safe
+to run anytime — idempotent).
 
-### Mode C — Sparse checkout (large monorepos, partial install)
+**Upgrades**: `git -C .agent-os fetch --tags && git -C .agent-os checkout vX.Y.Z`. Symlinks
+stay valid; nothing else to do.
 
-```bash
-git clone --filter=blob:none --no-checkout https://github.com/lg-labs-pentagon/lg5-spring-agent-os.git .lg5-agent-os
-git -C .lg5-agent-os sparse-checkout init --cone
-git -C .lg5-agent-os sparse-checkout set rules skills/lg5-saga skills/lg5-outbox commands
-git -C .lg5-agent-os checkout v0.3.2
-.lg5-agent-os/scripts/install.sh .opencode
-```
-
----
-
-## Consumer install layout
-
-`scripts/install.sh <opencode-dir>` produces:
+### Resulting consumer layout
 
 ```
-<opencode-dir>/
-├── skills/                 ← copied from this repo's skills/
-├── rules/                  ← copied from this repo's rules/
-├── commands/               ← copied from this repo's commands/
-├── subagents/              ← copied from this repo's subagents/
-├── specs/                  ← copied from this repo's specs/
-└── .bundle-version         ← bundle version marker
+your-microservice-repo/
+├── .agent-os/                  ← git submodule (HEAD-detached at vX.Y.Z, COMMITTED)
+│   ├── skills/
+│   ├── commands/
+│   ├── subagents/
+│   ├── rules/
+│   ├── specs/
+│   ├── AGENTS.md               ← bundle-shipped rules/routing
+│   └── scripts/install.sh
+│
+├── .opencode/                  ← generated, GITIGNORED
+│   ├── skills    -> ../.agent-os/skills
+│   ├── commands  -> ../.agent-os/commands
+│   ├── agents    -> ../.agent-os/subagents
+│   └── AGENTS.md -> ../.agent-os/AGENTS.md
+│
+├── AGENTS.md                   ← consumer's own AGENTS.md (per-repo overrides)
+└── …
 ```
 
-`AGENTS.md` is **not** touched — the consumer repo owns it and merges
-upstream rules manually (otherwise per-repo customizations would be wiped on
-every upgrade). Use the upstream `AGENTS.md` in this repo as a template:
-copy it, then add your service-specific overrides at the bottom.
+OpenCode reads BOTH `<repo-root>/AGENTS.md` (consumer overrides) and
+`.opencode/AGENTS.md` (bundle-shipped, via symlink). The consumer's root
+`AGENTS.md` takes precedence.
 
 ---
 
