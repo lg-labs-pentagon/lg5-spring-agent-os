@@ -4,6 +4,58 @@ All notable changes to the **subagents** artifact set are documented here.
 Uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] — 2026-05-10
+### Added (MAJOR — bundle 3.0.0)
+- **4 new SDD phase-specialist subagents** completing the 1:1 mapping
+  with the extended 7-phase workflow (plus a meta-orchestrator):
+  - **`sdd-intender`** (v0.1.0) — pairs with `/sdd-intent`. Optional
+    phase 0. Converts an informal idea into a one-page `intent.md`
+    framing problem, users, why now, desired outcome, success metrics,
+    non-goals, constraints, and open questions. Never mentions
+    technology or solution words. Tools: `read, write, edit, glob, grep`.
+  - **`sdd-designer`** (v0.1.0) — pairs with `/sdd-design`. New phase
+    3, between Plan and Tasks. Produces `design.md` + `data-model.md`
+    with concrete class signatures, REST contracts (RULE-006), Kafka
+    contracts + Avro schemas (RULE-007), JPA model + outbox payloads
+    (RULE-008), Saga step semantics (RULE-009), configs (RULE-014), and
+    an acyclic module dependency graph (RULE-004). Tools: `read, write,
+    edit, glob, grep`.
+  - **`sdd-verifier`** (v0.1.0) — pairs with `/sdd-verify`. New closing
+    phase 6. Runs `make all-build` + `make run-acceptance-test` and
+    cross-checks every PRD AC against test evidence (Surefire,
+    Failsafe, Cucumber JSON, Allure results). Performs a constitutional
+    spot-check per RULE-NNN. Emits a gate decision (VERIFIED / VERIFIED
+    WITH OVERRIDE / NOT VERIFIED). Bloqueante — a red gate blocks spec
+    closure unless overridden by a pre-existing `tech-debt` ADR file on
+    disk. Tools: `read, write, edit, glob, grep, bash`.
+  - **`sdd-orchestrator`** (v0.1.0) — pairs with `/sdd-orchestrate`.
+    Meta-subagent. Inspects `docs/specs/<NNN-slug>/` state and
+    recommends the next phase command. Read-only — never produces
+    feature artifacts. Decision tree covers all 7 phases plus closed
+    specs. Tools: `read, glob, grep, bash`.
+### Changed (BREAKING)
+- **`sdd-specifier`** (v0.1.0 → v0.2.0) — now optionally reads
+  `intent.md` (if present) and uses it as anchor for REQs and
+  non-goals. Pre-flight detects intent presence and adapts the prompt.
+- **`sdd-planner`** (v0.2.0 → v0.3.0) — **no longer produces
+  `data-model.md`**. Detailed design (data model, REST contracts, Avro
+  schemas, JPA tables, configs) moves to the new `sdd-designer`
+  subagent. `plan.md` now contains architecture decisions and ADRs
+  only. Suggested next-step recommendation changes from `/sdd-tasks`
+  to `/sdd-design`.
+- **`sdd-tasker`** (v0.1.0 → v0.2.0) — now reads `design.md` (mandatory
+  pre-flight) in addition to `plan.md`. Every TASK references a
+  specific design section. Tasks that improvise design are forbidden —
+  if a TASK has no design anchor, the subagent STOPs and recommends
+  re-running `/sdd-design`.
+### Notes
+- Bundle bumped to `3.0.0` (MAJOR) — the canonical SDD subagent set
+  grew from 4 to 8 (7 phase specialists + 1 meta-orchestrator).
+- All new subagents have `mode: subagent` and `model:
+  anthropic/claude-sonnet-4-20250514` to align with the existing
+  `sdd-*` set. They are discoverable in OpenCode's agent tab via their
+  `sdd-` prefix.
+
 ## [2.0.0] — 2026-05-10
 ### Added (BREAKING)
 - **3 new SDD phase-specialist subagents** completing the 1:1 mapping

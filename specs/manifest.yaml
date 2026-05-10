@@ -9,11 +9,16 @@
 
 bundle:
   name: lg5-spring-agent-os
-  version: 2.0.0
+  version: 3.0.0
   lg5-spring-sha: d0d754a
 
 specs:
   # Templates
+  - name: intent-template
+    file: templates/intent-template.md
+    kind: template
+    version: 0.1.0
+    description: Pre-PRD intent one-pager. Captures the WHY and the problem framing before /sdd-specify. Used by /sdd-intent. Optional but recommended.
   - name: prd-template
     file: templates/prd-template.md
     kind: template
@@ -29,16 +34,26 @@ specs:
     kind: template
     version: 0.1.0
     description: Technical plan derived from a PRD + ADRs. Used by /sdd-plan.
+  - name: design-template
+    file: templates/design-template.md
+    kind: template
+    version: 0.1.0
+    description: Detailed technical design (class signatures, REST/Kafka contracts, JPA, configs, module graph) from an approved Plan. Used by /sdd-design. Consumed by /sdd-tasks.
+  - name: data-model-template
+    file: templates/data-model-template.md
+    kind: template
+    version: 0.1.0
+    description: Concrete data shapes (aggregates, events, outbox, REST DTOs, Avro, JPA). Now owned by /sdd-design.
   - name: tasks-template
     file: templates/tasks-template.md
     kind: template
     version: 0.1.0
     description: Atomic TASK-NNN list. Used by /sdd-tasks; consumed by /sdd-implement.
-  - name: data-model-template
-    file: templates/data-model-template.md
+  - name: verify-report-template
+    file: templates/verify-report-template.md
     kind: template
     version: 0.1.0
-    description: Concrete data shapes (aggregates, events, outbox, REST DTOs, Avro, JPA).
+    description: Verification report cross-checking every PRD AC against test evidence. Produced by /sdd-verify. Gate decision blocks spec closure.
   - name: research-template
     file: templates/research-template.md
     kind: template

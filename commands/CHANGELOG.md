@@ -4,6 +4,54 @@ All notable changes to the **commands** artifact set are documented here.
 Uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] — 2026-05-10
+### Added (MAJOR — bundle 3.0.0)
+- **4 new SDD orchestrator commands** that extend the workflow from 4
+  phases to 7 (plus a read-only meta-helper):
+  - **`/sdd-intent <slug> "<idea>"`** (v0.1.0) — optional phase 0.
+    Frame an informal idea as a one-page `intent.md` (problem, users,
+    why now, desired outcome, success metrics, non-goals, constraints,
+    open questions). Pairs with `subagents/sdd-intender.md`. Never
+    mentions technology or solution words.
+  - **`/sdd-design <NNN-slug>`** (v0.1.0) — new phase 3, between Plan
+    and Tasks. Produces `design.md` + `data-model.md` with concrete
+    class signatures, REST contracts, Avro schemas, JPA model, configs,
+    and module dependency graph. Sits between `sdd-planner`
+    (architecture) and `sdd-tasker` (atomic backlog). Pairs with
+    `subagents/sdd-designer.md`.
+  - **`/sdd-verify <NNN-slug>`** (v0.1.0) — new closing phase 6. Builds
+    an AC↔evidence matrix by running `make all-build` + `make
+    run-acceptance-test` and cross-checking every PRD AC against test
+    output. Constitutional spot-check per RULE-NNN. Emits a gate
+    decision (VERIFIED / VERIFIED WITH OVERRIDE / NOT VERIFIED). Red
+    gate **blocks spec closure** unless overridden by a `tech-debt`
+    ADR. Pairs with `subagents/sdd-verifier.md`.
+  - **`/sdd-orchestrate [<NNN-slug>]`** (v0.1.0) — read-only meta-helper.
+    Inspects `docs/specs/<NNN-slug>/` and recommends the next phase
+    command. With no argument, produces a multi-spec dashboard. Never
+    creates artifacts. Pairs with `subagents/sdd-orchestrator.md`.
+### Changed (BREAKING)
+- **`/sdd-plan`** (v0.1.0 → v0.2.0) — **no longer produces
+  `data-model.md`**. Detailed design (including the data model) moves
+  to the new `/sdd-design` phase. `plan.md` now contains architecture
+  decisions and ADRs only.
+- **`/sdd-tasks`** (v0.1.0 → v0.2.0) — now reads `design.md` (mandatory)
+  in addition to `plan.md`. Every TASK must reference a specific
+  section of `design.md`; tasks that improvise design are forbidden.
+- **`/sdd-specify`** (v0.1.0 → v0.2.0) — now optionally reads
+  `intent.md` (if present from a prior `/sdd-intent` run) and uses it
+  as anchor for REQs and non-goals.
+### Notes
+- Bundle bumped to `3.0.0` (MAJOR) because the canonical SDD workflow
+  changed from `specify → plan → tasks → implement` (4 phases) to
+  `[intent →] specify → plan → design → tasks → implement → verify`
+  (6-7 phases). Existing specs continue to work — `/sdd-tasks` falls
+  back gracefully when `design.md` is missing (it complains and asks
+  the human to backfill via `/sdd-design`).
+- All transitions still require explicit human approval — no auto-flow.
+- Intent (phase 0) is **optional**; Verify (phase 6) is **mandatory**
+  and bloqueante.
+
 ## [0.3.3] — 2026-05-10
 ### Added
 - New building-block command **`/scaffold-ci-cd`** (v0.1.0) that
