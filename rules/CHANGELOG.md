@@ -7,6 +7,13 @@ This file uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 The version below tracks the rules bundle as a whole, independently of
 individual rule versions in their own frontmatter.
 
+## [0.3.5] — 2026-05-13
+### Changed (PATCH — bundle 4.1.1)
+- `manifest.yaml` `bundle.version` bumped to `4.1.1` per the cross-bundle
+  invariant. No rule changed; the 4.1.1 release ships a fix to
+  `scripts/install.sh` (housekeeping-files-leak — issue #15) reflected in
+  full in `skills/CHANGELOG.md`.
+
 ## [0.3.4] — 2026-05-13
 ### Changed
 - `bundle.version` in `manifest.yaml` bumped to `4.1.0` per the

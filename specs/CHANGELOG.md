@@ -4,6 +4,13 @@ All notable changes to the **specs** artifact set are documented here.
 Uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.1] — 2026-05-13
+### Changed (PATCH — bundle 4.1.1)
+- `manifest.yaml` `bundle.version` bumped to `4.1.1` per the cross-bundle
+  invariant. No spec template changed; the 4.1.1 release ships a fix to
+  `scripts/install.sh` (housekeeping-files-leak — issue #15) reflected in
+  full in `skills/CHANGELOG.md`.
+
 ## [0.5.0] — 2026-05-13
 ### Added (MINOR — bundle 4.1.0)
 - **`quick-spec-template`** (v0.1.0) — compressed single-page spec for

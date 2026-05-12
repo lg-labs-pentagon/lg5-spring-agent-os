@@ -23,6 +23,30 @@ commits is unsupported.
 
 ## [Unreleased]
 
+## [4.1.1] — 2026-05-13
+### Fixed
+- `scripts/install.sh` no longer leaks bundle housekeeping files
+  (`CHANGELOG.md`, `manifest.yaml`, `.DS_Store`) into the OpenCode
+  discovery surface. The legacy folder-level symlinks
+  (`.opencode/{skills,commands,agents}` → `.agent-os/<artifact>`) caused
+  OpenCode to load `CHANGELOG.md` as a phantom subagent (no frontmatter,
+  visually noisy in the `@`-mention picker) and the same for commands and
+  skills. Reported by downstream consumer `lg5-loyalty-ledger` (issue #15).
+
+  The installer now creates `.opencode/{skills,commands,agents}/` as real
+  directories populated with one symlink per real artifact entry, filtering
+  a configurable `meta_skip` list. Upgrading from any earlier version is
+  transparent: the existing folder-level symlink is removed and replaced
+  by the per-file tree on the next `install.sh` run; consumers do not have
+  to re-add the submodule or change `.gitignore`.
+
+  No skill, rule, command, subagent, spec, template, or example content
+  changed in this release — the fix lives entirely in `scripts/install.sh`.
+
+### Changed
+- `bundle.version` in `manifest.yaml` bumped to `4.1.1` per the
+  cross-bundle invariant.
+
 ## [4.1.0] — 2026-05-13
 ### Changed
 - `bundle.version` in `manifest.yaml` bumped to `4.1.0` per the

@@ -23,10 +23,20 @@
 #   └── scripts/install.sh           <- this script
 #
 #   .opencode/                       <- generated, gitignored
-#   ├── skills    -> ../.agent-os/skills
-#   ├── commands  -> ../.agent-os/commands
-#   ├── agents    -> ../.agent-os/subagents      (OpenCode's naming)
+#   ├── skills/                      <- real dir; one symlink per skill subdir
+#   │   ├── lg5-saga      -> ../../.agent-os/skills/lg5-saga
+#   │   └── …
+#   ├── commands/                    <- real dir; one symlink per .md
+#   │   ├── sdd-plan.md   -> ../../.agent-os/commands/sdd-plan.md
+#   │   └── …
+#   ├── agents/                      <- real dir; one symlink per .md (OpenCode's naming)
+#   │   ├── sdd-planner.md -> ../../.agent-os/subagents/sdd-planner.md
+#   │   └── …
 #   └── AGENTS.md -> ../.agent-os/AGENTS.md
+#
+#   Bundle housekeeping files (`CHANGELOG.md`, `manifest.yaml`, `.DS_Store`) are
+#   filtered out — see `meta_skip` below — so OpenCode does not discover them
+#   as phantom agents/commands/skills (issue #15).
 #
 # Usage:
 #
@@ -153,13 +163,45 @@ if [[ "${mode}" == "clean" ]]; then
 fi
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Plan: link table (link-name : target relative to .opencode/)
+# Plan
 # ─────────────────────────────────────────────────────────────────────────────
-declare -a links=(
-  "skills:${link_prefix}/skills"
-  "commands:${link_prefix}/commands"
-  "agents:${link_prefix}/subagents"
-  "AGENTS.md:${link_prefix}/AGENTS.md"
+# Two kinds of links are produced:
+#
+#   1) Per-artifact directories (skills, commands, agents): created as REAL
+#      directories under .opencode/, populated with one symlink per real
+#      artifact entry. Bundle housekeeping files (CHANGELOG.md, manifest.yaml,
+#      .DS_Store) are filtered out so OpenCode does not load them as phantom
+#      agents/commands/skills (issue #15).
+#
+#   2) Single-file links (AGENTS.md): created directly as a file symlink.
+#
+# `link_prefix` already points at .agent-os (consumer) or .. (self-host).
+# Per-file links live one extra level deep (under .opencode/<dir>/<entry>),
+# so their target prefix needs an additional "../".
+per_file_prefix="../${link_prefix}"
+
+# Filenames inside artifact dirs that must NOT be exposed to OpenCode.
+# Keep this list in sync with scripts/validate.sh (when issue #17 ships).
+meta_skip=("CHANGELOG.md" "manifest.yaml" ".DS_Store")
+
+is_meta() {
+  local name="$1"
+  for skip in "${meta_skip[@]}"; do
+    [[ "${name}" == "${skip}" ]] && return 0
+  done
+  return 1
+}
+
+# Per-artifact directory plan: <opencode-dir-name>:<bundle-source-dir-name>
+declare -a artifact_dirs=(
+  "skills:skills"
+  "commands:commands"
+  "agents:subagents"
+)
+
+# Single-file link plan: <opencode-name>:<bundle-source-relative-to-bundle-root>
+declare -a file_links=(
+  "AGENTS.md:AGENTS.md"
 )
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -167,10 +209,23 @@ declare -a links=(
 # ─────────────────────────────────────────────────────────────────────────────
 if [[ "${mode}" == "dry-run" ]]; then
   blue "Would install lg5-spring-agent-os@${bundle_version} (mode: ${install_mode}) into ${consumer_root}"
-  echo "  Symlinks to create under ${opencode_dir}:"
-  for entry in "${links[@]}"; do
+  echo "  Per-artifact directories under ${opencode_dir}:"
+  for entry in "${artifact_dirs[@]}"; do
+    name="${entry%%:*}"; src_dir="${entry#*:}"
+    echo "    .opencode/${name}/   (real dir, populated from .agent-os/${src_dir}/)"
+    while IFS= read -r -d '' item; do
+      base="$(basename "${item}")"
+      if is_meta "${base}"; then
+        echo "      · skip ${base} (bundle meta)"
+      else
+        echo "      ✓ link ${base} -> ${per_file_prefix}/${src_dir}/${base}"
+      fi
+    done < <(find "${bundle_root}/${src_dir}" -mindepth 1 -maxdepth 1 -print0 | sort -z)
+  done
+  echo "  Single-file links under ${opencode_dir}:"
+  for entry in "${file_links[@]}"; do
     name="${entry%%:*}"; src="${entry#*:}"
-    echo "    .opencode/${name} -> ${src}"
+    echo "    .opencode/${name} -> ${link_prefix}/${src}"
   done
   if ! grep -qxF ".opencode/" "${gitignore}" 2>/dev/null; then
     echo "  Would add '.opencode/' to ${gitignore}"
@@ -187,18 +242,46 @@ blue "Installing lg5-spring-agent-os@${bundle_version} (mode: ${install_mode}) i
 
 mkdir -p "${opencode_dir}"
 
-for entry in "${links[@]}"; do
+# Per-artifact directories: replace any pre-existing entry (could be the legacy
+# folder-level symlink from v4.1.0 and earlier) with a fresh real directory of
+# per-entry symlinks.
+for entry in "${artifact_dirs[@]}"; do
+  name="${entry%%:*}"
+  src_dir="${entry#*:}"
+  link_dir="${opencode_dir}/${name}"
+
+  if [[ -e "${link_dir}" || -L "${link_dir}" ]]; then
+    rm -rf "${link_dir}"
+  fi
+  mkdir -p "${link_dir}"
+
+  linked=0
+  skipped=0
+  while IFS= read -r -d '' item; do
+    base="$(basename "${item}")"
+    if is_meta "${base}"; then
+      skipped=$((skipped + 1))
+      continue
+    fi
+    ln -s "${per_file_prefix}/${src_dir}/${base}" "${link_dir}/${base}"
+    linked=$((linked + 1))
+  done < <(find "${bundle_root}/${src_dir}" -mindepth 1 -maxdepth 1 -print0 | sort -z)
+
+  green "  ✓ .opencode/${name}/ (${linked} linked, ${skipped} meta skipped)"
+done
+
+# Single-file links.
+for entry in "${file_links[@]}"; do
   name="${entry%%:*}"
   src="${entry#*:}"
   link="${opencode_dir}/${name}"
 
-  # Replace any pre-existing entry (file, dir, symlink) at the link path.
   if [[ -e "${link}" || -L "${link}" ]]; then
     rm -rf "${link}"
   fi
 
-  ln -s "${src}" "${link}"
-  green "  ✓ .opencode/${name} -> ${src}"
+  ln -s "${link_prefix}/${src}" "${link}"
+  green "  ✓ .opencode/${name} -> ${link_prefix}/${src}"
 done
 
 # Ensure .opencode/ is gitignored.
