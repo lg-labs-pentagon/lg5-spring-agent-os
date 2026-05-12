@@ -23,6 +23,16 @@ commits is unsupported.
 
 ## [Unreleased]
 
+## [4.1.0] — 2026-05-13
+### Changed
+- `bundle.version` in `manifest.yaml` bumped to `4.1.0` per the
+  cross-bundle invariant. The SDD Quick-path (`/sdd-quick` +
+  `sdd-quicker` + `quick-spec-template`) shipped from `commands`,
+  `subagents`, and `specs` — all per-type manifests must agree.
+### Notes
+- **No skill content changed.** The Quick-path is orthogonal to the
+  11 existing skills; they remain valid for the same situations.
+
 ## [4.0.0] — 2026-05-12
 ### Added
 - New skill **`lg5-vitepress-docs`** (v0.1.0) capturing the unified

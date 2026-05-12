@@ -9,7 +9,7 @@
 
 bundle:
   name: lg5-spring-agent-os
-  version: 4.0.0
+  version: 4.1.0
   lg5-spring-sha: d0d754a
 
 subagents:
@@ -29,6 +29,10 @@ subagents:
     file: sdd-intender.md
     version: 0.1.0
     description: SDD Intent-phase subagent (optional first phase). Converts an informal idea into a one-page intent.md framing the problem before a PRD is written. Pairs with /sdd-intent.
+  - name: sdd-quicker
+    file: sdd-quicker.md
+    version: 0.1.0
+    description: SDD Quick-path subagent. Produces a compressed quick-spec.md (~40 lines) for trivial changes that don't justify the full 7-phase workflow. Enforces strict eligibility — rejects sagas, new outboxes, new aggregates, new Avro schemas, multi-module changes. Pairs with /sdd-quick. /sdd-verify remains mandatory.
   - name: sdd-specifier
     file: sdd-specifier.md
     version: 0.2.0

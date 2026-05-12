@@ -9,7 +9,7 @@
 
 bundle:
   name: lg5-spring-agent-os
-  version: 4.0.0
+  version: 4.1.0
   lg5-spring-sha: d0d754a
 
 specs:
@@ -19,6 +19,11 @@ specs:
     kind: template
     version: 0.1.0
     description: Pre-PRD intent one-pager. Captures the WHY and the problem framing before /sdd-specify. Used by /sdd-intent. Optional but recommended.
+  - name: quick-spec-template
+    file: templates/quick-spec-template.md
+    kind: template
+    version: 0.1.0
+    description: Compressed single-page spec (~40 lines) for trivial changes (1 endpoint, 1 entity, 1 listener, 1 field, 1 config). Replaces Specify+Plan+Design+Tasks. Used by /sdd-quick. Verify remains mandatory.
   - name: prd-template
     file: templates/prd-template.md
     kind: template

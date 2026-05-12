@@ -4,6 +4,19 @@ All notable changes to the **subagents** artifact set are documented here.
 Uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.0] — 2026-05-13
+### Added (MINOR — bundle 4.1.0)
+- **`sdd-quicker`** (v0.1.0) — new SDD Quick-path subagent. Produces a
+  compressed `quick-spec.md` (~40 content lines) for trivial changes
+  (1 endpoint, 1 entity, 1 listener, 1 field, 1 config) that don't
+  justify the full 7-phase workflow. Pairs with `/sdd-quick`.
+  Enforces a strict 10-criterion eligibility gate before creating any
+  file: rejects sagas, new outboxes, new aggregates, new Avro schemas,
+  multi-module changes, new modules, new external dependencies,
+  cross-service changes, breaking API changes, and performance- or
+  security-critical changes. When rejected, recommends `/sdd-specify`
+  and stops. Tools: `read, write, edit, glob, grep, bash`.
+
 ## [3.0.0] — 2026-05-10
 ### Added (MAJOR — bundle 3.0.0)
 - **4 new SDD phase-specialist subagents** completing the 1:1 mapping

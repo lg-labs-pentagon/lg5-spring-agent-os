@@ -7,6 +7,17 @@ This file uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 The version below tracks the rules bundle as a whole, independently of
 individual rule versions in their own frontmatter.
 
+## [0.3.4] — 2026-05-13
+### Changed
+- `bundle.version` in `manifest.yaml` bumped to `4.1.0` per the
+  cross-bundle invariant. `commands`, `subagents`, and `specs` shipped
+  the SDD Quick-path (MINOR). All per-type manifests must agree on
+  `bundle.version` even when their own content didn't change.
+### Notes
+- **No rule wording changed.** The Quick-path consumes existing
+  rules (RULE-006, RULE-008, RULE-009, RULE-010, RULE-016) by
+  naming them explicitly inside `quick-spec.md` §3.
+
 ## [0.3.3] — 2026-05-10
 ### Changed
 - `bundle.version` in `manifest.yaml` bumped to `3.0.0` to honor the
