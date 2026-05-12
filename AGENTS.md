@@ -154,6 +154,39 @@ See `commands/<name>.md` for each command's full prompt and parameters.
 
 ---
 
+## How to invoke the bundle's agents
+
+All bundle subagents have `mode: subagent` — they're specialists invoked from
+within an SDD phase, not primary chat partners. That has two practical
+consequences in OpenCode:
+
+- **Tab does NOT cycle through bundle subagents.** Tab is for `primary`
+  agents only (Build, Plan, plus any custom primary you configure in
+  `.opencode/agent.toml`). Pressing Tab after installing the bundle and
+  seeing nothing new is **expected**.
+- **Use `@` mentions to invoke bundle subagents.** Type `@` from any
+  primary-agent chat to surface the subagent picker: `@sdd-planner help me
+  plan feature 001`. The picker reads `.opencode/agents/` (which this bundle
+  populates via `install.sh`).
+
+In practice you rarely `@`-mention manually — the `/sdd-*` slash commands
+automatically dispatch to the right subagent under the hood (`/sdd-plan`
+invokes `sdd-planner`, `/sdd-tasks` invokes `sdd-tasker`, etc.). The three
+cross-cutting subagents (`lg5-code-reviewer`, `lg5-test-generator`,
+`lg5-ci-cd-engineer`) are the typical `@`-mention targets when you need a
+spot-check outside the SDD flow.
+
+> **Troubleshooting.** If `@<tab>` surfaces a phantom `CHANGELOG` entry
+> instead of the real subagents, you're on a pre-`4.1.1` install — that
+> bug (issue #15) was fixed by switching from folder-level symlinks to
+> per-entry symlinks under `.opencode/{agents,commands,skills}/`. Re-run
+> `.agent-os/scripts/install.sh` against bundle `>= 4.1.1` to refresh.
+
+See [opencode.ai/docs/agents](https://opencode.ai/docs/agents/) for the
+upstream documentation of `primary` vs `subagent` modes.
+
+---
+
 ## Subagent catalog
 
 Cross-cutting (apply to any phase):

@@ -247,9 +247,15 @@ your-microservice-repo/
 │   └── scripts/install.sh
 │
 ├── .opencode/                  ← generated, GITIGNORED
-│   ├── skills    -> ../.agent-os/skills
-│   ├── commands  -> ../.agent-os/commands
-│   ├── agents    -> ../.agent-os/subagents
+│   ├── skills/                 ← real dir; one symlink per skill subdir
+│   │   ├── lg5-saga    -> ../../.agent-os/skills/lg5-saga
+│   │   └── …
+│   ├── commands/               ← real dir; one symlink per .md
+│   │   ├── sdd-plan.md -> ../../.agent-os/commands/sdd-plan.md
+│   │   └── …
+│   ├── agents/                 ← real dir; one symlink per .md (OpenCode's naming)
+│   │   ├── sdd-planner.md -> ../../.agent-os/subagents/sdd-planner.md
+│   │   └── …
 │   └── AGENTS.md -> ../.agent-os/AGENTS.md
 │
 ├── AGENTS.md                   ← consumer's own AGENTS.md (per-repo overrides)
@@ -259,6 +265,28 @@ your-microservice-repo/
 OpenCode reads BOTH `<repo-root>/AGENTS.md` (consumer overrides) and
 `.opencode/AGENTS.md` (bundle-shipped, via symlink). The consumer's root
 `AGENTS.md` takes precedence.
+
+> Bundle housekeeping files (`CHANGELOG.md`, `manifest.yaml`, `.DS_Store`)
+> are filtered out of `.opencode/{agents,commands,skills}/` by `install.sh`
+> (≥ `4.1.1`) so they never surface as phantom agents in OpenCode's
+> `@`-mention picker — see [issue #15](https://github.com/lg-labs-pentagon/lg5-spring-agent-os/issues/15).
+
+### How to invoke bundle agents
+
+All bundle subagents have `mode: subagent`, so:
+
+- **Tab** in OpenCode cycles **primary** agents only (Build, Plan, custom).
+  Bundle subagents do not show up there.
+- Use **`@<name>`** from a primary chat to invoke a bundle subagent:
+  `@sdd-planner help me plan feature 001`.
+- In practice the `/sdd-*` slash commands dispatch to the right subagent
+  automatically — you usually only `@`-mention the three cross-cutting
+  ones (`lg5-code-reviewer`, `lg5-test-generator`, `lg5-ci-cd-engineer`)
+  for ad-hoc work outside the SDD flow.
+
+See [opencode.ai/docs/agents](https://opencode.ai/docs/agents/) for the
+upstream `primary` vs `subagent` discoverability model. Full discussion
+in [`AGENTS.md`](AGENTS.md#how-to-invoke-the-bundles-agents).
 
 ---
 
@@ -288,6 +316,19 @@ disk, plus cross-bundle invariants. Specifically:
   `version`, `description`); kind ∈ {`template`, `example`}.
 - **cross-bundle** — every `<type>/manifest.yaml` declares the same
   `bundle.lg5-spring-sha` and `bundle.version`.
+
+Optional install-output lint (regression test for issue #15):
+
+```bash
+bash scripts/validate.sh --install
+```
+
+This runs `scripts/install.sh` against a disposable temp fixture (fake
+consumer repo with `.agent-os/` symlinked to the bundle) and asserts that
+`.opencode/{agents,commands,skills}/` are real directories containing no
+housekeeping files (`CHANGELOG.md`, `manifest.yaml`, `.DS_Store`) and that
+every `.md` under `agents/` and `commands/` has YAML frontmatter. Gated
+behind `--install` because it materializes a temp filesystem (slower).
 
 The same script runs in CI on every push and PR
 (`.github/workflows/validate.yml`).

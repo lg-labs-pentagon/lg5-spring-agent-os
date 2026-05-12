@@ -23,6 +23,52 @@ commits is unsupported.
 
 ## [Unreleased]
 
+## [4.1.2] — 2026-05-13
+### Added
+- **Discoverability docs** (issue #16). New "How to invoke the bundle's
+  agents" section in `AGENTS.md` (linked from `README.md`'s consumer-layout
+  section) clarifies that bundle subagents have `mode: subagent`, so Tab
+  in OpenCode does NOT cycle through them — Tab is reserved for `primary`
+  agents (Build, Plan, custom). The right way to invoke a bundle subagent
+  is `@<name>` from a primary chat, but in practice the `/sdd-*` commands
+  dispatch to the right subagent automatically. The three cross-cutting
+  subagents (`lg5-code-reviewer`, `lg5-test-generator`, `lg5-ci-cd-engineer`)
+  are the typical `@`-mention targets for ad-hoc work outside the SDD flow.
+  Reported by `lg5-loyalty-ledger` (Luis Quiroga).
+- **`scripts/validate.sh --install`** (issue #17) — regression test for
+  the housekeeping-files-leak (#15). Runs `scripts/install.sh` against a
+  disposable temp consumer fixture (fake repo with `.agent-os/` symlinked
+  to the bundle), then asserts that `.opencode/{agents,commands,skills}/`
+  are **real directories** containing none of the forbidden meta files
+  (`CHANGELOG.md`, `manifest.yaml`, `.DS_Store`) and that every `.md`
+  under `agents/` and `commands/` has YAML frontmatter. Verified
+  end-to-end: removing `"CHANGELOG.md"` from `install.sh`'s `meta_skip`
+  makes the lint fail with exit code 1, citing each leaked path by
+  reference to #15. Gated behind `--install` because it materializes a
+  temp filesystem.
+- **CI wiring** — `.github/workflows/validate.yml` now runs
+  `scripts/validate.sh --install` as a second step after the artifact-side
+  checks. Future regressions of #15 fail CI on the same PR that
+  introduces them.
+
+### Changed
+- `bundle.version` in `manifest.yaml` bumped to `4.1.2` per the
+  cross-bundle invariant.
+- `README.md`'s "Resulting consumer layout" diagram updated to reflect
+  the per-entry symlink layout introduced in `4.1.1`. Adds a short
+  pointer-to-AGENTS.md FAQ on Tab-vs-`@` discoverability.
+
+### Rationale
+- Issues #15 and #16 originated from the same downstream confusion
+  ("only one agent loaded"). #15 was the bug; #16 was the missing docs
+  that prevented the consumer from self-diagnosing. Shipping the docs in
+  the same minor cycle as the regression test closes the feedback loop.
+- The install-output lint is the smallest possible test that exercises
+  the actual user-visible artifact (`.opencode/`), which was previously
+  unverified by CI. Any future change to `install.sh` (or any new
+  housekeeping file in an artifact folder) that re-introduces #15 will
+  fail CI on the introducing PR.
+
 ## [4.1.1] — 2026-05-13
 ### Fixed
 - `scripts/install.sh` no longer leaks bundle housekeeping files
