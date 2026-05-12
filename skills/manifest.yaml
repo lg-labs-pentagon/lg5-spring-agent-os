@@ -8,8 +8,8 @@
 # Bundle version follows SemVer; bump when any included artifact changes.
 bundle:
   name: lg5-spring-agent-os
-  version: 3.0.0
-  released: 2026-05-10
+  version: 4.0.0
+  released: 2026-05-12
   repository: https://github.com/lg-labs-pentagon/lg5-spring-agent-os
   # Framework commit against which the WHOLE bundle is validated.
   # All skills must declare the same `lg5-spring-sha`.
@@ -76,3 +76,9 @@ skills:
     lg5-spring-sha: d0d754a
     path: lg5-allure-report/SKILL.md
     description: Allure Report wiring for Cucumber 7 + JUnit Platform acceptance tests.
+
+  - name: lg5-vitepress-docs
+    version: 0.1.0
+    lg5-spring-sha: d0d754a
+    path: lg5-vitepress-docs/SKILL.md
+    description: Unified VitePress documentation site aggregating OpenAPI/AsyncAPI viewers, Allure reports, ADRs, runbooks; dual deploy (GitHub Pages + Firebase) with 7-day PR preview channels.

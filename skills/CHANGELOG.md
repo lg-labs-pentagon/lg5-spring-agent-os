@@ -23,6 +23,37 @@ commits is unsupported.
 
 ## [Unreleased]
 
+## [4.0.0] — 2026-05-12
+### Added
+- New skill **`lg5-vitepress-docs`** (v0.1.0) capturing the unified
+  VitePress documentation site that aggregates the per-contract viewers
+  (from `lg5-api-docs`), Allure acceptance reports (from
+  `lg5-allure-report`), architecture visualizations, ADRs, runbooks, and
+  glossary into a single navigable surface.
+- Pattern coverage: dual-deploy (GitHub Pages + Firebase Hosting),
+  7-day PR preview channels with bot-commented URLs, source-state footer
+  (short SHA + ISO timestamp + PR number), pnpm 11 build-script gating,
+  VitePress `public/` static-asset wiring (the critical "don't drop my
+  HTML" rule), base-aware relative links for dual-base-path builds, and
+  the warn-don't-fail artifact handling via
+  `check-artifacts.mjs` + `linkinator-to-annotations.mjs`.
+- "Common pitfalls" catalogue: the 4 post-merge bugs surfaced during
+  the canonical implementation's verification (footer rendering `dev`,
+  footer rendering full 40-char SHA, viewers placed in wrong directory,
+  absolute links breaking under non-root base) — all distilled into
+  Rules 1-6 in the skill body.
+- Compatibility marker `lg5-spring-sha: d0d754a` matching the other
+  skills in this release.
+
+### Changed
+- `bundle.version` in `manifest.yaml` bumped to `4.0.0` per ADR-006 of
+  the canonical consumer (`lg5-loyalty-ledger/docs/specs/004-project-docs/adr/ADR-006-bundle-version-strategy.md`),
+  which earmarked v4.0.0 for the introduction of docs-aggregator
+  capabilities. The bump is **additive-only** (no existing artifact
+  changed); it is marked MAJOR per the consumer's pre-agreement to
+  signal the new aggregator capability prominently to downstream
+  services.
+
 ## [3.0.0] — 2026-05-10
 ### Changed
 - `bundle.version` in `manifest.yaml` bumped to `3.0.0` to honor the

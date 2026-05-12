@@ -4,6 +4,19 @@ All notable changes to the **commands** artifact set are documented here.
 Uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] — 2026-05-12
+### Added (bundle 4.0.0)
+- **`/scaffold-docs <service-name> <firebase-project-id>`** (v0.1.0) — new
+  building-block command. Drops the unified VitePress documentation site into
+  a consumer service: `docs/site/` aggregator scaffold, `firebase.json`,
+  `.firebaserc`, 6 Make targets, and 6 CI jobs appended to the canonical
+  `c-integration.yml` (`docs-build-pages`, `docs-build-firebase`,
+  `pages-deploy`, `firebase-deploy-docs`, `firebase-deploy-allure`,
+  `firebase-preview`). Operationalises the `lg5-vitepress-docs` skill
+  introduced in skills bundle 4.0.0.
+- Final-output checklist for one-time operator setup (Firebase project,
+  service-account secret, Pages source toggle, `docs/preview` label).
+
 ## [0.4.0] — 2026-05-10
 ### Added (MAJOR — bundle 3.0.0)
 - **4 new SDD orchestrator commands** that extend the workflow from 4
