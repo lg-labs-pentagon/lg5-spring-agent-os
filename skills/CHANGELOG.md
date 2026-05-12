@@ -23,6 +23,37 @@ commits is unsupported.
 
 ## [Unreleased]
 
+## [4.0.1] — 2026-05-13
+### Fixed
+- **install.sh: filter housekeeping files out of `.opencode/` symlink trees.**
+  Previous versions symlinked the bundle artifact directories wholesale
+  (`.opencode/agents -> ../.agent-os/subagents/`, idem `commands`,
+  `skills`). OpenCode lists every entry in those dirs as a candidate
+  agent/command/skill, so the bundle's housekeeping files
+  (`CHANGELOG.md`, `manifest.yaml`) leaked into the `@`-mention menu —
+  most visibly a phantom `CHANGELOG` "subagent" with no frontmatter that
+  confused consumers into thinking only one agent was being loaded.
+  - `install.sh` now creates `.opencode/{skills,commands,agents}/` as
+    real directories and populates them with one symlink per real
+    artifact entry, skipping a configurable `meta_skip` list
+    (`CHANGELOG.md`, `manifest.yaml`, `.DS_Store`).
+  - Upgrades from earlier bundles are transparent: the old folder-level
+    symlinks are removed and replaced by the new per-file trees on the
+    next `install.sh` run. No consumer-side changes required.
+  - `--dry-run` output expanded to show the per-file plan (`✓ linked`
+    vs `· skip <meta-file>`) so users can audit what will end up in
+    `.opencode/` before writing anything.
+  - Tested in both `self-host` (bundle repo root) and `consumer` modes
+    (downstream service repo with `.agent-os/` submodule).
+
+### Notes
+- No artifact content changed in this release — same skills, commands,
+  subagents, rules, specs as 4.0.0. The fix lives entirely in
+  `scripts/install.sh` and consumer-visible symlink layout.
+- `bundle.version` bumped to `4.0.1` across all five per-type manifests
+  (`skills/`, `commands/`, `subagents/`, `specs/`, `rules/`) to satisfy
+  the cross-bundle invariant enforced by `scripts/validate.sh`.
+
 ## [4.0.0] — 2026-05-12
 ### Added
 - New skill **`lg5-vitepress-docs`** (v0.1.0) capturing the unified

@@ -4,6 +4,13 @@ All notable changes to the **commands** artifact set are documented here.
 Uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.1] — 2026-05-13
+### Notes
+- No command content changed. Bundle `bundle.version` bumped to
+  `4.0.1` (cross-bundle invariant) for the `install.sh` fix that filters
+  `CHANGELOG.md` and `manifest.yaml` out of `.opencode/commands/`.
+  See `skills/CHANGELOG.md` 4.0.1 for the full description.
+
 ## [0.5.0] — 2026-05-12
 ### Added (bundle 4.0.0)
 - **`/scaffold-docs <service-name> <firebase-project-id>`** (v0.1.0) — new

@@ -9,7 +9,7 @@
 
 bundle:
   name: lg5-spring-agent-os
-  version: 4.0.0
+  version: 4.0.1
   lg5-spring-sha: d0d754a
 
 specs:

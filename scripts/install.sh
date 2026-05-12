@@ -23,10 +23,24 @@
 #   └── scripts/install.sh           <- this script
 #
 #   .opencode/                       <- generated, gitignored
-#   ├── skills    -> ../.agent-os/skills
-#   ├── commands  -> ../.agent-os/commands
-#   ├── agents    -> ../.agent-os/subagents      (OpenCode's naming)
+#   ├── skills/                      <- dir of per-skill symlinks (filters CHANGELOG.md, manifest.yaml)
+#   │   ├── lg5-saga    -> ../../.agent-os/skills/lg5-saga
+#   │   └── ...
+#   ├── commands/                    <- dir of per-command symlinks (filters CHANGELOG.md, manifest.yaml)
+#   │   ├── sdd-plan.md -> ../../.agent-os/commands/sdd-plan.md
+#   │   └── ...
+#   ├── agents/                      <- dir of per-subagent symlinks (filters CHANGELOG.md, manifest.yaml)
+#   │   ├── sdd-planner.md -> ../../.agent-os/subagents/sdd-planner.md
+#   │   └── ...
 #   └── AGENTS.md -> ../.agent-os/AGENTS.md
+#
+# Why per-file symlinks instead of one big folder symlink?
+#   OpenCode discovers agents/commands/skills by listing the matching directory
+#   and treating every entry as a definition. If we symlinked the whole
+#   `subagents/` folder, the bundle's housekeeping files (`CHANGELOG.md`,
+#   `manifest.yaml`) would surface as bogus "agents" in the @-mention menu (the
+#   `CHANGELOG.md` one is particularly confusing because it lacks frontmatter
+#   yet still shows up). Per-file symlinks let us filter at install time.
 #
 # Usage:
 #
@@ -153,22 +167,68 @@ if [[ "${mode}" == "clean" ]]; then
 fi
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Plan: link table (link-name : target relative to .opencode/)
+# Plan: artifact folders to wire as per-file symlink trees, plus
+#       top-level file symlinks (AGENTS.md).
+#
+# For each (consumer_dirname : bundle_subdir) entry we create a directory under
+# .opencode/ and populate it with one symlink per real entry in the bundle
+# subdir, SKIPPING the housekeeping files `CHANGELOG.md` and `manifest.yaml`
+# (and any future meta-file matching ${meta_skip}). This avoids leaking those
+# files into OpenCode's agent/command/skill discovery loops.
 # ─────────────────────────────────────────────────────────────────────────────
-declare -a links=(
-  "skills:${link_prefix}/skills"
-  "commands:${link_prefix}/commands"
-  "agents:${link_prefix}/subagents"
+declare -a artifact_dirs=(
+  "skills:skills"
+  "commands:commands"
+  "agents:subagents"
+)
+
+declare -a file_links=(
   "AGENTS.md:${link_prefix}/AGENTS.md"
 )
+
+# Glob patterns (one per line) of bundle entries that must NOT be symlinked
+# into .opencode/. Bash extended globs would work too but plain shell case
+# patterns keep us POSIX-leaning and portable to macOS's stock bash 3.2.
+meta_skip='CHANGELOG.md
+manifest.yaml
+.DS_Store'
+
+is_meta() {
+  local name="$1"
+  while IFS= read -r pat; do
+    [[ -z "${pat}" ]] && continue
+    [[ "${name}" == "${pat}" ]] && return 0
+  done <<< "${meta_skip}"
+  return 1
+}
 
 # ─────────────────────────────────────────────────────────────────────────────
 # --dry-run
 # ─────────────────────────────────────────────────────────────────────────────
 if [[ "${mode}" == "dry-run" ]]; then
   blue "Would install lg5-spring-agent-os@${bundle_version} (mode: ${install_mode}) into ${consumer_root}"
-  echo "  Symlinks to create under ${opencode_dir}:"
-  for entry in "${links[@]}"; do
+  echo "  Per-artifact symlink trees under ${opencode_dir}:"
+  for entry in "${artifact_dirs[@]}"; do
+    consumer_name="${entry%%:*}"
+    bundle_subdir="${entry#*:}"
+    src_dir="${bundle_root}/${bundle_subdir}"
+    if [[ ! -d "${src_dir}" ]]; then
+      yellow "    .opencode/${consumer_name}/   (skipped — ${src_dir} missing)"
+      continue
+    fi
+    echo "    .opencode/${consumer_name}/"
+    for src_entry in "${src_dir}"/*; do
+      [[ -e "${src_entry}" ]] || continue
+      base="$(basename "${src_entry}")"
+      if is_meta "${base}"; then
+        echo "      · skip ${base} (meta-file)"
+      else
+        echo "      ✓ ${base} -> ${link_prefix}/${bundle_subdir}/${base}"
+      fi
+    done
+  done
+  echo "  Top-level symlinks under ${opencode_dir}:"
+  for entry in "${file_links[@]}"; do
     name="${entry%%:*}"; src="${entry#*:}"
     echo "    .opencode/${name} -> ${src}"
   done
@@ -187,12 +247,49 @@ blue "Installing lg5-spring-agent-os@${bundle_version} (mode: ${install_mode}) i
 
 mkdir -p "${opencode_dir}"
 
-for entry in "${links[@]}"; do
+# 1) Per-artifact symlink trees (skills/, commands/, agents/).
+for entry in "${artifact_dirs[@]}"; do
+  consumer_name="${entry%%:*}"
+  bundle_subdir="${entry#*:}"
+  src_dir="${bundle_root}/${bundle_subdir}"
+  target_dir="${opencode_dir}/${consumer_name}"
+
+  if [[ ! -d "${src_dir}" ]]; then
+    yellow "  · skipping .opencode/${consumer_name}/ — ${src_dir} missing"
+    continue
+  fi
+
+  # Replace any pre-existing entry at the target path with a fresh dir. This
+  # handles upgrades from older bundle versions that used a single folder
+  # symlink (e.g., .opencode/agents -> ../.agent-os/subagents).
+  if [[ -e "${target_dir}" || -L "${target_dir}" ]]; then
+    rm -rf "${target_dir}"
+  fi
+  mkdir -p "${target_dir}"
+
+  skipped=0
+  linked=0
+  for src_entry in "${src_dir}"/*; do
+    [[ -e "${src_entry}" ]] || continue
+    base="$(basename "${src_entry}")"
+    if is_meta "${base}"; then
+      skipped=$((skipped + 1))
+      continue
+    fi
+    # Symlink target is relative to the parent of the link itself
+    # (${opencode_dir}/${consumer_name}/), so we need an extra `../`.
+    ln -s "../${link_prefix}/${bundle_subdir}/${base}" "${target_dir}/${base}"
+    linked=$((linked + 1))
+  done
+  green "  ✓ .opencode/${consumer_name}/ (${linked} linked, ${skipped} meta-files filtered)"
+done
+
+# 2) Top-level file symlinks (AGENTS.md).
+for entry in "${file_links[@]}"; do
   name="${entry%%:*}"
   src="${entry#*:}"
   link="${opencode_dir}/${name}"
 
-  # Replace any pre-existing entry (file, dir, symlink) at the link path.
   if [[ -e "${link}" || -L "${link}" ]]; then
     rm -rf "${link}"
   fi
@@ -226,10 +323,13 @@ if [[ "${install_mode}" == "consumer" ]]; then
   echo "  git commit -m \"chore(agent-os): pin lg5-spring-agent-os@${bundle_version}\""
   echo
   echo "OpenCode running from ${consumer_root} will now load:"
-  echo "  • skills via .opencode/skills/    -> .agent-os/skills/"
-  echo "  • commands via .opencode/commands/ -> .agent-os/commands/"
-  echo "  • subagents via .opencode/agents/  -> .agent-os/subagents/"
+  echo "  • skills via .opencode/skills/*    -> .agent-os/skills/*"
+  echo "  • commands via .opencode/commands/* -> .agent-os/commands/*"
+  echo "  • subagents via .opencode/agents/*  -> .agent-os/subagents/*"
   echo "  • bundle rules via .opencode/AGENTS.md -> .agent-os/AGENTS.md"
+  echo
+  echo "Housekeeping files (CHANGELOG.md, manifest.yaml) inside each artifact"
+  echo "directory are filtered out of the symlink tree by design."
   echo
   echo "Per-repo overrides go in ${consumer_root}/AGENTS.md (root). Both files"
   echo "are read by OpenCode; the consumer one takes precedence."

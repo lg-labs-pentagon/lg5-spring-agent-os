@@ -4,6 +4,16 @@ All notable changes to the **subagents** artifact set are documented here.
 Uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.1] — 2026-05-13
+### Notes
+- No subagent content changed. Bundle `bundle.version` bumped to
+  `4.0.1` (cross-bundle invariant) for the `install.sh` fix that filters
+  `CHANGELOG.md` and `manifest.yaml` out of `.opencode/agents/`. See
+  `skills/CHANGELOG.md` 4.0.1 for the full description — that bug
+  surfaced most visibly here, where the bundle's housekeeping
+  `CHANGELOG.md` was being mis-loaded by OpenCode as a phantom
+  `CHANGELOG` subagent.
+
 ## [3.0.0] — 2026-05-10
 ### Added (MAJOR — bundle 3.0.0)
 - **4 new SDD phase-specialist subagents** completing the 1:1 mapping
