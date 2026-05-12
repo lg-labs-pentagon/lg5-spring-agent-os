@@ -94,6 +94,7 @@ When the user asks anything related to lg5-spring, **load the relevant skill**:
 | GitHub Actions CI pipeline + Maven-credentials action       | `lg5-github-actions`     |
 | OpenAPI / AsyncAPI HTML doc sites (Swagger UI + Studio)     | `lg5-api-docs`           |
 | Allure Report wiring (Cucumber 7 + JUnit Platform)          | `lg5-allure-report`      |
+| Unified VitePress docs site (Pages + Firebase + previews)   | `lg5-vitepress-docs`     |
 
 ---
 
@@ -125,6 +126,7 @@ generate code.
 | `/add-outbox`          | Adds an outbox (entity + DDL + helper + scheduler) for one event type. |
 | `/add-kafka-listener`  | Adds a Kafka listener (batch + NO-OP exception handling per RULE-010). |
 | `/scaffold-ci-cd`      | Installs the canonical CI pipeline (workflow + composite action + API doc templates + Allure wiring) into a consumer service. |
+| `/scaffold-docs`       | Installs the unified VitePress documentation site (`docs/site/` aggregator + 6 CI jobs + Firebase config) into a consumer service. |
 
 See `commands/<name>.md` for each command's full prompt and parameters.
 

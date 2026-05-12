@@ -14,7 +14,7 @@
 
 bundle:
   name: lg5-spring-agent-os
-  version: 3.0.0
+  version: 4.0.0
   lg5-spring-sha: d0d754a
 
 commands:
@@ -86,3 +86,8 @@ commands:
     version: 0.1.0
     category: building-block
     description: Scaffold the canonical CI/CD pipeline (workflow + composite action + API docs + Allure) into a consumer service.
+  - name: scaffold-docs
+    file: scaffold-docs.md
+    version: 0.1.0
+    category: building-block
+    description: Scaffold the unified VitePress documentation site (docs/site/ aggregator + 6 CI jobs + Firebase config) into a consumer service.
