@@ -4,6 +4,24 @@ All notable changes to the **commands** artifact set are documented here.
 Uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] — 2026-05-13
+### Added (MINOR — bundle 4.1.0)
+- **`/sdd-quick <change-slug> "<description>"`** (v0.1.0) — new SDD
+  Quick-path command. For trivial changes (1 endpoint, 1 entity,
+  1 listener, 1 field, 1 config) that don't justify the full
+  7-phase workflow. Produces a compressed `quick-spec.md` (~40
+  content lines) under `docs/specs/<NNN-slug>/` and recommends
+  going directly to `/sdd-implement`. `/sdd-verify` remains
+  **mandatory** — preserves SDD's essence ("the spec is canonical;
+  code is derived from it"). Strict eligibility gate rejects: sagas,
+  new outboxes, new aggregates, new Avro schemas, multi-module
+  changes, new dependencies, breaking API changes, performance- or
+  security-critical changes. Pairs with the `sdd-quicker` subagent.
+### Rationale
+- Empirical: 7 phases × human approval for every trivial change
+  produced predictable bypass behavior. Sanctioned quick path with
+  mandatory verify > unsanctioned bypass with no verify.
+
 ## [0.5.0] — 2026-05-12
 ### Added (bundle 4.0.0)
 - **`/scaffold-docs <service-name> <firebase-project-id>`** (v0.1.0) — new

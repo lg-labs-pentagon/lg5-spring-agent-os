@@ -31,9 +31,30 @@ borrowing structural ideas from
           APPROVES       APPROVES       APPROVES          APPROVES        APPROVES       APPROVES
 ```
 
+### Quick-path (for trivial changes)
+
+```
+  /sdd-quick                                                              /sdd-implement   /sdd-verify
+      │                                                                          │              │
+      ▼                                                                          ▼              ▼
+   quick-spec.md  ──────────────────────────────────────────────────────►  code + tests  ►  verify-report.md
+   (compressed                                                                + commit       (mandatory gate)
+    ~40 lines)
+      │                                                                          │              │
+      └─────────────────────────── HUMAN ───────────────────────────────────────┴── HUMAN ─────►
+                                   APPROVES                                       APPROVES
+```
+
 > **Intent** (phase 0) is **optional** — skip when the idea is mature.
-> **Verify** (phase 6) is **mandatory and bloqueante** — a red gate
-> blocks spec closure unless overridden by an explicit `tech-debt` ADR.
+> **Verify** (phase 6) is **mandatory and bloqueante** for BOTH paths —
+> a red gate blocks spec closure unless overridden by an explicit
+> `tech-debt` ADR.
+>
+> **Quick-path** is for **trivial changes only** (1 endpoint, 1 entity,
+> 1 listener, 1 field, 1 config). The `/sdd-quick` command enforces a
+> 10-criterion eligibility gate: sagas, new outboxes, new aggregates,
+> new Avro schemas, multi-module changes, and breaking API changes are
+> all rejected and routed to the full path.
 >
 > Use `/sdd-orchestrate <NNN-slug>` (or with no arg, for a multi-spec
 > dashboard) to inspect a spec's state and get the recommended next phase.
@@ -116,6 +137,7 @@ generate code.
 | `/sdd-implement <TASK-NNN>`      | 5         | Execute ONE task (code + tests + commit). Loops by re-invocation.       |
 | `/sdd-verify <NNN-slug>`         | 6         | Cross-check every AC against test evidence; gate decision blocks closure. |
 | `/sdd-orchestrate [<NNN-slug>]`  | meta      | Inspect spec state; recommend the next phase command. Read-only helper. |
+| `/sdd-quick <slug> "<desc>"`     | quick     | Quick-path for trivial changes — 1 endpoint, 1 entity, 1 listener, 1 field, or 1 config. Compressed quick-spec.md (~40 lines); rejects sagas/outboxes/multi-module changes; goes directly to `/sdd-implement`. `/sdd-verify` mandatory. |
 
 ### Building blocks (called from inside /sdd-implement)
 
@@ -155,6 +177,7 @@ a meta-orchestrator):
 | `sdd-implementer`  | Implement (5) | `/sdd-implement`   | One TASK → code + tests + `lg5-code-reviewer` + commit.                                          |
 | `sdd-verifier`     | Verify (6)  | `/sdd-verify`        | Cross-check every AC against test evidence; produce gate decision (VERIFIED / OVERRIDE / NOT).   |
 | `sdd-orchestrator` | meta        | `/sdd-orchestrate`   | Inspect spec state; recommend next phase. Read-only. Never produces feature artifacts.           |
+| `sdd-quicker`      | Quick       | `/sdd-quick`         | Trivial-change Quick-path. Produces `quick-spec.md` (~40 lines); enforces 10-criterion eligibility gate. Rejects sagas, new outboxes, new aggregates, new Avro schemas, multi-module changes. |
 
 ---
 
@@ -165,6 +188,7 @@ Under [`specs/templates/`](specs/templates/):
 | Template                   | Used by             | Purpose                                                  |
 |----------------------------|---------------------|----------------------------------------------------------|
 | `intent-template`          | `/sdd-intent`       | One-page intent: problem, users, outcome, non-goals (pre-PRD framing). |
+| `quick-spec-template`      | `/sdd-quick`        | Compressed single-page spec (~40 lines) for trivial changes. Replaces Specify+Plan+Design+Tasks. |
 | `prd-template`             | `/sdd-specify`      | Functional PRD (REQ-NNN with AC; tech-free).             |
 | `plan-template`            | `/sdd-plan`         | Module map, ADR index, dep graph, risks (architecture only). |
 | `adr-template`             | `/sdd-plan`         | Lightweight ADR with constitutional impact section.      |

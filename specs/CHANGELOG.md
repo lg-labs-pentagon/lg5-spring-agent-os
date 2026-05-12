@@ -4,6 +4,17 @@ All notable changes to the **specs** artifact set are documented here.
 Uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] — 2026-05-13
+### Added (MINOR — bundle 4.1.0)
+- **`quick-spec-template`** (v0.1.0) — compressed single-page spec for
+  the SDD Quick-path. Hard cap: **40 content lines**. Sections: Change
+  (one sentence), Rationale (one sentence + observable outcome), Scope
+  (type/modules/file counts/RULE-NNNs), Acceptance criteria (1-3 ACs
+  in Given/When/Then), Non-goals (≥1), Open questions (ideally empty).
+  Used by `/sdd-quick` and the `sdd-quicker` subagent. Replaces
+  Specify+Plan+Design+Tasks for trivial changes. `/sdd-verify` remains
+  mandatory.
+
 ## [0.4.0] — 2026-05-10
 ### Added (MAJOR — bundle 3.0.0)
 - **3 new templates** covering the extended SDD workflow:
