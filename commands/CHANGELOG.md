@@ -4,6 +4,42 @@ All notable changes to the **commands** artifact set are documented here.
 Uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] — 2026-05-13
+### Added (MINOR — bundle 4.2.0)
+- **`/add-rest-endpoint <service-name> <http-method> <path> <operation-id>
+  [--existing-controller <name>]`** (v0.1.0) — new building-block command.
+  Adds a REST endpoint end-to-end: controller method on the aggregate's
+  existing controller, DTOs (`<Verb><Aggregate>Command` / `Response`
+  records under `<svc>-domain/<svc>-application-service/.../domain/dto/<verb>/`),
+  service-port method signature with `@Valid`, impl delegate, fresh
+  `<Verb>CommandHandler` `@Component` with `@Transactional`, MapStruct
+  mapper additions, `openapi.yaml` fragment appended under `paths:` +
+  `components.schemas:`, and a package-private IT extending `Bootstrap`.
+  Grounded on real evidence from `blank-service:BlankController.java`,
+  `BlankApplicationServiceImpl.java`, `BlankCreatorIT.java`, `openapi.yaml`.
+  Out of scope: file uploads, WebSocket/SSE, API versioning bumps,
+  aggregate-less endpoints. Follows RULE-003/004/005/006/012/015.
+- **`/add-jpa-entity <service-name> <aggregate-name> <field-spec>...`**
+  (v0.1.0) — new building-block command. Creates a brand-new persistent
+  aggregate end-to-end (8 files + 1 modified): domain entity extending
+  `AggregateRoot<<Aggregate>Id>` (Spring-free per RULE-003), value-object
+  id extending `BaseId<UUID>` (RULE-016), `<Aggregate>DomainException`,
+  output-port repository interface, JPA entity (`@Table(schema=…)`,
+  Lombok), `JpaRepository` extension, hexagonal adapter, MapStruct mapper
+  with the `default <Aggregate>Id map(UUID)` unwrap, Liquibase changelog
+  (`ddl-v.0.0.<next>.yaml` auto-versioned), wired into
+  `db.changelog-master.yaml`, plus a save+findById round-trip IT.
+  Grounded on real evidence from `blank-service:Blank.java`, `BlankId.java`,
+  `BlankRepository.java`, `BlankEntity.java`, `BlankJPARepository.java`,
+  `BlankRepositoryImpl.java`, `BlankDataAccessMapper.java`,
+  `ddl-v.0.0.1.yaml`, `db.changelog-master.yaml`. Out of scope:
+  `@OneToMany`/`@ManyToOne`/`@Embedded`, native Postgres ENUM columns,
+  `@Version` optimistic locking, outbox-pattern aggregates (use
+  `/add-outbox` instead), Flyway-based services. Follows
+  RULE-003/004/015/016.
+- `manifest.yaml` `bundle.version` bumped to `4.2.0` per the cross-bundle
+  invariant. Both commands listed under the `building-block` category.
+
 ## [0.6.2] — 2026-05-13
 ### Changed (PATCH — bundle 4.1.2)
 - `manifest.yaml` `bundle.version` bumped to `4.1.2` per the cross-bundle

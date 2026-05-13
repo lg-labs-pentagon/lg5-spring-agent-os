@@ -23,6 +23,81 @@ commits is unsupported.
 
 ## [Unreleased]
 
+## [4.2.0] — 2026-05-13
+### Added
+- **`/add-rest-endpoint` building-block command** (commands v0.7.0). New
+  slash command that adds a single REST endpoint end-to-end to an
+  existing lg5-spring service: appends a handler method to the
+  aggregate's existing `<Aggregate>Controller`, creates verb-scoped DTOs
+  (`<Verb><Aggregate>Command` + `<Verb><Aggregate>Response` records under
+  `<svc>-domain/<svc>-application-service/.../domain/dto/<verb>/`), adds
+  the service-port method signature with `@Valid`, implements it in the
+  package-private impl delegating to a fresh `<Verb>CommandHandler`
+  `@Component`, extends the MapStruct mapper, appends an OpenAPI fragment
+  to `openapi.yaml` (path block + schemas), and creates a package-private
+  IT extending `Bootstrap`. Idiomatic media-type `application/vnd.api.v1+json`
+  inherited from the class-level `@RequestMapping` (RULE-006). Aggregate
+  controllers are reused — the command refuses to create a second
+  controller for the same aggregate (RULE-004). Grounded on real evidence
+  from `blank-service:BlankController.java`, `BlankApplicationServiceImpl.java`,
+  `BlankCreatorIT.java`, `openapi.yaml`. Default invocation:
+  `/add-rest-endpoint blank POST /blank addBlank`. Out of scope: file
+  uploads, WebSocket/SSE, API versioning bumps, aggregate-less endpoints.
+- **`/add-jpa-entity` building-block command** (commands v0.7.0). New
+  slash command that creates a brand-new persistent aggregate end-to-end
+  (8 files created + 1 modified): domain entity extending
+  `AggregateRoot<<Aggregate>Id>` with private final fields and a
+  `validate()` method (Spring/JPA-free per RULE-003), value-object id
+  extending `BaseId<UUID>` (RULE-016), `<Aggregate>DomainException`,
+  output-port repository interface with `create<Aggregate>` +
+  `findById(UUID)` (no speculative finders), JPA entity with
+  `@Table(schema=…)` + Lombok `@Getter @Setter @Builder @NoArgsConstructor
+  @AllArgsConstructor` and `@Column` per field-spec, `JpaRepository<…, UUID>`
+  extension, hexagonal adapter `@Component implements <Aggregate>Repository`,
+  MapStruct mapper with the canonical `default <Aggregate>Id map(UUID)`
+  helper that unwraps the VO on read, Liquibase YAML changelog
+  (`ddl-v.0.0.<next>.yaml` auto-versioned from existing files), and a
+  one-line wire-up to `db.changelog-master.yaml`. Plus a save+findById
+  round-trip IT extending `Bootstrap`. Field-spec syntax:
+  `<name>:<type>[:<constraint>]` with `<type>` ∈ {String, UUID, Long,
+  Integer, BigDecimal, Instant, LocalDate, Boolean} and `<constraint>` ∈
+  {notnull, unique}. Reuses the service's existing Liquibase schema (does
+  not create new schemas). Grounded on real evidence from
+  `blank-service:Blank.java`, `BlankId.java`, `BlankRepository.java`,
+  `BlankEntity.java`, `BlankJPARepository.java`, `BlankRepositoryImpl.java`,
+  `BlankDataAccessMapper.java`, `ddl-v.0.0.1.yaml`,
+  `db.changelog-master.yaml`. Default invocation:
+  `/add-jpa-entity blank Customer name:String:notnull email:String:unique,notnull`.
+  Out of scope: `@OneToMany`/`@ManyToOne`/`@Embedded` relationships,
+  native Postgres ENUM columns, `@Version` optimistic locking,
+  outbox-pattern aggregates (use `/add-outbox` instead), Flyway-based
+  services.
+
+### Changed
+- `AGENTS.md` building-blocks table updated with the two new commands.
+- All 5 manifests (`commands`, `skills`, `subagents`, `specs`, `rules`)
+  bumped to `bundle.version: 4.2.0` per the cross-bundle invariant.
+- Per-bundle internal versions: commands 0.6.2 → 0.7.0 (MINOR — new
+  commands); skills 4.1.2 → 4.2.0 (MINOR — primary record);
+  subagents 3.1.2 → 3.2.0, specs 0.5.2 → 0.6.0, rules 0.3.6 → 0.4.0
+  (MINOR no-op bumps to keep cross-bundle invariant on the `4.x.0` line).
+
+### Rationale (v4.2.0 — boilerplate generators)
+These two commands close the largest pain point identified in the
+post-v4.1.x productivity audit: scaffolding boilerplate for the two
+most-frequent code paths in a hexagonal lg5-spring service (HTTP surface
++ persistent state). Together with `/scaffold-service`, `/add-saga`,
+`/add-outbox`, `/add-kafka-listener`, the bundle now covers the seven
+canonical extension points from `blank-service` (the upstream template
+itself was the primary reference). Convention: both commands are
+typically invoked from inside `/sdd-implement` for a `TASK-NNN` whose
+acceptance criteria call for a new endpoint or aggregate, but they can
+also be invoked standalone for ad-hoc work. Generator output goes
+straight into the repo (no per-file confirmation prompts) — accept the
+rollback risk in exchange for max productivity. Deferred to v4.3.0:
+`/add-domain-event`, `/add-cucumber-scenario`, incremental code-reviewer
+hook, retrospective subagent.
+
 ## [4.1.2] — 2026-05-13
 ### Added
 - **Discoverability docs** (issue #16). New "How to invoke the bundle's
