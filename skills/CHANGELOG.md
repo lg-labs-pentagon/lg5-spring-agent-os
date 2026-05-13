@@ -23,6 +23,43 @@ commits is unsupported.
 
 ## [Unreleased]
 
+## [4.3.0] — 2026-05-13
+### Removed
+- **`model:` frontmatter field stripped from all 12 subagents**. Was
+  previously hardcoded to `anthropic/claude-sonnet-4-20250514`,
+  breaking any consumer whose OpenCode / Claude Code / Cursor provider
+  config did not expose that exact model id (typical error:
+  `Model not found: anthropic/claude-sonnet-4-20250514`). After this
+  change subagents inherit the **consumer's default model**, making
+  the bundle portable across providers (Anthropic, OpenAI, Gemini,
+  GitHub Copilot, …) without per-consumer edits. Reported by
+  `blank-service` (Luis Quiroga). See `subagents/CHANGELOG.md`
+  [4.0.0] for the full migration note.
+
+### Changed
+- `scripts/validate.sh`: removed `model` from the required-keys set in
+  `validate_subagents()` (line 270) and updated the header comment
+  (lines 21-24) to document the new portability stance.
+- `subagents/manifest.yaml`: header comment rewritten to explain the
+  intentional absence of `model:` and the provider-agnostic design.
+- All 5 manifests bumped `bundle.version: 4.2.0 → 4.3.0`. Internal
+  versions: subagents 3.2.0 → **4.0.0** (MAJOR — breaking schema
+  change for the subagent artifact set in isolation, even though the
+  cross-bundle release is MINOR). skills 4.2.0 → 4.3.0,
+  commands 0.7.0 → 0.7.1, specs 0.6.0 → 0.6.1, rules 0.4.0 → 0.4.1
+  (PATCH no-op bumps for cross-bundle invariant).
+
+### Rationale (v4.3.0 — provider-agnostic subagents)
+The original bundle authors pinned every subagent to Sonnet 4 for
+quality consistency, but the trade-off was severe portability loss:
+the bundle was *de facto* Anthropic-only, despite OpenCode and the
+SDD workflow being model-agnostic by design. The fix is the simplest
+possible: remove the `model:` line entirely (Option A from the
+v4.2.0 retrospective discussion). Consumers who genuinely want to
+pin a specific model can re-add `model: …` to any subagent in their
+local checkout post-install — the validator now allows either
+presence (any string) or absence.
+
 ## [4.2.0] — 2026-05-13
 ### Added
 - **`/add-rest-endpoint` building-block command** (commands v0.7.0). New

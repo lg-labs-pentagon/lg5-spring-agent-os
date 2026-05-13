@@ -1,15 +1,18 @@
 # Subagents manifest — lg5-spring-agent-os bundle
 # Specialized subagents the orchestrator agent can spawn for delegated work.
 # Format: each subagent is a single .md file at the root of subagents/ with
-# YAML frontmatter (description, tools, model) and a body that is the
-# system prompt of the subagent.
+# YAML frontmatter (name, description, mode, tools) and a body that is the
+# system prompt of the subagent. The `model` field is intentionally NOT
+# declared in the bundle — each consumer's OpenCode (or Claude Code / etc.)
+# default model is used, so the bundle is portable across providers (Anthropic,
+# OpenAI, Gemini, GitHub Copilot, …). Override per consumer if needed.
 #
 # CI validates that every entry below maps 1:1 to a file on disk and that
 # every file declares the required frontmatter keys.
 
 bundle:
   name: lg5-spring-agent-os
-  version: 4.2.0
+  version: 4.3.0
   lg5-spring-sha: d0d754a
 
 subagents:

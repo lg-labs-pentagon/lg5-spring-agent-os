@@ -4,6 +4,37 @@ All notable changes to the **subagents** artifact set are documented here.
 Uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0] — 2026-05-13
+### Removed (MAJOR — provider-agnostic subagents)
+- **`model:` frontmatter field removed from all 12 subagents**
+  (`lg5-ci-cd-engineer`, `lg5-code-reviewer`, `lg5-test-generator`,
+  `sdd-designer`, `sdd-implementer`, `sdd-intender`, `sdd-orchestrator`,
+  `sdd-planner`, `sdd-quicker`, `sdd-specifier`, `sdd-tasker`,
+  `sdd-verifier`). Previously hardcoded to
+  `anthropic/claude-sonnet-4-20250514`, which broke for any consumer
+  whose OpenCode (or Claude Code / Cursor / etc.) provider config did
+  not expose that exact model id — typical error:
+  `Model not found: anthropic/claude-sonnet-4-20250514`.
+- After this change every subagent inherits the **consumer's default
+  model** at invocation time, so the bundle is portable across
+  providers (Anthropic, OpenAI, Gemini, GitHub Copilot, …) without
+  per-consumer edits.
+- `scripts/validate.sh` no longer requires the `model:` key in subagent
+  frontmatter (removed from the required-keys set in
+  `validate_subagents()`); the header comment block on line 21 was
+  rewritten accordingly.
+- Reported by `blank-service` (Luis Quiroga). Bundle version: 4.2.0 →
+  4.3.0.
+
+### Why MAJOR for this bundle (4.x → 4.0.0)
+The subagents bundle's internal SemVer is independent of the
+cross-bundle `bundle.version` (which is MINOR 4.2.0 → 4.3.0). Removing
+a previously-required frontmatter field is a breaking change *for any
+tooling that depended on it*, hence MAJOR for the subagents artifact
+set. Consumers who pinned a different model in their fork of any
+subagent can still re-add the `model:` line by hand post-install — the
+validator no longer enforces presence, only absence-or-string.
+
 ## [3.2.0] — 2026-05-13
 ### Changed (MINOR — bundle 4.2.0)
 - `manifest.yaml` `bundle.version` bumped to `4.2.0` per the cross-bundle

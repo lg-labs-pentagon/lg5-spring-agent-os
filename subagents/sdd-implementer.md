@@ -2,7 +2,6 @@
 name: sdd-implementer
 description: SDD Implement-phase subagent. Executes ONE TASK-NNN per invocation — writes code + tests, runs builds, invokes lg5-code-reviewer, commits, and flips Status. Loops by re-invocation. Pairs with the /sdd-implement command. Refuses to batch multiple TASKs in a single run.
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
 tools:
   read: true
   write: true

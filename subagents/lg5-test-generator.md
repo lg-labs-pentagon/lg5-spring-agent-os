@@ -2,7 +2,6 @@
 name: lg5-test-generator
 description: Generates integration tests (IT) and acceptance tests (ATDD) for a lg5-spring service following RULE-012 (test profiles + Lg5TestBoot base classes) and RULE-013 (opt-in Testcontainers). Produces both the test class skeleton and the supporting fixture files (SQL, Wiremock stubs, Avro schemas).
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
 tools:
   read: true
   write: true

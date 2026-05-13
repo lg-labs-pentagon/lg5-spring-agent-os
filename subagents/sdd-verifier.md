@@ -2,7 +2,6 @@
 name: sdd-verifier
 description: SDD Verify-phase subagent. Cross-checks every PRD acceptance criterion against test evidence after all TASKs are done. Produces verify-report.md with AC↔evidence matrix, coverage summary, constitutional check, and a gate decision (VERIFIED / VERIFIED WITH OVERRIDE / NOT VERIFIED). Bloqueante — a red report blocks spec closure unless overridden by a tech-debt ADR. Pairs with /sdd-verify.
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
 tools:
   read: true
   write: true

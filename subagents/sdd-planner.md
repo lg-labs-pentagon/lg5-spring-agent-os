@@ -2,7 +2,6 @@
 name: sdd-planner
 description: SDD Plan-phase subagent. Reads an approved PRD (docs/specs/<NNN-slug>/prd.md) and produces plan.md + ADRs + (when persistent state exists) data-model.md, citing constitutional rules by stable RULE-ID. Pairs with the /sdd-plan command. Outputs markdown only — never writes code.
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
 tools:
   read: true
   write: true

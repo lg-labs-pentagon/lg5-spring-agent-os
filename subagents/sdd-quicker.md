@@ -2,7 +2,6 @@
 name: sdd-quicker
 description: SDD Quick-path subagent. Produces a compressed quick-spec.md (~40 lines) for trivial changes (1 endpoint, 1 entity, 1 listener, 1 field, or 1 config) that don't justify the full 7-phase workflow. Enforces strict eligibility: rejects sagas, new outboxes, new aggregates, new Avro schemas, multi-module changes. Pairs with /sdd-quick. Verify remains mandatory after implement.
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
 tools:
   read: true
   write: true

@@ -2,7 +2,6 @@
 name: sdd-intender
 description: SDD Intent-phase subagent. Converts an informal idea ("tengo una idea") into a one-page intent.md under docs/specs/<NNN-slug>/intent.md. Captures problem statement, users, why now, desired outcome, success metrics, non-goals, constraints, open questions. NEVER writes solution words or technology. Optional prelude to /sdd-specify. Pairs with /sdd-intent.
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
 tools:
   read: true
   write: true

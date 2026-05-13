@@ -2,7 +2,6 @@
 name: sdd-designer
 description: SDD Design-phase subagent. Reads an approved Plan + ADRs and produces design.md + data-model.md under docs/specs/<NNN-slug>/, with concrete class signatures, REST contracts, Avro schemas, JPA model, configs, and module dep graph. Pairs with /sdd-design. Outputs markdown only — never writes production code. Sits between sdd-planner (architecture) and sdd-tasker (atomic backlog).
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
 tools:
   read: true
   write: true
