@@ -14,7 +14,7 @@
 
 bundle:
   name: lg5-spring-agent-os
-  version: 4.1.2
+  version: 4.2.0
   lg5-spring-sha: d0d754a
 
 commands:
@@ -96,3 +96,13 @@ commands:
     version: 0.1.0
     category: building-block
     description: Scaffold the unified VitePress documentation site (docs/site/ aggregator + 6 CI jobs + Firebase config) into a consumer service.
+  - name: add-rest-endpoint
+    file: add-rest-endpoint.md
+    version: 0.1.0
+    category: building-block
+    description: Add a REST endpoint (controller method + DTOs + service port + handler + mapper + OpenAPI fragment + IT). Idiomatic per RULE-003/004/005/006/012.
+  - name: add-jpa-entity
+    file: add-jpa-entity.md
+    version: 0.1.0
+    category: building-block
+    description: Add a JPA aggregate (domain entity + value-object id + repository port + JPA entity + Spring Data repo + adapter + MapStruct mapper + Liquibase changelog + IT). Idiomatic per RULE-003/004/015/016.

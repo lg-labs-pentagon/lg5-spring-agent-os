@@ -4,6 +4,13 @@ All notable changes to the **specs** artifact set are documented here.
 Uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] — 2026-05-13
+### Changed (MINOR — bundle 4.2.0)
+- `manifest.yaml` `bundle.version` bumped to `4.2.0` per the cross-bundle
+  invariant. No spec template changed; the 4.2.0 release ships two new
+  building-block commands (`/add-rest-endpoint`, `/add-jpa-entity`) —
+  full notes in `commands/CHANGELOG.md` and `skills/CHANGELOG.md`.
+
 ## [0.5.2] — 2026-05-13
 ### Changed (PATCH — bundle 4.1.2)
 - `manifest.yaml` `bundle.version` bumped to `4.1.2` per the cross-bundle

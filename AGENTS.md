@@ -149,6 +149,8 @@ generate code.
 | `/add-kafka-listener`  | Adds a Kafka listener (batch + NO-OP exception handling per RULE-010). |
 | `/scaffold-ci-cd`      | Installs the canonical CI pipeline (workflow + composite action + API doc templates + Allure wiring) into a consumer service. |
 | `/scaffold-docs`       | Installs the unified VitePress documentation site (`docs/site/` aggregator + 6 CI jobs + Firebase config) into a consumer service. |
+| `/add-rest-endpoint`   | Adds a REST endpoint (controller method + DTOs + service port + handler + mapper + OpenAPI fragment + IT) per RULE-003/004/005/006/012. |
+| `/add-jpa-entity`      | Adds a JPA aggregate (domain entity + value-object id + repository port + JPA entity + Spring Data repo + adapter + MapStruct mapper + Liquibase changelog + IT) per RULE-003/004/015/016. |
 
 See `commands/<name>.md` for each command's full prompt and parameters.
 
