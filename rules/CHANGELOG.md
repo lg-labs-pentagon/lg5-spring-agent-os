@@ -7,6 +7,13 @@ This file uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 The version below tracks the rules bundle as a whole, independently of
 individual rule versions in their own frontmatter.
 
+## [0.3.6] — 2026-05-13
+### Changed (PATCH — bundle 4.1.2)
+- `manifest.yaml` `bundle.version` bumped to `4.1.2` per the cross-bundle
+  invariant. No rule changed; the 4.1.2 release ships documentation
+  improvements (#16) and the `scripts/validate.sh --install` regression
+  test (#17) — full notes in `skills/CHANGELOG.md`.
+
 ## [0.3.5] — 2026-05-13
 ### Changed (PATCH — bundle 4.1.1)
 - `manifest.yaml` `bundle.version` bumped to `4.1.1` per the cross-bundle

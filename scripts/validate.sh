@@ -29,6 +29,15 @@
 #   - bundle.lg5-spring-sha is identical across all manifest.yaml files.
 #   - bundle.version is identical across all manifest.yaml files.
 #
+# Optional install-output check (--install):
+#   Runs scripts/install.sh against a disposable temp consumer fixture and
+#   asserts that the resulting .opencode/{agents,commands,skills}/ trees
+#   contain no bundle housekeeping files (CHANGELOG.md, manifest.yaml,
+#   .DS_Store) and that every .md under agents/ and commands/ has YAML
+#   frontmatter. This is the regression test for issue #15 and is gated
+#   behind --install because it materializes a temp filesystem (slower,
+#   and unnecessary for the artifact-side checks).
+#
 # Exit codes:
 #   0 — all checks passed
 #   1 — one or more checks failed
@@ -36,6 +45,23 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 fail=0
+
+# Filenames that must NOT appear under .opencode/{agents,commands,skills}/.
+# Keep in sync with scripts/install.sh `meta_skip`.
+META_SKIP=("CHANGELOG.md" "manifest.yaml" ".DS_Store")
+
+# Argument parsing
+run_install_check=0
+for arg in "$@"; do
+  case "${arg}" in
+    --install) run_install_check=1 ;;
+    -h|--help)
+      sed -n '2,40p' "$0"
+      exit 0
+      ;;
+    *) printf "ERROR: unknown argument: %s\n" "${arg}" >&2; exit 2 ;;
+  esac
+done
 
 red()    { printf "\033[31m%s\033[0m\n" "$*"; }
 green()  { printf "\033[32m%s\033[0m\n" "$*"; }
@@ -312,6 +338,74 @@ validate_cross_bundle() {
   [[ -n "${ver}" ]] && ok "all manifests agree on bundle.version=${ver}"
 }
 
+# Run scripts/install.sh against a disposable temp consumer fixture and
+# assert that no bundle housekeeping file leaks into the .opencode/ tree
+# that OpenCode discovers. Regression test for issue #15.
+validate_install_output() {
+  echo; echo "═══ install output (--install) ═══"
+
+  local installer="${ROOT}/scripts/install.sh"
+  [[ -x "${installer}" ]] || { err "scripts/install.sh missing or not executable"; return; }
+
+  # Disposable fake consumer: a temp dir with a fake .git marker and the
+  # bundle linked at .agent-os/ (so install.sh runs in 'consumer' mode,
+  # which is the layout downstream services use in practice).
+  local fixture; fixture="$(mktemp -d -t lg5-agent-os-install-XXXXXX)"
+  # shellcheck disable=SC2064
+  trap "rm -rf '${fixture}'" RETURN
+
+  mkdir -p "${fixture}/.git"
+  ln -s "${ROOT}" "${fixture}/.agent-os"
+
+  if ! "${fixture}/.agent-os/scripts/install.sh" >/dev/null 2>&1; then
+    err "install.sh failed against fixture ${fixture}"
+    return
+  fi
+  ok "install.sh ran against fixture (consumer mode)"
+
+  local opencode="${fixture}/.opencode"
+  for sub in agents commands skills; do
+    local target="${opencode}/${sub}"
+    if [[ ! -d "${target}" ]]; then
+      err ".opencode/${sub} is not a real directory (got: $(file -b "${target}" 2>/dev/null || echo missing))"
+      continue
+    fi
+    ok ".opencode/${sub}/ is a real directory"
+
+    # Forbidden files at the top level of each artifact dir.
+    for skip in "${META_SKIP[@]}"; do
+      if [[ -e "${target}/${skip}" || -L "${target}/${skip}" ]]; then
+        err ".opencode/${sub}/${skip} leaked (regression of #15)"
+      fi
+    done
+
+    # Sanity: every .md at the top level must have YAML frontmatter
+    # (skips skills/ because skills are directories, not .md files).
+    if [[ "${sub}" == "agents" || "${sub}" == "commands" ]]; then
+      local bad=0
+      while IFS= read -r -d '' md; do
+        local first; first="$(head -n1 "${md}")"
+        if [[ "${first}" != "---" ]]; then
+          err "$(basename "${md}") in .opencode/${sub}/ has no YAML frontmatter"
+          bad=1
+        fi
+      done < <(find "${target}" -mindepth 1 -maxdepth 1 -type l -name '*.md' -print0)
+      [[ ${bad} -eq 0 ]] && ok "all .md under .opencode/${sub}/ have frontmatter"
+    fi
+  done
+
+  # Confirm at least one real entry per artifact dir (catches an install
+  # that silently produced empty trees).
+  for sub in agents commands skills; do
+    local n; n="$(find "${opencode}/${sub}" -mindepth 1 -maxdepth 1 | wc -l | tr -d ' ')"
+    if [[ "${n}" -lt 1 ]]; then
+      err ".opencode/${sub}/ is empty"
+    else
+      ok ".opencode/${sub}/ has ${n} real entries"
+    fi
+  done
+}
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Main
 # ─────────────────────────────────────────────────────────────────────────────
@@ -325,6 +419,10 @@ echo "Validating bundle at ${ROOT}"
 [[ -d "${ROOT}/specs"     ]] && validate_specs
 
 validate_cross_bundle
+
+if [[ ${run_install_check} -eq 1 ]]; then
+  validate_install_output
+fi
 
 echo
 if [[ ${fail} -eq 0 ]]; then

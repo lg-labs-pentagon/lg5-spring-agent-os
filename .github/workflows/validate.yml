@@ -11,5 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run bundle validator
+      - name: Run bundle validator (artifact-side checks)
         run: bash scripts/validate.sh
+      - name: Run install-output lint (regression test for #15)
+        run: bash scripts/validate.sh --install
