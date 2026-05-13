@@ -2,7 +2,6 @@
 name: sdd-specifier
 description: SDD Specify-phase subagent. Converts an informal feature prompt into a functional PRD (docs/specs/<NNN-slug>/prd.md) using the prd-template. The PRD is technology-free — no Spring, Kafka, REST, Postgres, Avro. Surfaces ambiguity aggressively via [NEEDS CLARIFICATION] markers. Pairs with the /sdd-specify command.
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
 tools:
   read: true
   write: true

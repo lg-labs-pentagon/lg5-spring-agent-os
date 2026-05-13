@@ -2,7 +2,6 @@
 name: sdd-tasker
 description: SDD Tasks-phase subagent. Decomposes an approved Plan into atomic TASK-NNN with Given/When/Then acceptance criteria under docs/specs/<NNN-slug>/tasks.md. Each TASK is ≤1 day of work, touches 1–2 modules, has explicit deps, and references REQ-NNN/RULE-NNN/ADR-NNN. Pairs with the /sdd-tasks command.
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
 tools:
   read: true
   write: true

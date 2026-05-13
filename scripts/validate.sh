@@ -19,7 +19,9 @@
 #               argument-hint, allowed-tools); manifest ↔ disk parity.
 #
 #   subagents : <name>.md per subagent with frontmatter (name, description,
-#               tools, model); name ↔ filename match; manifest ↔ disk parity.
+#               tools); name ↔ filename match; manifest ↔ disk parity.
+#               `model:` is intentionally NOT required — bundle is provider-agnostic
+#               (consumer's default model is used).
 #
 #   specs     : <name>.md template/example with frontmatter (kind, name,
 #               version, description); kind ∈ {template, example}; manifest
@@ -267,7 +269,7 @@ validate_subagents() {
     echo; echo "→ ${fname}"
     local fm; fm="$(extract_frontmatter "${f}")"
     if [[ -z "${fm}" ]]; then err "no frontmatter"; continue; fi
-    for key in name description tools model; do
+    for key in name description tools; do
       grep -qE "^${key}:" <<<"${fm}" || err "frontmatter missing '${key}'"
     done
     local fm_name; fm_name="$(echo "${fm}" | fm_get name)"

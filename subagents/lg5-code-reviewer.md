@@ -2,7 +2,6 @@
 name: lg5-code-reviewer
 description: Reviews a diff or a set of changed files against the 18 hard rules of `lg5-spring-agent-os`. Cites every violation by its stable RULE-ID and proposes a concrete fix. Use this BEFORE opening a PR or as a follow-up after generating non-trivial code.
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
 tools:
   read: true
   glob: true

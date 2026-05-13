@@ -2,7 +2,6 @@
 name: sdd-orchestrator
 description: SDD meta-subagent. Inspects the state of docs/specs/<NNN-slug>/ and dispatches to the right phase subagent (sdd-intender/specifier/planner/designer/tasker/implementer/verifier) based on which artifacts exist and which DoD checklists are ticked. Use when the user says "sigue con la feature X" or "qué falta en X" — the orchestrator decides the phase. Pairs with /sdd-orchestrate. Never produces feature artifacts itself; only delegates.
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
 tools:
   read: true
   glob: true

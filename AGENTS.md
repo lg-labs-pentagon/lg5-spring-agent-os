@@ -184,6 +184,16 @@ spot-check outside the SDD flow.
 > per-entry symlinks under `.opencode/{agents,commands,skills}/`. Re-run
 > `.agent-os/scripts/install.sh` against bundle `>= 4.1.1` to refresh.
 
+> **Model selection (since v4.3.0).** Bundle subagents intentionally do
+> **not** declare a `model:` field — they inherit the consumer's
+> **default model** at invocation time. This makes the bundle portable
+> across providers (Anthropic, OpenAI, Gemini, GitHub Copilot, …). If
+> you see `Model not found: …` errors on a pre-`4.3.0` install,
+> upgrade to `>= 4.3.0`. To pin a specific model for a specific
+> subagent, edit the symlinked file in your fork of `.agent-os/subagents/`
+> and add `model: <provider>/<id>` to the frontmatter — the validator
+> allows either presence (any string) or absence.
+
 See [opencode.ai/docs/agents](https://opencode.ai/docs/agents/) for the
 upstream documentation of `primary` vs `subagent` modes.
 
