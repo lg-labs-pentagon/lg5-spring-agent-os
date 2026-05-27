@@ -30,7 +30,10 @@ jobs:
         with:
           node-version: 20
           cache: 'pnpm'
-          cache-dependency-path: docs/pnpm-lock.yaml
+
+      - name: Set up public npm registry
+        run: echo "registry=https://registry.npmjs.org/" > .npmrc
+        working-directory: ./docs
 
       - name: Install dependencies
         run: pnpm install
