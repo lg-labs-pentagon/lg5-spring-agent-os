@@ -31,12 +31,8 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
-      - name: Set up public npm registry
-        run: echo "registry=https://registry.npmjs.org/" > .npmrc
-        working-directory: ./docs
-
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --registry https://registry.npmjs.org/
         working-directory: ./docs
 
       - name: Build VitePress site
