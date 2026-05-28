@@ -30,3 +30,11 @@ features:
     icon: 🧩
     details: Designed to be modular, allowing teams to adopt, customize, and extend the system with their own rules and skills.
 ---
+
+<script setup>
+import { data } from './github.data.js'
+</script>
+
+<div style="text-align: center; margin-top: 20px;">
+  <h3>Latest Version: {{ data.latestVersion }}</h3>
+</div>
