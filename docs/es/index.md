@@ -32,10 +32,9 @@ features:
 ---
 
 <script setup>
-import { useData } from 'vitepress'
-const { theme } = useData()
+import { data } from '../github.data.js'
 </script>
 
 <div style="text-align: center; margin-top: 20px;">
-  <h3>Latest Version: {{ theme.latestVersion }}</h3>
+  <h3>Última Versión: {{ data.latestVersion }}</h3>
 </div>

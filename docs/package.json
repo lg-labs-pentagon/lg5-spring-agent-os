@@ -6,7 +6,6 @@
     "docs:preview": "vitepress preview"
   },
   "devDependencies": {
-    "node-fetch": "^3.3.2",
     "vitepress": "^1.2.3",
     "vitepress-mermaid-renderer": "^1.1.24",
     "vue": "^3.4.27"
