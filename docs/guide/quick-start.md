@@ -16,9 +16,13 @@ The bundle is consumed as a **Git submodule** mounted at `.agent-os/` in your co
 
 Navigate to the root of your microservice repository and run the following command to add the Agent OS bundle as a submodule.
 
+By default, we use the HTTPS URL to avoid SSH authentication issues:
+
 ```bash
 git submodule add -b main git@github.com:lg-labs-pentagon/lg5-spring-agent-os.git .agent-os
 ```
+
+*(Note: If you have SSH keys configured and prefer SSH, you can use `git@github.com:lg-labs-pentagon/lg5-spring-agent-os.git` instead).*
 
 This command tracks the `main` branch, which is suitable for development. For production, you should pin to a specific release tag.
 

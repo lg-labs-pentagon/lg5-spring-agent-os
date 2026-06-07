@@ -20,15 +20,19 @@ features:
   - title: Spec-Driven Development
     icon: 📝
     details: Follow a rigorous, spec-anchored workflow from idea to implementation, ensuring features are built as intended.
+    link: /reference/sdd-workflow
   - title: Constitutional Guardrails
     icon: 📜
     details: Build with confidence. 15 immutable rules enforce architectural integrity and best practices, preventing common pitfalls.
+    link: /reference/constitution
   - title: Autonomous Tooling
     icon: 🤖
     details: Leverage a rich ecosystem of Skills, Commands, and Subagents that empower your AI to autonomously scaffold, build, and test.
+    link: /guide/agent-architecture
   - title: Extensible & Composable
     icon: 🧩
     details: Designed to be modular, allowing teams to adopt, customize, and extend the system with their own rules and skills.
+    link: /reference/skills
 ---
 
 <script setup>
