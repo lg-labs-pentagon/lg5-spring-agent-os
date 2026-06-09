@@ -36,6 +36,7 @@ export default defineConfig({
               items: [
                 { text: 'Why Agent OS?', link: '/guide/why' },
                 { text: 'Quick Start', link: '/guide/quick-start' },
+                { text: 'Contributing', link: '/guide/contributing' },
                 { text: 'Agent Architecture', link: '/guide/agent-architecture' },
               ]
             },
