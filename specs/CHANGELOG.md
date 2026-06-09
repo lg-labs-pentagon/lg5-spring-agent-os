@@ -5,11 +5,11 @@ Uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
 
 ## [0.6.1] — 2026-05-13
-### Changed (PATCH — bundle 4.3.0)
+### Changed (PATCH — bundle 4.4.0)
 - `manifest.yaml` `bundle.version` bumped to `4.3.0` per the cross-bundle
-  invariant. No spec template changed; the 4.3.0 release strips the
+  invariant. No spec template changed; the 4.4.0 release strips the
   hardcoded `model:` field from all 12 subagents — full notes in
-  `subagents/CHANGELOG.md` [4.0.0] and `skills/CHANGELOG.md` [4.3.0].
+  `subagents/CHANGELOG.md` [4.0.0] and `skills/CHANGELOG.md` [4.4.0].
 
 ## [0.6.0] — 2026-05-13
 ### Changed (MINOR — bundle 4.2.0)
