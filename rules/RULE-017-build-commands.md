@@ -1,7 +1,7 @@
 ---
 id: RULE-017
 slug: build-commands
-version: 4.4.3
+version: 0.1.0
 lg5-spring-sha: d0d754a
 severity: should
 constitutional: false

@@ -1,7 +1,7 @@
 ---
 id: RULE-013
 slug: testcontainers-opt-in
-version: 4.4.3
+version: 0.1.0
 lg5-spring-sha: d0d754a
 severity: must
 constitutional: true

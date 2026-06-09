@@ -1,6 +1,6 @@
 ---
 name: lg5-saga
-version: 4.4.3
+version: 0.1.0
 lg5-spring-sha: d0d754a
 last-validated: 2026-05-09
 description: How to implement a SagaStep<T> in lg5-spring — orchestration, idempotency, optimistic locking, transactional boundaries. Load this skill when the user asks about sagas, saga steps, choreography, distributed transactions, compensating actions, or wants to add/modify a saga in a service.

@@ -1,6 +1,6 @@
 ---
 name: lg5-outbox
-version: 4.4.3
+version: 0.1.0
 lg5-spring-sha: d0d754a
 last-validated: 2026-05-09
 description: How to implement the Transactional Outbox pattern in lg5-spring — JPA outbox entity with optimistic locking, OutboxScheduler relay, status transitions. Load this skill when the user asks about outbox, dual-write problem, reliable event publishing, scheduled message relay, or needs to add an outbox to a service.

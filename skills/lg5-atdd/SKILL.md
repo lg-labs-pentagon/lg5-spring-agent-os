@@ -1,6 +1,6 @@
 ---
 name: lg5-atdd
-version: 4.4.3
+version: 0.1.0
 lg5-spring-sha: d0d754a
 last-validated: 2026-05-09
 description: How to write acceptance tests in lg5-spring services using Cucumber + JUnit Platform Suite + Testcontainers (Postgres, Confluent Kafka, Wiremock, App container). Covers Lg5TestBootPortNone, *ContainerCustomConfig opt-in, dynamic env var injection, log control. Load this skill when the user asks about ATDD, acceptance tests, end-to-end tests, Cucumber features, or testcontainers wiring.

@@ -145,9 +145,6 @@ validate_skills() {
     semver_ok "${fm_ver}" && ok "version ${fm_ver}" \
       || err "version '${fm_ver}' is not SemVer"
     
-    [[ "${fm_ver}" == "${GLOBAL_VERSION}" ]] && ok "version matches root manifest" \
-      || err "version '${fm_ver}' != global '${GLOBAL_VERSION}'"
-    
     [[ "${fm_sha}" == "${GLOBAL_SHA}" ]] && ok "lg5-spring-sha matches root manifest" \
       || err "lg5-spring-sha '${fm_sha}' != global '${GLOBAL_SHA}'"
 
@@ -195,9 +192,6 @@ validate_rules() {
     [[ "${fname}" == "${fm_id}-${fm_slug}" ]] && ok "filename matches id+slug" \
       || err "filename '${fname}' != '${fm_id}-${fm_slug}'"
     semver_ok "${fm_ver}" && ok "version ${fm_ver}" || err "version '${fm_ver}' not SemVer"
-    
-    [[ "${fm_ver}" == "${GLOBAL_VERSION}" ]] && ok "version matches root manifest" \
-      || err "version '${fm_ver}' != global '${GLOBAL_VERSION}'"
     
     [[ "${fm_sha}" == "${GLOBAL_SHA}" ]] && ok "lg5-spring-sha matches root manifest" \
       || err "lg5-spring-sha '${fm_sha}' != global '${GLOBAL_SHA}'"

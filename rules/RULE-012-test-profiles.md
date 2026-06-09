@@ -1,7 +1,7 @@
 ---
 id: RULE-012
 slug: test-profiles
-version: 4.4.3
+version: 0.1.0
 lg5-spring-sha: d0d754a
 severity: must
 constitutional: true

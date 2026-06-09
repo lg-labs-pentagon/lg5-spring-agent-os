@@ -1,6 +1,6 @@
 ---
 name: food-ordering-system
-version: 4.4.3
+version: 0.1.0
 lg5-spring-sha: d0d754a
 last-validated: 2026-05-09
 description: Canonical reference implementation breakdown of the food-ordering-system project (https://github.com/lg-labs/food-ordering-system) — 4 microservices on top of lg5-spring with full Saga/Outbox orchestration. Use this skill when the user asks "how does food-ordering-system do X", needs to copy a real-world pattern, wants to trace the order saga end-to-end, or needs concrete examples of orchestrator vs participant services, reverse outbox, or multi-service ATDD.
