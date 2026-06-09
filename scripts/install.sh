@@ -181,6 +181,16 @@ bundle_version="$(awk '
 ' "${manifest}")"
 [[ -n "${bundle_version}" ]] || err "could not parse bundle version from ${manifest}"
 
+# Append short SHA if not on a tagged release (dirty or ahead).
+# In consumer mode, we check the .agent-os submodule.
+if [[ -d "${bundle_root}/.git" || -f "${bundle_root}/.git" ]]; then
+  # check if the current commit has an exact tag match
+  if ! (cd "${bundle_root}" && git describe --tags --exact-match >/dev/null 2>&1); then
+    short_sha=$(cd "${bundle_root}" && git rev-parse --short HEAD)
+    bundle_version="${bundle_version}.${short_sha}"
+  fi
+fi
+
 opencode_dir="${consumer_root}/.opencode"
 gitignore="${consumer_root}/.gitignore"
 
