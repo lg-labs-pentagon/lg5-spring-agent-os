@@ -23,7 +23,7 @@ commits is unsupported.
 
 ## [Unreleased]
 
-## [4.4.2] — 2026-06-09
+## [4.4.3] — 2026-06-09
 ### Added
 - **Primary Agents**: Introduced `sdd` and `quick` agents as top-level orchestrators in the OpenCode agent cycle (Tab key).
 - **Dynamic Model Support**: All new agents are provider-agnostic, inheriting the consumer's default model for better portability.
