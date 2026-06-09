@@ -53,19 +53,32 @@ Once the submodule is added and the installation script has been run, commit the
 git add .gitmodules .agent-os .gitignore
 git commit -m "chore(agent-os): [LG-89] Integrate lg5-spring-agent-os"
 ```
-*Note: We've included the ticket number `LG-89` as requested for this documentation work.*
 
-### 5. Post-Clone Setup for Teammates
+## Keeping Agent OS Up to Date
 
-After a fresh clone of your repository, other developers will need to initialize the submodule. Instruct them to run:
+Starting from **v4.5.0**, you can easily upgrade the Agent OS bundle in your repository using the built-in upgrade command. This is the recommended way to stay current with the latest stable features, rules, and skills.
+
+### The Upgrade Command
+
+To update the `.agent-os` submodule to the latest stable tag (e.g., from `v4.5.0` to `v4.6.0`) and refresh all symlinks in a single step, run:
 
 ```bash
-# Initialize and fetch all submodules
-git submodule update --init --recursive
-
-# Re-create the symlinks for the agent
-.agent-os/scripts/install.sh
+.agent-os/scripts/install.sh --upgrade
 ```
+
+**What this does:**
+1.  **Fetches tags**: Connects to the upstream repository to find the latest `v*` release.
+2.  **Checkouts**: Moves the `.agent-os` submodule to that latest tag.
+3.  **Refreshes**: Re-runs the installation logic to ensure all new skills, commands, and subagents are correctly linked in your `.opencode/` folder.
+
+After running the upgrade, remember to commit the submodule change:
+
+```bash
+git add .agent-os
+git commit -m "chore(agent-os): upgrade bundle to latest release"
+```
+
+---
 
 ## What's Next?
 
