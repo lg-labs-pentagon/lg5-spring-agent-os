@@ -8,7 +8,7 @@ This repository ships a curated, validated set of **agent context artifacts**
 Copilot, etc.) need to be productive on services that follow the lg5-spring
 conventions.
 
-Current bundle: **v4.4.3** · Validated against `lg5-spring` SHA: **`d0d754a`**.
+Current bundle: **v4.5.1** · Validated against `lg5-spring` SHA: **`d0d754a`**.
 
 ---
 
@@ -82,7 +82,7 @@ lg5-spring-agent-os/
 | **subagent** | `<name>.md` with frontmatter (name, description, tools, model) | Spawned by orchestrator | Delegated specialists (code-reviewer, test-generator, planner). |
 | **spec**     | `<name>.md` with frontmatter (kind, name, version)     | Read at planning time | PRD/ADR templates + example spec for spec-driven workflow.   |
 
-### Inventory at v4.4.3
+### Inventory at v4.5.1
 
 - **18 rules** (15 constitutional / `severity: must`, 2 `should`, 1 `info`).
   Scopes: framework (4), architecture (5), kafka (2), outbox (2), saga (1),
@@ -202,6 +202,7 @@ defined in the root `manifest.yaml` (SINGLE SOURCE OF TRUTH).
 | `4.4.0`        | `d0d754a`      | 2026-06-09 | **Centralized Versioning & Primary Agents.** Moved all versions to root `manifest.yaml`. Introduced Primary agents `sdd` and `quick` for better discoverability. Automated release pipeline via GitHub Actions. |
 | `4.4.3`        | `d0d754a`      | 2026-06-09 | **Fixes.** Updated `scripts/validate.sh` and `scripts/install.sh` to use the root manifest. Unified versions across all Skill and Rule artifacts. |
 | `4.5.0`        | `d0d754a`      | 2026-06-09 | **Upgrade capability.** Added `--upgrade` flag to `install.sh` to easily update the bundle to the latest stable tag in consumer services. |
+| `4.5.1`        | `d0d754a`      | 2026-06-10 | **New Identity.** Added a new animated SVG logo representing the Agent Operating System. Updated docs theme and index. |
 
 ---
 
