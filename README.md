@@ -201,6 +201,7 @@ defined in the root `manifest.yaml` (SINGLE SOURCE OF TRUTH).
 | `1.0.0`        | `d0d754a`      | 2026-05-10 | **MAJOR (install layout change).** Bundle is now consumed as a single git submodule mounted at `.agent-os/` (was `.lg5-agent-os/` with copy to `.agent-os/`). `install.sh` no longer copies — it materializes `.opencode/` symlinks into `.agent-os/`. Removed Modes B (plain copy) and C (sparse checkout); only the submodule mode is supported. Removed `scripts/dev-link.sh` (logic absorbed into `install.sh`, which auto-detects consumer vs. self-host mode). See `skills/CHANGELOG.md` for the migration guide. |
 | `4.4.0`        | `d0d754a`      | 2026-06-09 | **Centralized Versioning & Primary Agents.** Moved all versions to root `manifest.yaml`. Introduced Primary agents `sdd` and `quick` for better discoverability. Automated release pipeline via GitHub Actions. |
 | `4.4.3`        | `d0d754a`      | 2026-06-09 | **Fixes.** Updated `scripts/validate.sh` and `scripts/install.sh` to use the root manifest. Unified versions across all Skill and Rule artifacts. |
+| `4.5.0`        | `d0d754a`      | 2026-06-09 | **Upgrade capability.** Added `--upgrade` flag to `install.sh` to easily update the bundle to the latest stable tag in consumer services. |
 
 ---
 

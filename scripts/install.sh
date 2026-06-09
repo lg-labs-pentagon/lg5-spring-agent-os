@@ -53,6 +53,7 @@
 #     # → creates .opencode/* symlinks pointing at the repo-root artifacts
 #
 #   Common flags:
+#     --upgrade    update the submodule to the latest stable tag (vX.Y.Z)
 #     --clean      remove .opencode/
 #     --dry-run    show what would change without writing
 #     -h | --help  print this header
@@ -84,6 +85,7 @@ err() { red "ERROR: $*" >&2; exit 1; }
 mode="install"
 for arg in "$@"; do
   case "${arg}" in
+    --upgrade) mode="upgrade" ;;
     --clean)   mode="clean" ;;
     --dry-run) mode="dry-run" ;;
     -h|--help)
@@ -133,6 +135,39 @@ for r in "${required[@]}"; do
   [[ -e "${bundle_root}/${r}" ]] || err "missing bundle artifact ${bundle_root}/${r}
        Is the submodule fully checked out? Try: git submodule update --init"
 done
+
+# ─────────────────────────────────────────────────────────────────────────────
+# --upgrade (Consumer only)
+# ─────────────────────────────────────────────────────────────────────────────
+if [[ "${mode}" == "upgrade" ]]; then
+  if [[ "${install_mode}" != "consumer" ]]; then
+    err "--upgrade is only supported when running from a consumer repository (.agent-os submodule)"
+  fi
+
+  blue "Checking for the latest stable release..."
+  
+  # Fetch latest tags from the submodule's remote
+  (cd "${bundle_root}" && git fetch --tags --quiet)
+  
+  # Get the latest tag matching v* (e.g., v4.5.0)
+  latest_tag=$(cd "${bundle_root}" && git tag -l "v*" | sort -V | tail -n1)
+  
+  if [[ -z "${latest_tag}" ]]; then
+    err "no stable tags (v*) found in ${bundle_root}"
+  fi
+  
+  current_tag=$(cd "${bundle_root}" && git describe --tags --abbrev=0 2>/dev/null || echo "unknown")
+  
+  if [[ "${latest_tag}" == "${current_tag}" ]]; then
+    green "  ✓ Already at the latest release: ${latest_tag}"
+  else
+    yellow "  → Upgrading from ${current_tag} to ${latest_tag}..."
+    (cd "${bundle_root}" && git checkout "${latest_tag}" --quiet)
+    green "  ✓ Upgraded .agent-os to ${latest_tag}"
+  fi
+  # Continue with the install logic to refresh symlinks
+  mode="install"
+fi
 
 # Read bundle version from root manifest.yaml.
 manifest="${bundle_root}/manifest.yaml"
