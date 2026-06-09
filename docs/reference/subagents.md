@@ -4,7 +4,14 @@ Subagents are specialized, autonomous agents that are invoked by the primary age
 
 You can invoke them directly via `@<name>` in the chat, but they are most often dispatched automatically by the `/sdd-*` commands.
 
-There are two categories of subagents: **SDD Phase Specialists** and **Cross-Cutting Specialists**.
+## Primary Agents (Orchestrators)
+
+In addition to subagents, the bundle provides **Primary Agents** that can be selected directly in the OpenCode agent cycle (via the **Tab** key). These agents act as top-level orchestrators for the development workflow.
+
+| Agent | Purpose | Mode |
+|:---|:---|:---|
+| `sdd` | **Main SDD Orchestrator**. Inspects project state, recommends next phases, and coordinates the full 7-phase flow. | `primary` |
+| `quick` | **Quick-path Specialist**. Handles trivial changes in a single step, bypassing design/tasks phases for maximum agility. | `primary` |
 
 ## SDD Phase Specialists
 
