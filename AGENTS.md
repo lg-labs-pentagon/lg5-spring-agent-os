@@ -189,7 +189,7 @@ spot-check outside the SDD flow.
 > **default model** at invocation time. This makes the bundle portable
 > across providers (Anthropic, OpenAI, Gemini, GitHub Copilot, …). If
 > you see `Model not found: …` errors on a pre-`4.3.0` install,
-> upgrade to `>= 4.3.0`. To pin a specific model for a specific
+> upgrade to `>= v4.4.0` (latest release). To pin a specific model for a specific
 > subagent, edit the symlinked file in your fork of `.agent-os/subagents/`
 > and add `model: <provider>/<id>` to the frontmatter — the validator
 > allows either presence (any string) or absence.

@@ -12,10 +12,18 @@
 
 bundle:
   name: lg5-spring-agent-os
-  version: 4.3.0
+  version: 4.4.0
   lg5-spring-sha: d0d754a
 
 subagents:
+  - name: sdd
+    file: sdd.md
+    version: 0.1.0
+    description: Main SDD Orchestrator primary agent. Inspects project state and coordinates the full 7-phase flow.
+  - name: quick
+    file: quick.md
+    version: 0.1.0
+    description: Quick-path primary agent for trivial changes. Handles trivial-change workflow in a single step.
   - name: lg5-code-reviewer
     file: lg5-code-reviewer.md
     version: 0.1.1

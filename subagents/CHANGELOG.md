@@ -4,6 +4,12 @@ All notable changes to the **subagents** artifact set are documented here.
 Uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.0] — 2026-06-09
+### Added (MINOR — bundle 4.4.0)
+- **`sdd`** (v0.1.0) — new **Primary Agent** for OpenCode. Acts as the main orchestrator for the SDD workflow. Discoverable in the agent cycle (Tab key).
+- **`quick`** (v0.1.0) — new **Primary Agent** for OpenCode. Handles the trivial-change Quick-path in a single step. Discoverable in the agent cycle (Tab key).
+- Both agents are provider-agnostic (no fixed `model:` field) and inherit the consumer's default model.
+
 ## [4.0.0] — 2026-05-13
 ### Removed (MAJOR — provider-agnostic subagents)
 - **`model:` frontmatter field removed from all 12 subagents**

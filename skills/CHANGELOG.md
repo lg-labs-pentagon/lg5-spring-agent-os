@@ -23,6 +23,16 @@ commits is unsupported.
 
 ## [Unreleased]
 
+## [4.4.0] — 2026-06-09
+### Added
+- **Primary Agents**: Introduced `sdd` and `quick` agents as top-level orchestrators in the OpenCode agent cycle (Tab key).
+- **Dynamic Model Support**: All new agents are provider-agnostic, inheriting the consumer's default model for better portability.
+
+### Changed
+- All 5 manifests bumped `bundle.version: 4.3.0 → 4.4.0`.
+- Updated `subagents/manifest.yaml` to include the new primary agents in the validation registry.
+- Updated `docs/reference/subagents.md` to document the new Primary Agents section.
+
 ## [4.3.0] — 2026-05-13
 ### Removed
 - **`model:` frontmatter field stripped from all 12 subagents**. Was
