@@ -8,81 +8,10 @@ This repository ships a curated, validated set of **agent context artifacts**
 Copilot, etc.) need to be productive on services that follow the lg5-spring
 conventions.
 
-Current bundle: **v4.4.3** · Validated against `lg5-spring` SHA: **`d0d754a`**.
+Current bundle: **v4.5.0** · Validated against `lg5-spring` SHA: **`d0d754a`**.
 
----
+### Inventory at v4.5.0
 
-## What's inside
-
-```
-lg5-spring-agent-os/
-├── AGENTS.md                                  # always-loaded index + skill routing table + rule cheat sheet
-├── manifest.yaml                              # SINGLE SOURCE OF TRUTH for bundle version & SHA
-├── skills/                                    # 7 thematic skills (load on demand)
-│   ├── CHANGELOG.md
-│   ├── lg5-spring-overview/SKILL.md
-│   ├── lg5-new-service/SKILL.md
-│   ├── lg5-saga/SKILL.md
-│   ├── lg5-outbox/SKILL.md
-│   ├── lg5-kafka-avro/SKILL.md
-│   ├── lg5-atdd/SKILL.md
-│   └── food-ordering-system/SKILL.md
-├── rules/                                     # 18 always-active hard rules (15 form the constitution)
-│   ├── CHANGELOG.md
-│   ├── CONSTITUTION.md                        # index of constitutional rules + rules of engagement
-│   └── RULE-001-stack-baseline.md … RULE-018-reference-projects.md
-├── commands/                                  # 17 slash commands (9 SDD orchestrators + 8 building-blocks)
-│   ├── CHANGELOG.md
-│   ├── sdd-specify.md                         # SDD: informal prompt → PRD
-│   ├── sdd-plan.md                            # SDD: PRD → plan + ADRs + data-model
-│   ├── sdd-tasks.md                           # SDD: plan → atomic TASK-NNN
-│   ├── sdd-implement.md                       # SDD: execute one TASK-NNN end-to-end
-│   ├── scaffold-service.md
-│   ├── add-saga.md
-│   ├── add-outbox.md
-│   └── add-kafka-listener.md
-├── subagents/                                 # 14 specialized subagents (including 2 Primary)
-│   ├── CHANGELOG.md
-│   ├── sdd.md                                 # Primary orchestrator agent (Tab-discoverable)
-│   ├── quick.md                               # Primary quick-path agent (Tab-discoverable)
-│   ├── lg5-code-reviewer.md
-│   ├── lg5-test-generator.md
-│   ├── lg5-ci-cd-engineer.md
-│   ├── sdd-specifier.md
-│   ├── sdd-planner.md
-│   ├── sdd-tasker.md
-│   └── sdd-implementer.md
-├── specs/                                     # spec-driven workflow templates + examples
-│   ├── CHANGELOG.md
-│   ├── README.md                              # SDD workflow overview
-│   ├── templates/
-│   │   ├── prd-template.md
-│   │   ├── adr-template.md
-│   │   ├── plan-template.md
-│   │   ├── tasks-template.md
-│   │   ├── data-model-template.md
-│   │   └── research-template.md
-│   └── examples/loyalty-ledger/               # end-to-end SDD example (PRD+plan+tasks+ADRs+data-model)
-├── scripts/
-│   ├── validate.sh                            # CI / local sanity checks for all artifact types
-│   └── install.sh                             # install into a consumer repo
-├── .github/workflows/validate.yml             # CI runs validate.sh on push/PR
-├── .github/workflows/release.yml              # Automated release pipeline (tags + GH releases)
-├── CONTRIBUTING.md
-└── LICENSE
-```
-
-### Artifact type cheat sheet
-
-| Artifact   | Format                                                  | When loaded         | What it does                                                  |
-|------------|---------------------------------------------------------|---------------------|---------------------------------------------------------------|
-| **rule**     | `<RULE-ID>-<slug>.md` with frontmatter (id, severity, scope) | Always-active   | Hard constraints, cited in PR review by stable ID.            |
-| **skill**    | `<dir>/SKILL.md` with frontmatter                      | On demand by topic  | Deep recipes (saga, outbox, kafka, atdd, scaffolding, …).     |
-| **command**  | `<name>.md` with frontmatter (description, argument-hint, allowed-tools) | On user `/invocation` | Repeatable workflows (scaffold service, add saga, etc.).  |
-| **subagent** | `<name>.md` with frontmatter (name, description, tools, model) | Spawned by orchestrator | Delegated specialists (code-reviewer, test-generator, planner). |
-| **spec**     | `<name>.md` with frontmatter (kind, name, version)     | Read at planning time | PRD/ADR templates + example spec for spec-driven workflow.   |
-
-### Inventory at v4.4.3
 
 - **18 rules** (15 constitutional / `severity: must`, 2 `should`, 1 `info`).
   Scopes: framework (4), architecture (5), kafka (2), outbox (2), saga (1),
