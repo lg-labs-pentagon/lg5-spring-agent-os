@@ -1,0 +1,39 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Glow -->
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0" />
+    </radialGradient>
+    <linearGradient id="cyber-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb" />
+      <stop offset="100%" style="stop-color:#9333ea" />
+    </linearGradient>
+  </defs>
+
+  <!-- Glow Effect -->
+  <circle cx="100" cy="100" r="80" fill="url(#glow)" />
+
+  <!-- Outer Ring (OS/System) -->
+  <circle cx="100" cy="100" r="70" fill="none" stroke="url(#cyber-grad)" stroke-width="4" stroke-dasharray="10 5" />
+  
+  <!-- Central Shield/Hexagon (Framework & Hexagonal Architecture) -->
+  <path d="M100 45 L147.6 72.5 L147.6 127.5 L100 155 L52.4 127.5 L52.4 72.5 Z" fill="none" stroke="url(#cyber-grad)" stroke-width="6" />
+
+  <!-- Agent Core (AI Intelligence) -->
+  <circle cx="100" cy="100" r="25" fill="url(#cyber-grad)" />
+  
+  <!-- Neural Connections -->
+  <circle cx="100" cy="100" r="15" fill="white" fill-opacity="0.2" />
+  <path d="M100 100 L130 130 M100 100 L70 130 M100 100 L100 65" stroke="white" stroke-width="2" stroke-linecap="round" />
+  
+  <!-- Nodes (Skills/Commands) -->
+  <circle cx="130" cy="130" r="5" fill="#9333ea" />
+  <circle cx="70" cy="130" r="5" fill="#9333ea" />
+  <circle cx="100" cy="65" r="5" fill="#2563eb" />
+
+  <!-- Orbiting Satellite (Continuous Automation) -->
+  <circle cx="170" cy="100" r="8" fill="#3b82f6">
+    <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="10s" repeatCount="indefinite" />
+  </circle>
+</svg>
