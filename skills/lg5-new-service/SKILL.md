@@ -1,6 +1,6 @@
 ---
 name: lg5-new-service
-version: 0.1.0
+version: 4.4.3
 lg5-spring-sha: d0d754a
 last-validated: 2026-05-09
 description: Step-by-step recipe to scaffold a brand-new lg5-spring microservice by copying and renaming the blank-service template. Load this skill when the user asks to "create a new service", "bootstrap a microservice", "generate a μ-service", or wants to start a new bounded context on top of lg5-spring.

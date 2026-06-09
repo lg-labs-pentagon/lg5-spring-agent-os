@@ -1,7 +1,7 @@
 ---
 id: RULE-002
 slug: parent-pom
-version: 0.1.0
+version: 4.4.3
 lg5-spring-sha: d0d754a
 severity: must
 constitutional: true
@@ -58,8 +58,8 @@ To advance to a newer framework commit:
 1. Pull the latest `lg5-spring`, run `make publish-local`.
 2. Note the short SHA of the new HEAD (`git rev-parse --short=7 HEAD`).
 3. Bump the `<version>` in this rule and in every consumer service's parent.
-4. Bump the agent-os bundle `lg5-spring-sha` in `skills/manifest.yaml` and
-   `rules/manifest.yaml` and re-validate every artifact.
+4. Bump the agent-os bundle `lg5-spring-sha` in the root `manifest.yaml`
+   and re-validate every artifact using `scripts/validate.sh`.
 
 ## Anti-pattern
 

@@ -1,6 +1,6 @@
 ---
 name: lg5-api-docs
-version: 0.1.0
+version: 4.4.3
 lg5-spring-sha: d0d754a
 last-validated: 2026-05-10
 description: How to publish browseable HTML documentation for the REST (OpenAPI) and event (AsyncAPI) contracts of an lg5-spring service. Uses static HTML wrappers that load Swagger UI 5 and the AsyncAPI web-component from unpkg CDN — no build step, no Docker, same renderers as petstore.swagger.io and studio.asyncapi.com. Replaces the legacy `asyncapi/cli` + `openapitools/openapi-generator-cli` Docker pipelines that broke on `--use-new-generator` and puppeteer install. Load this skill when the user asks about API docs, OpenAPI HTML, AsyncAPI HTML, Swagger UI, AsyncAPI Studio look-alike, or how to publish the contract sites from CI.

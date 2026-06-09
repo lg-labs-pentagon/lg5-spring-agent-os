@@ -1,6 +1,6 @@
 ---
 name: lg5-allure-report
-version: 0.1.0
+version: 4.4.3
 lg5-spring-sha: d0d754a
 last-validated: 2026-05-10
 description: How to wire Allure Report into the Cucumber acceptance-test module of an lg5-spring service. Covers `allure-cucumber7-jvm` + `allure-junit-platform` 2.29.1 dependencies, registering `io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm` as a Cucumber plugin in `AcceptanceTestCase`, pinning the results directory via `allure.properties`, and the CI job that downloads Allure CLI 2.32.0 and generates the HTML dashboard. Load this skill when the user asks about Allure, Cucumber HTML reports, test dashboards, replacing the default Cucumber HTML output, or adding Allure to an `<svc>-acceptance-test` module.

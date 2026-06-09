@@ -1,6 +1,6 @@
 ---
 name: lg5-spring-overview
-version: 0.1.0
+version: 4.4.3
 lg5-spring-sha: d0d754a
 last-validated: 2026-05-09
 description: Overview, module map, recent commit insights, and global conventions of the lg5-spring framework (https://github.com/lg-labs-pentagon/lg5-spring). Load this skill when the user asks "what is lg5-spring", "what modules does it have", "what changed recently", or needs a high-level orientation before diving into a specific topic.

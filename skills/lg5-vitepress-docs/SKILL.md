@@ -1,6 +1,6 @@
 ---
 name: lg5-vitepress-docs
-version: 0.1.0
+version: 4.4.3
 lg5-spring-sha: d0d754a
 last-validated: 2026-05-12
 description: How to publish a unified VitePress documentation site for an lg5-spring service — aggregates the OpenAPI/AsyncAPI viewers (from `lg5-api-docs`), Allure acceptance reports, architecture visualizations, ADRs, and runbooks under a single navigable surface. Covers dual-target deploy (GitHub Pages + Firebase Hosting), 7-day PR preview channels, source-state footer (short SHA + ISO timestamp + PR number), pnpm 11 build-script gating, VitePress `public/` static-asset wiring, base-aware relative links, and the `check-artifacts.mjs` warn-don't-fail pattern. Load this skill when the user asks about a documentation site, VitePress, Firebase Hosting + Pages dual deploy, docs preview channels, or how to aggregate API/AsyncAPI/Allure outputs into a single browseable surface.

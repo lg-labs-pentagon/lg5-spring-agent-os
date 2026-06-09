@@ -1,7 +1,7 @@
 ---
 id: RULE-004
 slug: service-module-shape
-version: 0.1.0
+version: 4.4.3
 lg5-spring-sha: d0d754a
 severity: must
 constitutional: true
