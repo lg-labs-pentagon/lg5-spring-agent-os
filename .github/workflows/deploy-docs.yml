@@ -1,13 +1,17 @@
 name: Deploy VitePress Docs to GitHub Pages
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Release Automation"]
+    types:
+      - completed
+  # También permitimos disparo manual si fuera necesario
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     permissions:
       pages: write
       id-token: write
