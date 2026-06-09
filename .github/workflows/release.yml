@@ -1,0 +1,46 @@
+name: Release Automation
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+jobs:
+  release:
+    if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'release')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from manifest
+        id: get_version
+        run: |
+          VERSION=$(grep -m 1 'version:' subagents/manifest.yaml | awk '{print $2}')
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "Detected version: $VERSION"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.get_version.outputs.VERSION }}
+          name: v${{ steps.get_version.outputs.VERSION }}
+          body: |
+            ## Release v${{ steps.get_version.outputs.VERSION }}
+            
+            Automated release triggered by merged PR #${{ github.event.pull_request.number }} with 'release' label.
+            
+            ### Changes
+            ${{ github.event.pull_request.title }}
+            
+            See [PR #${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }}) for full details.
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
