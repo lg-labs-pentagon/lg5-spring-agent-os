@@ -20,12 +20,23 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Extract version from manifest
+      - name: Extract and finalize version
         id: get_version
         run: |
-          VERSION=$(grep -m 1 'version:' manifest.yaml | awk '{print $2}')
-          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
-          echo "Detected version: $VERSION"
+          BASE_VERSION=$(grep -m 1 'version:' manifest.yaml | awk '{print $2}')
+          TAG_NAME="v$BASE_VERSION"
+          
+          # Check if tag already exists in the remote
+          if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+            echo "Tag $TAG_NAME already exists. Appending short SHA..."
+            SHORT_SHA=$(git rev-parse --short HEAD)
+            FINAL_VERSION="$BASE_VERSION.$SHORT_SHA"
+          else
+            FINAL_VERSION="$BASE_VERSION"
+          fi
+          
+          echo "VERSION=$FINAL_VERSION" >> $GITHUB_OUTPUT
+          echo "Final version: $FINAL_VERSION"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
