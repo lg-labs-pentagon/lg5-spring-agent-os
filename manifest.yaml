@@ -1,0 +1,17 @@
+# lg5-spring-agent-os — Root Manifest
+# This is the SINGLE SOURCE OF TRUTH for the bundle version.
+
+bundle:
+  name: lg5-spring-agent-os
+  version: 4.4.2
+  lg5-spring-sha: d0d754a
+  released: 2026-06-09
+  repository: https://github.com/lg-labs-pentagon/lg5-spring-agent-os
+
+# Map of component versions (for internal tracking)
+components:
+  subagents: 4.1.0
+  skills: 4.4.0
+  commands: 0.7.1
+  specs: 0.6.1
+  rules: 0.4.1
