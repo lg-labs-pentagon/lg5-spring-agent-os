@@ -1,4 +1,13 @@
+<p align="center">
+  <img src="docs/public/logo.svg" alt="lg5-spring-agent-os" width="200" />
+</p>
+
 # lg5-spring-agent-os
+
+<p align="center">
+  <img src="https://img.shields.io/github/v/release/lg-labs-pentagon/lg5-spring-agent-os?color=blue&label=version&logo=github" alt="GitHub release" />
+  <img src="https://img.shields.io/github/license/lg-labs-pentagon/lg5-spring-agent-os?color=purple" alt="License" />
+</p>
 
 > Versioned **agent operating system** for building microservices on top of the
 > [`lg5-spring`](https://github.com/lg-labs-pentagon/lg5-spring) framework.
