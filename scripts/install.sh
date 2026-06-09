@@ -134,8 +134,8 @@ for r in "${required[@]}"; do
        Is the submodule fully checked out? Try: git submodule update --init"
 done
 
-# Read bundle version from skills/manifest.yaml.
-manifest="${bundle_root}/skills/manifest.yaml"
+# Read bundle version from root manifest.yaml.
+manifest="${bundle_root}/manifest.yaml"
 [[ -f "${manifest}" ]] || err "${manifest} not found"
 bundle_version="$(awk '
   /^bundle:/        { in_bundle=1; next }

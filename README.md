@@ -8,7 +8,7 @@ This repository ships a curated, validated set of **agent context artifacts**
 Copilot, etc.) need to be productive on services that follow the lg5-spring
 conventions.
 
-Current bundle: **v2.0.0** · Validated against `lg5-spring` SHA: **`d0d754a`**.
+Current bundle: **v4.4.3** · Validated against `lg5-spring` SHA: **`d0d754a`**.
 
 ---
 
@@ -17,8 +17,8 @@ Current bundle: **v2.0.0** · Validated against `lg5-spring` SHA: **`d0d754a`**.
 ```
 lg5-spring-agent-os/
 ├── AGENTS.md                                  # always-loaded index + skill routing table + rule cheat sheet
+├── manifest.yaml                              # SINGLE SOURCE OF TRUTH for bundle version & SHA
 ├── skills/                                    # 7 thematic skills (load on demand)
-│   ├── manifest.yaml
 │   ├── CHANGELOG.md
 │   ├── lg5-spring-overview/SKILL.md
 │   ├── lg5-new-service/SKILL.md
@@ -28,12 +28,10 @@ lg5-spring-agent-os/
 │   ├── lg5-atdd/SKILL.md
 │   └── food-ordering-system/SKILL.md
 ├── rules/                                     # 18 always-active hard rules (15 form the constitution)
-│   ├── manifest.yaml
 │   ├── CHANGELOG.md
 │   ├── CONSTITUTION.md                        # index of constitutional rules + rules of engagement
 │   └── RULE-001-stack-baseline.md … RULE-018-reference-projects.md
-├── commands/                                  # 8 slash commands (4 SDD orchestrators + 4 building-blocks)
-│   ├── manifest.yaml
+├── commands/                                  # 17 slash commands (9 SDD orchestrators + 8 building-blocks)
 │   ├── CHANGELOG.md
 │   ├── sdd-specify.md                         # SDD: informal prompt → PRD
 │   ├── sdd-plan.md                            # SDD: PRD → plan + ADRs + data-model
@@ -43,9 +41,10 @@ lg5-spring-agent-os/
 │   ├── add-saga.md
 │   ├── add-outbox.md
 │   └── add-kafka-listener.md
-├── subagents/                                 # 7 specialized subagents
-│   ├── manifest.yaml
+├── subagents/                                 # 14 specialized subagents (including 2 Primary)
 │   ├── CHANGELOG.md
+│   ├── sdd.md                                 # Primary orchestrator agent (Tab-discoverable)
+│   ├── quick.md                               # Primary quick-path agent (Tab-discoverable)
 │   ├── lg5-code-reviewer.md
 │   ├── lg5-test-generator.md
 │   ├── lg5-ci-cd-engineer.md
@@ -54,7 +53,6 @@ lg5-spring-agent-os/
 │   ├── sdd-tasker.md
 │   └── sdd-implementer.md
 ├── specs/                                     # spec-driven workflow templates + examples
-│   ├── manifest.yaml
 │   ├── CHANGELOG.md
 │   ├── README.md                              # SDD workflow overview
 │   ├── templates/
@@ -69,6 +67,7 @@ lg5-spring-agent-os/
 │   ├── validate.sh                            # CI / local sanity checks for all artifact types
 │   └── install.sh                             # install into a consumer repo
 ├── .github/workflows/validate.yml             # CI runs validate.sh on push/PR
+├── .github/workflows/release.yml              # Automated release pipeline (tags + GH releases)
 ├── CONTRIBUTING.md
 └── LICENSE
 ```
@@ -83,20 +82,22 @@ lg5-spring-agent-os/
 | **subagent** | `<name>.md` with frontmatter (name, description, tools, model) | Spawned by orchestrator | Delegated specialists (code-reviewer, test-generator, planner). |
 | **spec**     | `<name>.md` with frontmatter (kind, name, version)     | Read at planning time | PRD/ADR templates + example spec for spec-driven workflow.   |
 
-### Inventory at v2.0.0
+### Inventory at v4.4.3
 
 - **18 rules** (15 constitutional / `severity: must`, 2 `should`, 1 `info`).
   Scopes: framework (4), architecture (5), kafka (2), outbox (2), saga (1),
   testing (2), style (1), build (1), reference (1). Indexed in
   [`rules/CONSTITUTION.md`](rules/CONSTITUTION.md).
-- **7 skills** (`lg5-spring-overview`, `lg5-new-service`, `lg5-saga`,
-  `lg5-outbox`, `lg5-kafka-avro`, `lg5-atdd`, `food-ordering-system`).
-- **8 commands**:
-  - 4 SDD orchestrators (`/sdd-specify`, `/sdd-plan`, `/sdd-tasks`, `/sdd-implement`)
-  - 4 building blocks (`/scaffold-service`, `/add-saga`, `/add-outbox`, `/add-kafka-listener`)
-- **7 subagents**:
+- **11 skills** (`lg5-spring-overview`, `lg5-new-service`, `lg5-saga`,
+  `lg5-outbox`, `lg5-kafka-avro`, `lg5-atdd`, `food-ordering-system`,
+  `lg5-github-actions`, `lg5-api-docs`, `lg5-allure-report`, `lg5-vitepress-docs`).
+- **17 commands**:
+  - 9 SDD orchestrators (`/sdd-intent`, `/sdd-specify`, `/sdd-plan`, `/sdd-design`, `/sdd-tasks`, `/sdd-implement`, `/sdd-verify`, `/sdd-orchestrate`, `/sdd-quick`)
+  - 8 building blocks (`/scaffold-service`, `/add-saga`, `/add-outbox`, `/add-kafka-listener`, `/scaffold-ci-cd`, `/scaffold-docs`, `/add-rest-endpoint`, `/add-jpa-entity`)
+- **14 subagents**:
+  - 2 Primary orchestrators (`sdd`, `quick`) — discoverable via **Tab**.
   - 3 cross-cutting (`lg5-code-reviewer`, `lg5-test-generator`, `lg5-ci-cd-engineer`)
-  - 4 SDD phase specialists (`sdd-specifier`, `sdd-planner`, `sdd-tasker`, `sdd-implementer`) — 1:1 with the four `/sdd-*` commands.
+  - 9 SDD phase specialists (`sdd-intender`, `sdd-specifier`, `sdd-planner`, `sdd-designer`, `sdd-tasker`, `sdd-implementer`, `sdd-verifier`, `sdd-orchestrator`, `sdd-quicker`).
 - **6 spec templates + 1 worked example**: `prd-template`, `plan-template`,
   `tasks-template`, `data-model-template`, `adr-template`, `research-template`,
   plus the end-to-end [`examples/loyalty-ledger/`](specs/examples/loyalty-ledger/)
@@ -180,9 +181,9 @@ Follows [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html):
   artifact, validation against a new framework SHA.
 - **PATCH** — clarifications, anti-pattern additions, no recipe change.
 
-Every release is tagged (`v0.1.0`, `v0.2.0`, `v0.3.0`, `v0.3.1`, `v0.3.2`, …) and pinned to a single
-`lg5-spring-sha`. The `bundle.lg5-spring-sha` and `bundle.version` fields
-are identical across all per-type `manifest.yaml` files (CI-enforced).
+Every release is tagged (`v4.4.0`, `v4.4.1`, …) and pinned to a single
+`lg5-spring-sha`. The `bundle.lg5-spring-sha` and `bundle.version` are
+defined in the root `manifest.yaml` (SINGLE SOURCE OF TRUTH).
 
 ### Compatibility matrix
 
@@ -198,6 +199,8 @@ are identical across all per-type `manifest.yaml` files (CI-enforced).
 | `0.3.5`        | `d0d754a`      | 2026-05-10 | MINOR-equivalent shipped as PATCH (early-access cadence): added subagent `lg5-ci-cd-engineer` (v0.1.0) — CI/CD specialist that loads the 3 CI/CD skills on demand and declares an explicit out-of-scope section listing 8 future skills (container delivery, k8s manifests, GitOps, release automation, secrets, env promotion, perf pipelines, quality gates) per RULE-018. |
 | `0.3.6`        | `d0d754a`      | 2026-05-10 | PATCH (tooling-only): added `scripts/dev-link.sh` to self-host the bundle for OpenCode in the upstream working tree via `.opencode/` symlinks. No artifact contract changes; consumer upgrade unnecessary. |
 | `1.0.0`        | `d0d754a`      | 2026-05-10 | **MAJOR (install layout change).** Bundle is now consumed as a single git submodule mounted at `.agent-os/` (was `.lg5-agent-os/` with copy to `.agent-os/`). `install.sh` no longer copies — it materializes `.opencode/` symlinks into `.agent-os/`. Removed Modes B (plain copy) and C (sparse checkout); only the submodule mode is supported. Removed `scripts/dev-link.sh` (logic absorbed into `install.sh`, which auto-detects consumer vs. self-host mode). See `skills/CHANGELOG.md` for the migration guide. |
+| `4.4.0`        | `d0d754a`      | 2026-06-09 | **Centralized Versioning & Primary Agents.** Moved all versions to root `manifest.yaml`. Introduced Primary agents `sdd` and `quick` for better discoverability. Automated release pipeline via GitHub Actions. |
+| `4.4.3`        | `d0d754a`      | 2026-06-09 | **Fixes.** Updated `scripts/validate.sh` and `scripts/install.sh` to use the root manifest. Unified versions across all Skill and Rule artifacts. |
 
 ---
 
@@ -301,21 +304,20 @@ disk, plus cross-bundle invariants. Specifically:
 
 - **skills** — `SKILL.md` + `CHANGELOG.md` per dir; YAML frontmatter
   (`name`, `version`, `lg5-spring-sha`, `description`); SemVer; name ↔
-  directory match; bundle-wide `lg5-spring-sha` consistency; manifest ↔
-  disk parity; no forbidden `/tmp/` paths in fenced code blocks (only
-  `/tmp/lg5-study/` is allowed).
+  directory match; versions & SHA must match root `manifest.yaml`; no
+  forbidden `/tmp/` paths in fenced code blocks (only `/tmp/lg5-study/`
+  is allowed).
 - **rules** — `RULE-NNN-<slug>.md` files; frontmatter (`id`, `slug`,
   `version`, `lg5-spring-sha`, `severity`, `scope`, `tags`, `description`);
-  filename ↔ id+slug match; severity ∈ {`must`, `should`, `info`}; scope ∈
-  9 known values; manifest ↔ disk parity.
+  filename ↔ id+slug match; versions & SHA must match root `manifest.yaml`;
+  severity ∈ {`must`, `should`, `info`}.
 - **commands** — `<name>.md` files; frontmatter (`description`,
-  `argument-hint`, `allowed-tools`); manifest ↔ disk parity.
+  `argument-hint`, `allowed-tools`).
 - **subagents** — `<name>.md` files; frontmatter (`name`, `description`,
-  `tools`, `model`); name ↔ filename match; manifest ↔ disk parity.
+  `tools`); name ↔ filename match.
 - **specs** — templates and examples; frontmatter (`kind`, `name`,
   `version`, `description`); kind ∈ {`template`, `example`}.
-- **cross-bundle** — every `<type>/manifest.yaml` declares the same
-  `bundle.lg5-spring-sha` and `bundle.version`.
+- **cross-bundle** — root `manifest.yaml` exists and defines global version/SHA.
 
 Optional install-output lint (regression test for issue #15):
 
@@ -342,9 +344,9 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md). TL;DR:
 1. Branch off `main`.
 2. Add or modify an artifact (mirror the existing structure for that type).
 3. Update the relevant `<type>/CHANGELOG.md` and (if bumping the artifact's
-   own version) the entry in `<type>/manifest.yaml`.
-4. If this is a bundle-wide release, bump `bundle.version` in EVERY
-   `<type>/manifest.yaml` and add a top-level entry in this README's
+   own version) the root `manifest.yaml`.
+4. If this is a bundle-wide release, bump `bundle.version` in the root
+   `manifest.yaml` and add a top-level entry in this README's
    compatibility matrix.
 5. Run `bash scripts/validate.sh` until green.
 6. Open a PR with a Conventional Commits title (e.g. `feat(rules): add

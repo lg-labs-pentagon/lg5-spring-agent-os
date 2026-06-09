@@ -57,49 +57,41 @@ feat(saga)!: rename SagaStatus.PROCESSING to IN_FLIGHT
 
 Before requesting review:
 
-- [ ] Skill `version` bumped (SemVer rules below).
-- [ ] Skill's `CHANGELOG.md` updated under `## [Unreleased]`.
-- [ ] Bundle's `skills/CHANGELOG.md` updated under `## [Unreleased]`.
-- [ ] `skills/manifest.yaml` version aligned with the skill frontmatter.
+- [ ] Artifact `version` bumped (SemVer rules below).
+- [ ] Artifact's `CHANGELOG.md` updated under `## [Unreleased]`.
+- [ ] Root `manifest.yaml` version aligned with the artifact frontmatter.
 - [ ] `lg5-spring-sha` updated if the change was validated against a new SHA.
-- [ ] `bash scripts/validate-skills.sh` is green locally.
+- [ ] `bash scripts/validate.sh` is green locally.
 - [ ] PR title follows Conventional Commits.
 
 ## Versioning policy
 
-Per-skill SemVer:
+Per-artifact SemVer:
 
-- `feat`  → MINOR bump in the skill version
-- `fix`   → PATCH bump in the skill version
+- `feat`  → MINOR bump in the bundle version
+- `fix`   → PATCH bump in the bundle version
 - `feat!` / `BREAKING CHANGE:` → MAJOR bump
 
-The **bundle** version (`skills/manifest.yaml > bundle.version`) follows the
-**highest** bump among included skills in the release.
+The **bundle** version (`manifest.yaml > bundle.version`) is the single source of truth.
 
 ## Release flow
 
 After a PR is merged to `main`:
 
-1. Maintainer moves `[Unreleased]` to `[X.Y.Z] — YYYY-MM-DD` in:
-   - The skill's CHANGELOG.md (for each skill that changed)
-   - `skills/CHANGELOG.md` (bundle)
-2. Aligns `bundle.version` and `released:` in `skills/manifest.yaml`.
-3. Updates the compatibility matrix in `README.md` if `lg5-spring-sha` changed.
-4. Tags: `git tag -a vX.Y.Z -m "lg5-spring-agent-os vX.Y.Z"` and `git push --tags`.
-5. (Optional) Cuts a GitHub Release with the bundle CHANGELOG section as body.
+1. Maintainer moves `[Unreleased]` to `[X.Y.Z] — YYYY-MM-DD` in the relevant `CHANGELOG.md`.
+2. Aligns `bundle.version` and `released:` in root `manifest.yaml`.
+3. Updates the compatibility matrix in `README.md`.
+4. Automated release: The merge itself triggers the `Release Automation` workflow if the `release` label is present.
+5. Manual release (backup): Tags: `git tag -a vX.Y.Z -m "lg5-spring-agent-os vX.Y.Z"` and `git push --tags`.
 
-## How skills are validated
+## How artifacts are validated
 
-`scripts/validate-skills.sh` checks:
+`scripts/validate.sh` checks:
 
-- Each skill directory has `SKILL.md` and `CHANGELOG.md`.
-- `SKILL.md` has the required frontmatter (`name`, `version`, `lg5-spring-sha`,
-  `description`).
-- `name` matches the directory name.
-- `version` is SemVer.
+- Each artifact has the required frontmatter.
+- `version` and `lg5-spring-sha` match the root `manifest.yaml`.
 - All skills declare the **same** `lg5-spring-sha` (consistent bundle).
-- `manifest.yaml` lists every skill present on disk.
 - No forbidden local paths inside fenced code blocks (only `/tmp/lg5-study/`
-  is allowed because it's the documented framework checkout location).
+  is allowed).
 
 CI runs the same script on every PR (`.github/workflows/validate.yml`).
