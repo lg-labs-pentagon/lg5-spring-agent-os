@@ -64,27 +64,48 @@ Before requesting review:
 - [ ] `bash scripts/validate.sh` is green locally.
 - [ ] PR title follows Conventional Commits.
 
-## Versioning policy
+## Versioning & Release Policy
 
-Per-artifact SemVer:
+We use a **Hybrid Versioning** system to balance stability with continuous delivery:
 
-- `feat`  → MINOR bump in the bundle version
-- `fix`   → PATCH bump in the bundle version
-- `feat!` / `BREAKING CHANGE:` → MAJOR bump
+1.  **Stable Releases (Clean Version)**:
+    - To create an official stable release (e.g., `v4.6.0`), you **must** manually increment the `version` field in the root `manifest.yaml` in your PR.
+    - When the PR is merged with the `release` label, the system checks if that tag already exists. If it's new, it creates a clean, official release.
 
-The **bundle** version (`manifest.yaml > bundle.version`) is the single source of truth.
+2.  **Continuous Releases (SHA-suffixed)**:
+    - If you merge a PR with the `release` label **without** incrementing the version in `manifest.yaml`, the automation will automatically append the short commit SHA (e.g., `v4.5.1.a1b2c3d`).
+    - This allows for "early-access" releases that can be tested in consumer services immediately without forcing a formal version bump for every small change.
+
+### SemVer decision matrix
+
+| Change Type | Version Component | Example |
+| :--- | :--- | :--- |
+| **Breaking Change** | MAJOR | `4.5.1` → `5.0.0` |
+| **New Feature / Skill** | MINOR | `4.5.1` → `4.6.0` |
+| **Bug Fix / Docs** | PATCH | `4.5.1` → `4.5.2` |
+| **WIP / Mid-feature** | SHA Suffix | `4.5.1` → `4.5.1.a1b2c3d` |
+
+## PR checklist
+
+Before requesting review:
+
+- [ ] (Optional) Root `manifest.yaml` version bumped if you want a **stable** release.
+- [ ] PR has the **`release`** label if you want to trigger the automated release/tagging.
+- [ ] Artifact's `CHANGELOG.md` updated under `## [Unreleased]`.
+- [ ] `lg5-spring-sha` updated if the change was validated against a new SHA.
+- [ ] `bash scripts/validate.sh` is green locally.
+- [ ] PR title follows Conventional Commits.
 
 ## Release flow
 
 After a PR is merged to `main`:
 
-1. Maintainer moves `[Unreleased]` to `[X.Y.Z] — YYYY-MM-DD` in the relevant `CHANGELOG.md`.
-2. Aligns `bundle.version` and `released:` in root `manifest.yaml`.
-3. Updates the compatibility matrix in `README.md`.
-4. Automated release: The merge itself triggers the `Release Automation` workflow if the `release` label is present.
-5. Manual release (backup): Tags: `git tag -a vX.Y.Z -m "lg5-spring-agent-os vX.Y.Z"` and `git push --tags`.
+1.  **Automated release**: The merge itself triggers the `Release Automation` workflow if the `release` label is present. It handles tag creation and version naming (clean or SHA-suffixed).
+2.  **Automatic Docs**: Documentation is automatically redeployed to GitHub Pages only after a successful release.
+3.  **Consumer side**: Developers can use `.agent-os/scripts/install.sh --upgrade` in their services to pull the latest tag (stable or SHA-suffixed).
 
 ## How artifacts are validated
+
 
 `scripts/validate.sh` checks:
 
