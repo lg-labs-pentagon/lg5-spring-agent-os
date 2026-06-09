@@ -229,23 +229,22 @@ cd your-microservice-repo
 # 1. Add the bundle as a submodule at .agent-os/
 git submodule add -b main git@github.com:lg-labs-pentagon/lg5-spring-agent-os.git .agent-os
 
-# 2. Pin to a release
-git -C .agent-os checkout v1.0.0
+# 2. Pin to a release (e.g., v4.5.1)
+git -C .agent-os checkout v4.5.1
 
 # 3. Wire OpenCode (creates .opencode/ symlinks + adds .opencode/ to .gitignore)
 .agent-os/scripts/install.sh
 
 # 4. Commit the submodule pin
 git add .gitmodules .agent-os .gitignore
-git commit -m "chore(agent-os): pin lg5-spring-agent-os@v1.0.0"
+git commit -m "chore(agent-os): pin lg5-spring-agent-os@v4.5.1"
 ```
 
 **After fresh clone** (the only manual step): `git submodule update --init`
 followed by `.agent-os/scripts/install.sh` (re-creates the symlinks; safe
 to run anytime — idempotent).
 
-**Upgrades**: `git -C .agent-os fetch --tags && git -C .agent-os checkout vX.Y.Z`. Symlinks
-stay valid; nothing else to do.
+**Upgrades**: Simply run `.agent-os/scripts/install.sh --upgrade` to move to the latest stable tag and refresh links in one step.
 
 ### Resulting consumer layout
 
