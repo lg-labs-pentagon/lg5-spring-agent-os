@@ -12,7 +12,7 @@ These rules are mandatory and enforced automatically by the `lg5-code-reviewer` 
 
 | ID | Scope | One-liner |
 |:---|:---|:---|
-| `RULE-001` | Framework | Stack baseline: Spring Boot 3.4.2, Spring 6.2.2, JDK 21, Kotlin 21. |
+| `RULE-001` | Framework | Stack baseline: Spring Boot 4.0.0, Spring 7.0.1, JDK 25, Kotlin JVM 21. |
 | `RULE-002` | Framework | Parent POM must be `com.lg5.spring:lg5-spring-parent`. |
 | `RULE-003` | Architecture | Hexagonal + DDD; the domain core must be Spring-free. |
 | `RULE-004` | Architecture | All services must mirror the `blank-service` 8-module shape. |

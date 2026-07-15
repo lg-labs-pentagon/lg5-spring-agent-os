@@ -76,7 +76,7 @@ statement, rationale, examples, and anti-patterns.
 
 | ID         | Const? | Scope         | One-liner                                                                  |
 |------------|:------:|---------------|----------------------------------------------------------------------------|
-| RULE-001   | ✅ | framework     | Stack baseline: Spring Boot 3.4.2, Spring 6.2.2, JDK 21, Kotlin 21, Gradle/Maven. |
+| RULE-001   | ✅ | framework     | Stack baseline: Spring Boot 4.0.0, Spring 7.0.1, JDK 25, Kotlin JVM 21, Gradle/Maven. |
 | RULE-002   | ✅ | framework     | Parent POM `com.lg5.spring:lg5-spring-parent:1.0.0-alpha.<short-git-sha>`. |
 | RULE-003   | ✅ | architecture  | Hexagonal + DDD; domain core is Spring-free.                               |
 | RULE-004   | ✅ | architecture  | Mirror the `blank-service` module shape (8 modules).                       |

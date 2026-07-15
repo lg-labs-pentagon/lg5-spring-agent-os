@@ -38,7 +38,7 @@ This bundle currently has **15 constitutional rules** out of 18 total.
 
 | ID | Slug | Scope | One-liner |
 |----|------|-------|-----------|
-| [RULE-001](RULE-001-stack-baseline.md) | stack-baseline | framework | Spring Boot 3.4.2, Spring 6.2.2, JDK 21, Kotlin 21. |
+| [RULE-001](RULE-001-stack-baseline.md) | stack-baseline | framework | Spring Boot 4.0.0, Spring 7.0.1, JDK 25, Kotlin JVM 21. |
 | [RULE-002](RULE-002-parent-pom.md) | parent-pom | framework | Inherit from `lg5-spring-parent` pinned to a framework SHA. |
 | [RULE-003](RULE-003-hexagonal-ddd.md) | hexagonal-ddd | architecture | Domain depends on nothing Spring; ports & adapters strict. |
 | [RULE-004](RULE-004-service-module-shape.md) | service-module-shape | architecture | Mirror `blank-service` module layout (8 Maven modules). |

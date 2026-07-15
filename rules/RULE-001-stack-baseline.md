@@ -1,13 +1,13 @@
 ---
 id: RULE-001
 slug: stack-baseline
-version: 0.1.0
+version: 0.2.0
 lg5-spring-sha: d0d754a
 severity: must
 constitutional: true
 scope: framework
 tags: [versions, spring-boot, jdk, kotlin, build-tool]
-description: Pin the stack baseline (Spring Boot 3.4.2, Spring 6.2.2, JDK 21, Kotlin 21, Gradle for framework / Maven for services). Never propose lower versions.
+description: Pin the stack baseline (Spring Boot 4.0.0, Spring 7.0.1, JDK 25, Kotlin JVM 21, Gradle for framework / Maven for services). Never propose lower versions.
 ---
 
 # RULE-001 — Stack baseline
@@ -18,9 +18,9 @@ Every project — framework module or consumer microservice — must use exactly
 
 | Component        | Version  |
 |------------------|----------|
-| Spring Boot      | **3.4.2** |
-| Spring Framework | **6.2.2** |
-| JDK              | **21**   |
+| Spring Boot      | **4.0.0** |
+| Spring Framework | **7.0.1** |
+| JDK              | **25**   |
 | Kotlin           | **21**   |
 | Build tool       | **Gradle** (framework) / **Maven** (services) |
 
@@ -51,7 +51,7 @@ that drive the local dev loop.
 </parent>
 
 <properties>
-  <java.version>21</java.version>
+  <java.version>25</java.version>
 </properties>
 ```
 
@@ -64,11 +64,11 @@ The Spring Boot version is **inherited** from the parent — never restated.
 <parent>
   <groupId>org.springframework.boot</groupId>
   <artifactId>spring-boot-starter-parent</artifactId>
-  <version>3.3.0</version>
+  <version>3.5.0</version>
 </parent>
 
 <properties>
-  <java.version>17</java.version>
+  <java.version>21</java.version>
 </properties>
 ```
 
